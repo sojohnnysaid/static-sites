@@ -8,6 +8,9 @@ resources:
   - solutions/deployment.yaml
   - solutions/service.yaml
   - solutions/configmap.yaml
+  - hello-world/deployment.yaml
+  - hello-world/service.yaml
+  - hello-world/configmap.yaml
   - networkpolicy.yaml
 
 labels:
