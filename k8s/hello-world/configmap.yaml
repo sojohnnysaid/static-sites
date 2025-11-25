@@ -130,21 +130,6 @@ data:
           color: #94a3b8;
           font-size: 0.85rem;
         }
-        .node-detail {
-          color: #60a5fa;
-          font-size: 0.75rem;
-          margin-top: 8px;
-          padding-top: 8px;
-          border-top: 1px solid rgba(59,130,246,0.3);
-          max-height: 0;
-          overflow: hidden;
-          opacity: 0;
-          transition: all 0.3s ease;
-        }
-        .node:hover .node-detail {
-          max-height: 100px;
-          opacity: 1;
-        }
         .node-small {
           min-width: 160px;
           padding: 18px;
@@ -157,22 +142,6 @@ data:
         .node-small .node-title {
           font-size: 0.95rem;
         }
-        .layer-label {
-          position: absolute;
-          left: 20px;
-          color: #475569;
-          font-size: 0.7rem;
-          font-weight: 600;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          writing-mode: vertical-rl;
-          text-orientation: mixed;
-          transform: rotate(180deg);
-        }
-        .label-1 { top: 80px; }
-        .label-2 { top: 260px; }
-        .label-3 { top: 450px; }
-        .label-4 { top: 680px; }
         .nodes-row {
           display: flex;
           justify-content: center;
@@ -187,44 +156,11 @@ data:
           border-color: #67e8f9;
           box-shadow: 0 20px 40px rgba(34,211,238,0.2), 0 0 60px rgba(34,211,238,0.1);
         }
-        .status-dot {
-          width: 8px;
-          height: 8px;
-          background: #22c55e;
-          border-radius: 50%;
-          display: inline-block;
-          margin-right: 6px;
-          animation: pulse-dot 2s ease-in-out infinite;
-        }
-        @keyframes pulse-dot {
-          0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
-          50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(34,197,94,0); }
-        }
         .footer {
           text-align: center;
           margin-top: 50px;
           color: #475569;
           font-size: 0.8rem;
-          opacity: 0;
-        }
-        .tooltip {
-          position: fixed;
-          background: rgba(15,23,42,0.95);
-          border: 1px solid #3b82f6;
-          border-radius: 8px;
-          padding: 12px 16px;
-          color: #f8fafc;
-          font-size: 0.85rem;
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.2s ease;
-          z-index: 1000;
-          max-width: 250px;
-        }
-        .glow-line {
-          position: absolute;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, #3b82f6, transparent);
           opacity: 0;
         }
       </style>
@@ -237,18 +173,13 @@ data:
         </div>
 
         <div class="diagram">
-          <span class="layer-label label-1">External</span>
-          <span class="layer-label label-2">Ingress</span>
-          <span class="layer-label label-3">Control Plane</span>
-          <span class="layer-label label-4">Workloads</span>
-
           <div class="connector connector-1"></div>
           <div class="connector connector-2"></div>
           <div class="connector connector-3"></div>
 
           <!-- Layer 1: Cloudflare -->
           <div class="layer" data-layer="1">
-            <div class="node" data-info="Cloudflare Tunnel provides secure ingress without exposing ports">
+            <div class="node">
               <div class="node-icon">
                 <svg viewBox="0 0 128 128" fill="#f38020">
                   <path d="M102.4 70.4c-.4-1.2-1.2-2-2.4-2.4l-8.8-2c-.8-.4-1.2-.8-1.2-1.6s.4-1.2.8-1.6c1.2-1.2 2-2.8 2-4.4 0-4-3.6-7.2-8-7.2-1.2 0-2.4.4-3.6.8-.8.4-1.6.4-2 0s-.8-1.2-.4-2c2-4.8 1.2-10.4-2.4-14.4-3.6-4-9.2-5.6-14.4-4-4.8 1.6-8.4 5.6-9.6 10.4-.4 1.2-1.2 2-2.4 2-5.6.4-10.4 4-12 9.2-1.6 5.2 0 11.2 4 14.8.8.8 1.2 2 .8 3.2-.4.8-1.2 1.6-2.4 1.6H28c-1.6 0-2.8 1.2-2.8 2.8s1.2 2.8 2.8 2.8h73.6c1.6 0 2.8-1.2 2.8-2.8.4-1.2-.4-2.4-2-3.2z"/>
@@ -257,17 +188,12 @@ data:
               </div>
               <div class="node-title">Cloudflare Tunnel</div>
               <div class="node-subtitle">*.sogos.io</div>
-              <div class="node-detail">
-                hello.sogos.io<br>
-                mirai.sogos.io<br>
-                grafana.sogos.io
-              </div>
             </div>
           </div>
 
           <!-- Layer 2: Ingress -->
           <div class="layer" data-layer="2">
-            <div class="node" data-info="cloudflared daemon running in HA mode">
+            <div class="node">
               <div class="node-icon">
                 <svg viewBox="0 0 24 24" fill="#60a5fa">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
@@ -275,9 +201,6 @@ data:
               </div>
               <div class="node-title">Ingress Namespace</div>
               <div class="node-subtitle">cloudflared (3 replicas)</div>
-              <div class="node-detail">
-                <span class="status-dot"></span>High Availability
-              </div>
             </div>
           </div>
 
@@ -295,35 +218,32 @@ data:
               <div class="node-title">Kubernetes Control Plane</div>
               <div class="node-subtitle">v1.34.0 • 3 Node HA Cluster</div>
               <div class="nodes-row" style="margin-top: 20px;">
-                <div class="node node-small mac-node" data-info="Control plane node running etcd, API server, scheduler">
+                <div class="node node-small mac-node">
                   <div class="node-icon">
                     <svg viewBox="0 0 24 24" fill="#67e8f9">
                       <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
                     </svg>
                   </div>
                   <div class="node-title">mac-mini-1</div>
-                  <div class="node-subtitle">192.168.1.223</div>
-                  <div class="node-detail"><span class="status-dot"></span>Talos 1.11.2</div>
+                  <div class="node-subtitle">Talos 1.11.2</div>
                 </div>
-                <div class="node node-small mac-node" data-info="Control plane node running etcd, API server, scheduler">
+                <div class="node node-small mac-node">
                   <div class="node-icon">
                     <svg viewBox="0 0 24 24" fill="#67e8f9">
                       <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
                     </svg>
                   </div>
                   <div class="node-title">mac-mini-2</div>
-                  <div class="node-subtitle">192.168.1.162</div>
-                  <div class="node-detail"><span class="status-dot"></span>Talos 1.11.2</div>
+                  <div class="node-subtitle">Talos 1.11.2</div>
                 </div>
-                <div class="node node-small mac-node" data-info="Control plane node running etcd, API server, scheduler">
+                <div class="node node-small mac-node">
                   <div class="node-icon">
                     <svg viewBox="0 0 24 24" fill="#67e8f9">
                       <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
                     </svg>
                   </div>
                   <div class="node-title">mac-mini-3</div>
-                  <div class="node-subtitle">192.168.1.215</div>
-                  <div class="node-detail"><span class="status-dot"></span>Talos 1.11.2</div>
+                  <div class="node-subtitle">Talos 1.11.2</div>
                 </div>
               </div>
             </div>
@@ -331,7 +251,7 @@ data:
 
           <!-- Layer 4: Namespaces -->
           <div class="layer" data-layer="4" style="margin-top: 40px;">
-            <div class="node node-small" data-info="Mirai frontend application">
+            <div class="node node-small">
               <div class="node-icon">
                 <svg viewBox="0 0 24 24" fill="#a78bfa">
                   <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
@@ -340,7 +260,7 @@ data:
               <div class="node-title">mirai</div>
               <div class="node-subtitle">Frontend App</div>
             </div>
-            <div class="node node-small" data-info="Static HTML sites including this page!">
+            <div class="node node-small">
               <div class="node-icon">
                 <svg viewBox="0 0 24 24" fill="#34d399">
                   <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
@@ -349,7 +269,7 @@ data:
               <div class="node-title">static-sites</div>
               <div class="node-subtitle">This Page!</div>
             </div>
-            <div class="node node-small" data-info="ArgoCD GitOps continuous deployment">
+            <div class="node node-small">
               <div class="node-icon">
                 <svg viewBox="0 0 24 24" fill="#fb923c">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -358,7 +278,7 @@ data:
               <div class="node-title">argocd</div>
               <div class="node-subtitle">GitOps CD</div>
             </div>
-            <div class="node node-small" data-info="Prometheus, Grafana, Loki monitoring stack">
+            <div class="node node-small">
               <div class="node-icon">
                 <svg viewBox="0 0 24 24" fill="#f472b6">
                   <path d="M19.5 12c0-.23-.01-.45-.03-.68l1.86-1.41c.4-.3.51-.86.26-1.3l-1.87-3.23c-.25-.44-.79-.62-1.25-.42l-2.15.91c-.37-.26-.76-.49-1.17-.68l-.29-2.31c-.06-.5-.49-.88-.99-.88h-3.73c-.51 0-.94.38-1 .88l-.29 2.31c-.41.19-.8.42-1.17.68l-2.15-.91c-.46-.2-1-.02-1.25.42L2.41 8.62c-.25.44-.14.99.26 1.3l1.86 1.41c-.02.22-.03.44-.03.67s.01.45.03.68l-1.86 1.41c-.4.3-.51.86-.26 1.3l1.87 3.23c.25.44.79.62 1.25.42l2.15-.91c.37.26.76.49 1.17.68l.29 2.31c.06.5.49.88.99.88h3.73c.5 0 .93-.38.99-.88l.29-2.31c.41-.19.8-.42 1.17-.68l2.15.91c.46.2 1 .02 1.25-.42l1.87-3.23c.25-.44.14-.99-.26-1.3l-1.86-1.41c.02-.22.03-.44.03-.67zm-7.5 3.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
@@ -367,7 +287,7 @@ data:
               <div class="node-title">monitoring</div>
               <div class="node-subtitle">Prometheus + Grafana</div>
             </div>
-            <div class="node node-small" data-info="Redis caching layer">
+            <div class="node node-small">
               <div class="node-icon">
                 <svg viewBox="0 0 24 24" fill="#ef4444">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
@@ -383,8 +303,6 @@ data:
           Powered by Talos Linux • Managed with ArgoCD • Secured by Cloudflare
         </div>
       </div>
-
-      <div class="tooltip" id="tooltip"></div>
 
       <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -435,42 +353,8 @@ data:
             easing: 'easeOutExpo'
           });
 
-          // Interactive hover effects
-          const nodes = document.querySelectorAll('.node');
-          const tooltip = document.getElementById('tooltip');
-
-          nodes.forEach(node => {
-            node.addEventListener('mouseenter', function(e) {
-              const info = this.getAttribute('data-info');
-              if (info) {
-                tooltip.textContent = info;
-                tooltip.style.opacity = '1';
-              }
-
-              anime({
-                targets: this,
-                scale: 1.03,
-                duration: 200,
-                easing: 'easeOutExpo'
-              });
-            });
-
-            node.addEventListener('mousemove', function(e) {
-              tooltip.style.left = e.pageX + 15 + 'px';
-              tooltip.style.top = e.pageY + 15 + 'px';
-            });
-
-            node.addEventListener('mouseleave', function() {
-              tooltip.style.opacity = '0';
-
-              anime({
-                targets: this,
-                scale: 1,
-                duration: 200,
-                easing: 'easeOutExpo'
-              });
-            });
-
+          // Interactive click effects
+          document.querySelectorAll('.node').forEach(node => {
             node.addEventListener('click', function() {
               anime({
                 targets: this,
