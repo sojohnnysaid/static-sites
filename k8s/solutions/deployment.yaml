@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solutions
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: solutions
+  template:
+    metadata:
+      labels:
+        app: solutions
+    spec:
+      containers:
+      - name: python-server
+        image: python:3.11-alpine
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          cd /html
+          python -m http.server 8080
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: html
+          mountPath: /html
+          readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+      volumes:
+      - name: html
+        configMap:
+          name: solutions-html
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
