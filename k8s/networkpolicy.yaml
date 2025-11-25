@@ -1,12 +1,12 @@
 ---
-# Basic isolation for static sites in default namespace
+# Basic isolation for static sites
 # Less restrictive than full tenant isolation since these are
 # simple static content with no sensitive data
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: static-sites-isolation
-  namespace: default
+  namespace: static-sites
 spec:
   podSelector: {}
   policyTypes:

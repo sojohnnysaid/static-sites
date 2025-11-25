@@ -4,11 +4,13 @@ kind: Kustomization
 resources:
   - product/deployment.yaml
   - product/service.yaml
+  - product/configmap.yaml
   - solutions/deployment.yaml
   - solutions/service.yaml
+  - solutions/configmap.yaml
   - networkpolicy.yaml
 
-namespace: default
-
-commonLabels:
-  app.kubernetes.io/part-of: static-sites
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: static-sites
+    includeSelectors: true
