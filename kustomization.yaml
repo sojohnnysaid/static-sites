@@ -10,8 +10,6 @@ resources:
   - k8s/solutions/service.yaml
   - k8s/hello-world/deployment.yaml
   - k8s/hello-world/service.yaml
-  - k8s/homepage/deployment.yaml
-  - k8s/homepage/service.yaml
   - k8s/networkpolicy.yaml
 
 configMapGenerator:
@@ -24,9 +22,6 @@ configMapGenerator:
   - name: hello-world-html
     files:
       - index.html=sites/hello-world/index.html
-  - name: homepage-html
-    files:
-      - index.html=sites/homepage/index.html
 
 generatorOptions:
   disableNameSuffixHash: true
