@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirai Course Generation Architecture</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-page: #f9fafb;
+            --bg-surface: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --border-default: #e5e7eb;
+            --border-subtle: #f3f4f6;
+            --accent-primary: #6366f1;
+            --accent-secondary: #818cf8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border-default);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent-primary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tab {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+        }
+
+        .nav-tab:hover {
+            color: var(--accent-primary);
+            background-color: var(--border-subtle);
+        }
+
+        .nav-tab.active {
+            color: var(--accent-primary);
+            background-color: #eef2ff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .diagram-section, .doc-section {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .diagram-section h2, .doc-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-section h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+
+        .doc-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .doc-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-desc, .doc-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            padding: 1rem 0;
+        }
+
+        .doc-section ul, .doc-section ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .doc-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .doc-section li strong {
+            color: var(--text-primary);
+        }
+
+        .code-block {
+            background-color: #1f2937;
+            color: #e5e7eb;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .code-inline {
+            background-color: #f3f4f6;
+            color: #6366f1;
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.25rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.875rem;
+        }
+
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .doc-table th {
+            background-color: var(--border-subtle);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+        }
+
+        .doc-table td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-default);
+            color: var(--text-secondary);
+        }
+
+        .doc-table tr:nth-child(even) {
+            background-color: var(--border-subtle);
+        }
+
+        .info-box {
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .info-box.note {
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .info-box.warning {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: var(--border-subtle);
+            border-radius: 0.5rem;
+        }
+
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--accent-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin: 0 0 0.25rem 0;
+            color: var(--text-primary);
+        }
+
+        .step-content p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-default);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .diagram-section, .doc-section {
+                padding: 1.25rem;
+            }
+
+            .doc-table {
+                font-size: 0.8rem;
+            }
+
+            .doc-table th, .doc-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Mirai Architecture</div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('diagrams')">Flow Diagrams</button>
+            <button class="nav-tab" onclick="showTab('documentation')">Documentation</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- DIAGRAMS TAB -->
+        <div id="diagrams" class="tab-content active">
+            <header class="page-header">
+                <h1>Course Generation Flow Diagrams</h1>
+                <p class="subtitle">Visual representation of AI-powered course outline and content generation</p>
+            </header>
+
+            <section class="diagram-section">
+                <h2>High-Level Generation Overview</h2>
+                <p class="section-desc">The complete flow from user input to generated course content.</p>
+                <div class="mermaid">
+flowchart TB
+    subgraph Inputs["User Inputs"]
+        CT[Course Title]
+        DO[Desired Outcome]
+        SME[SME Knowledge]
+        TA[Target Audience]
+    end
+
+    subgraph Phase1["Phase 1: Outline Generation"]
+        OG[Generate Course Outline]
+        OR[Outline Review]
+        OA{Approved?}
+    end
+
+    subgraph Phase2["Phase 2: Content Generation"]
+        GL[Generate All Lessons]
+        PJ[Parent Job]
+        CJ1[Child Job 1]
+        CJ2[Child Job 2]
+        CJN[Child Job N]
+    end
+
+    subgraph Phase3["Phase 3: Refinement"]
+        IG[Generate Images]
+        EC[Edit Components]
+        PB[Publish Course]
+    end
+
+    Inputs --> OG
+    OG --> OR
+    OR --> OA
+    OA -->|No| OR
+    OA -->|Yes| GL
+    GL --> PJ
+    PJ --> CJ1 & CJ2 & CJN
+    CJ1 & CJ2 & CJN --> IG
+    IG --> EC
+    EC --> PB
+
+    style Inputs fill:#e0e7ff,stroke:#6366f1
+    style Phase1 fill:#fef3c7,stroke:#f59e0b
+    style Phase2 fill:#d1fae5,stroke:#10b981
+    style Phase3 fill:#fce7f3,stroke:#ec4899
+                </div>
+            </section>
+
+            <section class="diagram-section">
+                <h2>Outline Generation (Two-Phase Approach)</h2>
+                <p class="section-desc">Outline generation uses a two-call strategy to avoid Gemini's schema depth limits.</p>
+                <div class="mermaid">
+flowchart TB
+    subgraph Input["Inputs"]
+        I1[Course Title + Outcome]
+        I2[SME Knowledge]
+        I3[Target Audience]
+    end
+
+    subgraph Phase1["LLM Call 1: Sections"]
+        P1[Build Sections Prompt]
+        G1[Gemini API]
+        R1[Parse Sections + Lesson Titles]
+    end
+
+    subgraph Phase2["LLM Calls 2-N: Parallel"]
+        P2A[Section 1 Prompt]
+        P2B[Section 2 Prompt]
+        P2C[Section N Prompt]
+        G2A[Gemini]
+        G2B[Gemini]
+        G2C[Gemini]
+    end
+
+    subgraph Output["Output"]
+        M[Merge Sections]
+        PF[Compute Position Flags]
+        ST[Store in MinIO]
+    end
+
+    Input --> P1 --> G1 --> R1
+    R1 --> P2A & P2B & P2C
+    P2A --> G2A
+    P2B --> G2B
+    P2C --> G2C
+    G2A & G2B & G2C --> M --> PF --> ST
+
+    style Phase1 fill:#dbeafe,stroke:#3b82f6
+    style Phase2 fill:#dcfce7,stroke:#22c55e
+                </div>
+            </section>
+
+            <section class="diagram-section">
+                <h2>Lesson Content Generation (Three-Phase)</h2>
+                <p class="section-desc">Each lesson: component planning, iterative generation with context, and segue generation.</p>
+                <div class="mermaid">
+flowchart TB
+    subgraph PhaseA["Phase A: Planning"]
+        CP[Component Plan Prompt]
+        CPG[Gemini API]
+        CPR[5-8 Components Planned]
+    end
+
+    subgraph PhaseB["Phase B: Iterative Generation"]
+        LOOP[For each component]
+        SC1[Build Prompt + Context]
+        SC2[Gemini API]
+        SC3[Parse Component]
+        SC4[Add to Context]
+    end
+
+    subgraph Types["Component Types"]
+        T1[TEXT]
+        T2[HEADING]
+        T3[IMAGE]
+        T4[QUIZ]
+        T5[CODE]
+        T6[CALLOUT]
+    end
+
+    subgraph PhaseC["Phase C: Segue"]
+        SG[Segue Prompt]
+        SGR{Position?}
+        SGR1[Lesson-to-Lesson]
+        SGR2[Section-to-Section]
+        SGR3[Course Conclusion]
+    end
+
+    CP --> CPG --> CPR --> LOOP
+    LOOP --> SC1 --> SC2 --> SC3 --> SC4
+    SC4 -.->|Next| SC1
+    SC4 --> SG --> SGR
+    SGR --> SGR1 & SGR2 & SGR3
+    PhaseB --> Types
+
+    style PhaseA fill:#e0e7ff,stroke:#6366f1
+    style PhaseB fill:#fef3c7,stroke:#f59e0b
+    style PhaseC fill:#d1fae5,stroke:#10b981
+                </div>
+            </section>
+
+            <section class="diagram-section">
+                <h2>Background Job System</h2>
+                <p class="section-desc">Hierarchical job model with parent-child tracking and atomic claims.</p>
+                <div class="mermaid">
+flowchart TB
+    subgraph Client["Frontend"]
+        UI[User Interface]
+        SSE[SSE Stream]
+    end
+
+    subgraph Jobs["Job System"]
+        PG[(PostgreSQL)]
+        AQ[Asynq Queue]
+        PARENT[Parent Job]
+        CHILD1[Child 1]
+        CHILD2[Child 2]
+        CHILDN[Child N]
+    end
+
+    subgraph Workers["Workers"]
+        W1[Worker 1]
+        W2[Worker 2]
+        WN[Worker N]
+    end
+
+    subgraph Events["Events"]
+        REDIS[(Redis Pub/Sub)]
+    end
+
+    UI --> PG
+    PG --> PARENT --> CHILD1 & CHILD2 & CHILDN
+    AQ --> W1 & W2 & WN
+    W1 & W2 & WN --> REDIS
+    REDIS --> SSE --> UI
+
+    style Jobs fill:#dbeafe,stroke:#3b82f6
+    style Workers fill:#dcfce7,stroke:#22c55e
+                </div>
+            </section>
+
+            <section class="diagram-section">
+                <h2>Component Requirements by Position</h2>
+                <p class="section-desc">Position-aware component generation based on lesson location.</p>
+                <div class="mermaid">
+flowchart LR
+    subgraph Base["All Lessons"]
+        B1[1+ HEADING]
+        B2[2+ TEXT]
+        B3[1+ IMAGE]
+        B4[1+ QUIZ]
+    end
+
+    subgraph First["First in Course"]
+        F1[Welcome intro]
+        F2[Course overview]
+    end
+
+    subgraph Section["First in Section"]
+        S1[Section intro]
+        S2[Objectives overview]
+    end
+
+    subgraph Last["Last in Section"]
+        L1[Section summary]
+        L2[Key takeaways]
+    end
+
+    subgraph Final["Last in Course"]
+        FN1[Congratulations]
+        FN2[Next steps]
+    end
+
+    Base --> First & Section & Last & Final
+
+    style Base fill:#dbeafe,stroke:#3b82f6
+    style First fill:#dcfce7,stroke:#22c55e
+    style Section fill:#fef3c7,stroke:#f59e0b
+    style Last fill:#fce7f3,stroke:#ec4899
+    style Final fill:#f3e8ff,stroke:#a855f7
+                </div>
+            </section>
+        </div>
+
+        <!-- DOCUMENTATION TAB -->
+        <div id="documentation" class="tab-content">
+            <header class="page-header">
+                <h1>Course Generation Documentation</h1>
+                <p class="subtitle">Technical documentation for the AI-powered course generation system</p>
+            </header>
+
+            <section class="doc-section">
+                <h2>System Overview</h2>
+                <p>
+                    Mirai's course generation system uses a <strong>hierarchical, multi-phase approach</strong> to transform
+                    user inputs into complete, structured course content. The system is built on a strict contract architecture
+                    where Protocol Buffers define all data structures.
+                </p>
+
+                <h3>Core Architecture Principles</h3>
+                <ul>
+                    <li><strong>Single Source of Truth (SSOT)</strong>: Proto files define all contracts</li>
+                    <li><strong>Schema-First Development</strong>: Define interfaces before implementing logic</li>
+                    <li><strong>Compile-Time Safety</strong>: Build failures over runtime errors</li>
+                    <li><strong>Multi-Tenant Security</strong>: Every query is tenant-scoped via RLS</li>
+                </ul>
+
+                <h3>Technology Stack</h3>
+                <table class="doc-table">
+                    <thead>
+                        <tr><th>Component</th><th>Technology</th><th>Purpose</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>AI Provider</td><td>Google Gemini</td><td>1M token context, per-tenant keys</td></tr>
+                        <tr><td>Job Queue</td><td>Asynq (Redis)</td><td>Background processing with retry</td></tr>
+                        <tr><td>Content Storage</td><td>MinIO</td><td>Course content, lessons, images</td></tr>
+                        <tr><td>Database</td><td>PostgreSQL 16</td><td>Job tracking, tenant settings</td></tr>
+                        <tr><td>Real-time</td><td>Redis Pub/Sub + SSE</td><td>Job progress streaming</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="doc-section">
+                <h2>Input Parameters</h2>
+                <h3>Course Configuration</h3>
+                <ul>
+                    <li><strong>Course Title</strong>: Name of the course</li>
+                    <li><strong>Desired Outcome</strong>: What learners achieve after completion</li>
+                    <li><strong>Additional Context</strong>: Extra instructions for generation</li>
+                </ul>
+
+                <h3>SME Knowledge</h3>
+                <ul>
+                    <li><strong>SME Name</strong>: Expert source name</li>
+                    <li><strong>Domain</strong>: Area of expertise</li>
+                    <li><strong>Summary</strong>: Knowledge overview</li>
+                    <li><strong>Chunks</strong>: Discrete knowledge pieces (limited to 5 per call)</li>
+                    <li><strong>Keywords</strong>: Domain topics and tags</li>
+                </ul>
+
+                <h3>Target Audience</h3>
+                <ul>
+                    <li><strong>Role</strong>: Job title or function</li>
+                    <li><strong>Experience Level</strong>: Beginner, intermediate, advanced</li>
+                    <li><strong>Learning Goals</strong>: What they want to achieve</li>
+                    <li><strong>Challenges</strong>: Pain points to address</li>
+                </ul>
+            </section>
+
+            <section class="doc-section">
+                <h2>Phase 1: Outline Generation</h2>
+                <p>Uses a <strong>two-call approach</strong> to work around Gemini's schema depth limitations.</p>
+
+                <div class="info-box note">
+                    <p><strong>Why Two Calls?</strong> Gemini's structured output has schema nesting limits.
+                    By first generating sections (flat), then expanding lessons in parallel, we avoid these limits.</p>
+                </div>
+
+                <h3>Call 1: Generate Sections</h3>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Build Prompt</h4>
+                            <p><span class="code-inline">buildSectionsOnlyPrompt()</span> with role, course info, audience, SME knowledge.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Call Gemini</h4>
+                            <p>Uses flat schema returning sections with lesson titles only.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Calls 2-N: Parallel Section Expansion</h3>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Parallel Gemini Calls</h4>
+                            <p>Each section expanded with: titles, descriptions, durations (5-20 min), 2-4 learning objectives.</p>
+                        </div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Merge and Store</h4>
+                            <p>Position flags computed (IsFirstInCourse, etc.), stored in MinIO.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <h2>Phase 2: Lesson Content Generation</h2>
+                <p>Each lesson generated through <strong>three phases with context accumulation</strong>.</p>
+
+                <h3>Job Architecture</h3>
+                <ul>
+                    <li><strong>Parent Job</strong> (FULL_COURSE): Tracks overall progress</li>
+                    <li><strong>Child Jobs</strong> (LESSON_CONTENT): One per lesson, run in parallel</li>
+                </ul>
+
+                <h3>Phase A: Component Planning</h3>
+                <p><span class="code-inline">buildComponentPlanPrompt()</span> generates 5-8 component types with purposes.</p>
+
+                <h3>Phase B: Iterative Component Generation</h3>
+                <p>Each component generated with accumulated context from previous components.</p>
+
+                <h3>Phase C: Segue Generation</h3>
+                <ul>
+                    <li><strong>LESSON_TO_LESSON</strong>: 1-2 sentence transition</li>
+                    <li><strong>SECTION_TO_SECTION</strong>: Preview next section</li>
+                    <li><strong>COURSE_CONCLUSION</strong>: Congratulations + next steps</li>
+                </ul>
+
+                <h3>Component Types</h3>
+                <table class="doc-table">
+                    <thead><tr><th>Type</th><th>Purpose</th><th>Structure</th></tr></thead>
+                    <tbody>
+                        <tr><td>TEXT</td><td>Main content</td><td>HTML + plaintext</td></tr>
+                        <tr><td>HEADING</td><td>Section breaks</td><td>Level (h1-h6) + text</td></tr>
+                        <tr><td>IMAGE</td><td>Visual aids</td><td>Description, alt, caption</td></tr>
+                        <tr><td>QUIZ</td><td>Knowledge checks</td><td>Question, options, feedback</td></tr>
+                        <tr><td>CODE</td><td>Code examples</td><td>Code + language</td></tr>
+                        <tr><td>CALLOUT</td><td>Tips, warnings</td><td>Style, title, content</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="doc-section">
+                <h2>Background Job System</h2>
+                <h3>Job Types</h3>
+                <table class="doc-table">
+                    <thead><tr><th>Type</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td>COURSE_OUTLINE</td><td>Generate course outline</td></tr>
+                        <tr><td>FULL_COURSE</td><td>Parent job for lesson batch</td></tr>
+                        <tr><td>LESSON_CONTENT</td><td>Generate single lesson</td></tr>
+                        <tr><td>COMPONENT_REGEN</td><td>Regenerate single component</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Atomic Job Claiming</h3>
+                <div class="code-block">SELECT FOR UPDATE SKIP LOCKED</div>
+                <p>Jobs stuck &gt;30 minutes treated as crashed and can be reclaimed.</p>
+
+                <h3>Parent-Child Tracking</h3>
+                <p>Last child to complete atomically finalizes parent using <span class="code-inline">FOR UPDATE</span> lock.</p>
+            </section>
+
+            <section class="doc-section">
+                <h2>Real-time Event Streaming</h2>
+                <p>Uses <strong>Server-Sent Events (SSE)</strong> instead of polling.</p>
+
+                <h3>Event Types</h3>
+                <table class="doc-table">
+                    <thead><tr><th>Event</th><th>When Published</th></tr></thead>
+                    <tbody>
+                        <tr><td>JOB_CREATED</td><td>Job added to queue</td></tr>
+                        <tr><td>JOB_UPDATED</td><td>Progress changed</td></tr>
+                        <tr><td>JOB_COMPLETED</td><td>Job finished</td></tr>
+                        <tr><td>JOB_FAILED</td><td>Job encountered error</td></tr>
+                        <tr><td>JOB_KEEPALIVE</td><td>Every 15 seconds</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box warning">
+                    <p><strong>Keepalive Requirement:</strong> 15-second heartbeat prevents proxy timeouts (Cloudflare ~30s).</p>
+                </div>
+            </section>
+
+            <section class="doc-section">
+                <h2>Rate Limiting</h2>
+                <ul>
+                    <li><strong>Max RPM</strong>: 2000 requests per minute</li>
+                    <li><strong>Burst</strong>: 100 concurrent requests</li>
+                    <li><strong>Max Retries</strong>: 3 for rate limit errors</li>
+                </ul>
+                <p>Exponential backoff: 6s, 12s, 24s on 429 errors.</p>
+            </section>
+
+            <section class="doc-section">
+                <h2>Key Implementation Files</h2>
+                <table class="doc-table">
+                    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="code-inline">proto/mirai/v1/ai_generation.proto</span></td><td>Contract definitions</td></tr>
+                        <tr><td><span class="code-inline">backend/.../ai_generation_service.go</span></td><td>Core generation logic</td></tr>
+                        <tr><td><span class="code-inline">backend/.../gemini/client.go</span></td><td>Gemini integration, prompts</td></tr>
+                        <tr><td><span class="code-inline">frontend/.../courseGenerationMachine.ts</span></td><td>XState workflow UI</td></tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Mirai Course Generation Architecture</p>
+    </footer>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#6366f1',
+                primaryTextColor: '#1f2937',
+                primaryBorderColor: '#4f46e5',
+                lineColor: '#6b7280',
+                secondaryColor: '#f3f4f6',
+                tertiaryColor: '#e5e7eb',
+                fontFamily: 'Inter, system-ui, sans-serif'
+            },
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            if (tabId === 'diagrams') {
+                setTimeout(() => mermaid.init(undefined, '.mermaid'), 100);
+            }
+        }
+    </script>
+</body>
+</html>
