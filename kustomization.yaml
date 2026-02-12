@@ -12,6 +12,8 @@ resources:
   - k8s/hello-world/service.yaml
   - k8s/diagram/deployment.yaml
   - k8s/diagram/service.yaml
+  - k8s/kalshi-btc/deployment.yaml
+  - k8s/kalshi-btc/service.yaml
   - k8s/networkpolicy.yaml
 
 configMapGenerator:
@@ -27,6 +29,9 @@ configMapGenerator:
   - name: diagram-html
     files:
       - index.html=sites/diagram/index.html
+  - name: kalshi-btc-html
+    files:
+      - index.html=sites/kalshi-btc/index.html
 
 generatorOptions:
   disableNameSuffixHash: true
