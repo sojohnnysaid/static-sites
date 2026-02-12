@@ -469,7 +469,7 @@ tailwind.config = {
         <div class="bot-card p-6 reveal" style="--accent: #34d399; animation-delay: 0.3s;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
-            Data Sources
+            Data &amp; Infrastructure
           </h3>
           <div class="space-y-4">
             <div class="flex items-start gap-3">
@@ -484,6 +484,20 @@ tailwind.config = {
               <div>
                 <div class="font-mono text-sm text-ice">OKX REST API</div>
                 <div class="text-xs text-moon/40 mt-0.5">Funding rate • 5-min poll • No auth</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="glow-dot bg-orange-400 mt-1.5 shrink-0"></div>
+              <div>
+                <div class="font-mono text-sm text-ice">ClickHouse (10Gi PVC)</div>
+                <div class="text-xs text-moon/40 mt-0.5">btc_ticks 7d • signals 30d • trades 90d</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="glow-dot bg-cyan-400 mt-1.5 shrink-0"></div>
+              <div>
+                <div class="font-mono text-sm text-ice">Vol Warmup: Tick Replay</div>
+                <div class="text-xs text-moon/40 mt-0.5">Replays ~1200s of ticks on boot • 0s warmup</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
@@ -574,8 +588,8 @@ tailwind.config = {
               <div class="space-y-3">
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                  <div class="font-mono text-lg text-ice">~20 min</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Vol pricer: 120 bars</div>
+                  <div class="font-mono text-lg text-exit-glow">Instant</div>
+                  <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
                 </div>
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -637,7 +651,8 @@ tailwind.config = {
             <div class="space-y-3">
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                <div class="font-mono text-lg text-ice">~20 min</div>
+                <div class="font-mono text-lg text-exit-glow">Instant</div>
+                <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
               </div>
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -723,7 +738,7 @@ tailwind.config = {
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
                 <div class="font-mono text-lg text-ice">~12.5 hrs</div>
-                <div class="text-xs text-moon/30 mt-0.5">50 candles × 15 min + vol pricer</div>
+                <div class="text-xs text-moon/30 mt-0.5">50 candles × 15 min (vol pricer instant)</div>
               </div>
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -806,8 +821,8 @@ tailwind.config = {
               <div class="space-y-3">
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                  <div class="font-mono text-lg text-ice">~20 min</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Vol pricer: 120 bars</div>
+                  <div class="font-mono text-lg text-exit-glow">Instant</div>
+                  <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
                 </div>
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -1103,7 +1118,7 @@ tailwind.config = {
               <tr><td>Funding Weight</td><td>200</td><td>50</td><td>200</td><td>200</td></tr>
               <tr><td>Funding Cap</td><td>5%</td><td>2%</td><td>5%</td><td>5%</td></tr>
               <tr><td>Trade Frequency</td><td class="text-hold-glow">High</td><td class="text-exit-glow">Lowest</td><td class="text-ml-glow">Medium</td><td class="text-data-glow font-semibold">Highest</td></tr>
-              <tr><td>Warmup</td><td>~20 min</td><td>~20 min</td><td>~12.5 hr</td><td>~20 min</td></tr>
+              <tr><td>Warmup</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td><td>~12.5 hr</td><td class="text-exit-glow">Instant</td></tr>
             </tbody>
           </table>
         </div>
