@@ -387,8 +387,8 @@ tailwind.config = {
           <div class="text-xs text-moon/40 mt-1">Max Trades/Day</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">&lt;100ms</div>
-          <div class="text-xs text-moon/40 mt-1">Price Latency</div>
+          <div class="font-mono text-2xl font-semibold text-ice">~125ms</div>
+          <div class="text-xs text-moon/40 mt-1">Signal→Order</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
           <div class="font-mono text-2xl font-semibold text-ice">$100</div>
@@ -425,6 +425,7 @@ tailwind.config = {
             <tr><td>Asset</td><td class="text-lunar font-semibold">BTC (KXBTC15M)</td></tr>
             <tr><td>Bar Duration</td><td>10s</td></tr>
             <tr><td>Vol Lookback</td><td>1200s (120 bars)</td></tr>
+            <tr><td>Eval Loop</td><td>100ms</td></tr>
             <tr><td>Entry Window</td><td>First 300s of each 15m</td></tr>
             <tr><td>Expiry Cutoff</td><td>60s before close</td></tr>
             <tr><td>Cooldown</td><td>60s between trades</td></tr>
@@ -498,6 +499,13 @@ tailwind.config = {
               <div>
                 <div class="font-mono text-sm text-ice">Vol Warmup: Tick Replay</div>
                 <div class="text-xs text-moon/40 mt-0.5">Replays ~1200s of ticks on boot • 0s warmup</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="glow-dot bg-yellow-400 mt-1.5 shrink-0"></div>
+              <div>
+                <div class="font-mono text-sm text-ice">Persistent HTTPS</div>
+                <div class="text-xs text-moon/40 mt-0.5">DNS cached • TLS reused • ~5ms per order</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
