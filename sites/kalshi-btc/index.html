@@ -423,12 +423,12 @@ tailwind.config = {
           </h3>
           <table class="data-table">
             <tr><td>Asset</td><td class="text-lunar font-semibold">BTC (KXBTC15M)</td></tr>
-            <tr><td>Bar Duration</td><td>30s</td></tr>
-            <tr><td>Vol Lookback</td><td>900s (30 bars)</td></tr>
+            <tr><td>Bar Duration</td><td>10s</td></tr>
+            <tr><td>Vol Lookback</td><td>1200s (120 bars)</td></tr>
             <tr><td>Entry Window</td><td>First 300s of each 15m</td></tr>
             <tr><td>Expiry Cutoff</td><td>60s before close</td></tr>
             <tr><td>Cooldown</td><td>60s between trades</td></tr>
-            <tr><td>EWMA Lambda</td><td>0.90</td></tr>
+            <tr><td>EWMA Lambda</td><td>0.97</td></tr>
           </table>
         </div>
 
@@ -574,8 +574,8 @@ tailwind.config = {
               <div class="space-y-3">
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                  <div class="font-mono text-lg text-ice">~15 min</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Vol pricer: 30 bars</div>
+                  <div class="font-mono text-lg text-ice">~20 min</div>
+                  <div class="text-xs text-moon/30 mt-0.5">Vol pricer: 120 bars</div>
                 </div>
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -637,7 +637,7 @@ tailwind.config = {
             <div class="space-y-3">
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                <div class="font-mono text-lg text-ice">~15 min</div>
+                <div class="font-mono text-lg text-ice">~20 min</div>
               </div>
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -806,8 +806,8 @@ tailwind.config = {
               <div class="space-y-3">
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                  <div class="font-mono text-lg text-ice">~15 min</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Vol pricer: 30 bars</div>
+                  <div class="font-mono text-lg text-ice">~20 min</div>
+                  <div class="text-xs text-moon/30 mt-0.5">Vol pricer: 120 bars</div>
                 </div>
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -1103,7 +1103,7 @@ tailwind.config = {
               <tr><td>Funding Weight</td><td>200</td><td>50</td><td>200</td><td>200</td></tr>
               <tr><td>Funding Cap</td><td>5%</td><td>2%</td><td>5%</td><td>5%</td></tr>
               <tr><td>Trade Frequency</td><td class="text-hold-glow">High</td><td class="text-exit-glow">Lowest</td><td class="text-ml-glow">Medium</td><td class="text-data-glow font-semibold">Highest</td></tr>
-              <tr><td>Warmup</td><td>~15 min</td><td>~15 min</td><td>~12.5 hr</td><td>~15 min</td></tr>
+              <tr><td>Warmup</td><td>~20 min</td><td>~20 min</td><td>~12.5 hr</td><td>~20 min</td></tr>
             </tbody>
           </table>
         </div>
