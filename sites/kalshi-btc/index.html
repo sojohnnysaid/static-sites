@@ -369,14 +369,14 @@ tailwind.config = {
     <div class="text-center max-w-3xl reveal" id="hero">
       <div class="inline-flex items-center gap-2 badge bg-lunar/8 border border-lunar/15 text-moon/70 mb-6">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        2026-02-12 &middot; hft-loc-dev
+        2026-02-13 &middot; hft-loc-dev
       </div>
       <h1 class="font-display font-bold text-5xl md:text-7xl tracking-tight text-ice leading-[1.1] mb-4">
         Mission<br>
         <span class="bg-gradient-to-r from-lunar via-moon to-glow bg-clip-text text-transparent">Control</span>
       </h1>
       <p class="font-body text-lg text-moon/50 max-w-xl mx-auto leading-relaxed mb-10">
-        Five autonomous trading bots navigating Kalshi's 15-minute BTC binary contracts. Real-time volatility pricing, ML-gated entries, active exit management, low-edge data collection, and a low-vol specialist.
+        Five autonomous trading bots navigating Kalshi's 15-minute BTC binary contracts. Drift-aware volatility pricing, tick-level trade flow, microstructure signals, ML-gated entries, active exit management, and conviction-tiered sizing.
       </p>
       <div class="flex flex-wrap justify-center gap-3 mb-14">
         <div class="stat-chip text-center min-w-[120px]">
@@ -392,7 +392,7 @@ tailwind.config = {
           <div class="text-xs text-moon/40 mt-1">Signal→Order</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">$100</div>
+          <div class="font-mono text-2xl font-semibold text-ice">$50–200</div>
           <div class="text-xs text-moon/40 mt-1">Kill Switch</div>
         </div>
       </div>
@@ -427,9 +427,9 @@ tailwind.config = {
             <tr><td>Bar Duration</td><td>10s</td></tr>
             <tr><td>Vol Lookback</td><td>1200s (120 bars)</td></tr>
             <tr><td>Eval Loop</td><td>100ms</td></tr>
-            <tr><td>Entry Window</td><td>First 300s of each 15m</td></tr>
+            <tr><td>Entry Window</td><td>360–480s (min 6–8)</td></tr>
             <tr><td>Expiry Cutoff</td><td>60s before close</td></tr>
-            <tr><td>Cooldown</td><td>60s between trades</td></tr>
+            <tr><td>Cooldown</td><td>15–60s (per bot)</td></tr>
             <tr><td>EWMA Lambda</td><td>0.97</td></tr>
           </table>
         </div>
@@ -441,13 +441,12 @@ tailwind.config = {
             Risk Limits
           </h3>
           <table class="data-table">
-            <tr><td>Entry Price Filter</td><td>30–80¢ (85¢ data bot)</td></tr>
+            <tr><td>Entry Price Filter</td><td>5–35¢ (25¢ Dude)</td></tr>
             <tr><td>Max Spread</td><td>6¢</td></tr>
-            <tr><td>Min Notional</td><td>$10</td></tr>
-            <tr><td>Target Notional</td><td>$1</td></tr>
-            <tr><td>Max Notional/Trade</td><td>$20</td></tr>
-            <tr><td>Max Loss (Kill Switch)</td><td class="text-danger font-semibold">$100</td></tr>
-            <tr><td>Max Trades/Day</td><td>96</td></tr>
+            <tr><td>Target Notional</td><td>$5–50 (per bot)</td></tr>
+            <tr><td>Max Notional/Trade</td><td>$10–100 (per bot)</td></tr>
+            <tr><td>Max Loss (Kill Switch)</td><td class="text-danger font-semibold">$50–200</td></tr>
+            <tr><td>Max Trades/Day</td><td>40–96</td></tr>
             <tr><td>Max Trades/Market</td><td>1 per window</td></tr>
           </table>
         </div>
@@ -456,15 +455,16 @@ tailwind.config = {
         <div class="bot-card p-6 reveal" style="--accent: #8ab4ff; animation-delay: 0.2s;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8ab4ff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            Signal Weights
+            Signal Engine
           </h3>
           <table class="data-table">
-            <tr><td>Momentum Weight</td><td>0.30</td></tr>
-            <tr><td>Momentum Lookback</td><td>120s</td></tr>
-            <tr><td>Momentum Cap</td><td>10%</td></tr>
-            <tr><td>Book Imbalance Weight</td><td>0.05</td></tr>
-            <tr><td>Book Imbalance Cap</td><td>5%</td></tr>
-            <tr><td>Vol Divergence Cooldown</td><td>60s</td></tr>
+            <tr><td>Drift (replaces momentum)</td><td>weight 0.5, cap 0.3%</td></tr>
+            <tr><td>Drift Lookback</td><td>12 bars (2 min)</td></tr>
+            <tr><td>Trade Flow Weight / Cap</td><td>0.10 / 8%</td></tr>
+            <tr><td>Trade Flow Window</td><td>60s</td></tr>
+            <tr><td>Micro-Vol Weight / Cap</td><td>0.05 / 5%</td></tr>
+            <tr><td>Book Imbalance Weight</td><td>0.05 (0.12 Dude)</td></tr>
+            <tr><td>Funding Weight / Cap</td><td>200 / 5% (50 / 2% Exit)</td></tr>
           </table>
         </div>
 
@@ -479,7 +479,7 @@ tailwind.config = {
               <div class="glow-dot bg-green-400 mt-1.5 shrink-0"></div>
               <div>
                 <div class="font-mono text-sm text-ice">Coinbase WebSocket</div>
-                <div class="text-xs text-moon/40 mt-0.5">BTC-USD ticker • sub-100ms latency</div>
+                <div class="text-xs text-moon/40 mt-0.5">BTC-USD ticker + trade flow (side/size) • sub-100ms</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
@@ -582,7 +582,7 @@ tailwind.config = {
           </div>
 
           <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Enter during the first 5 minutes, hold to expiry. No exit management. Most aggressive entry threshold — pure binary outcome bet.
+            Enter during minutes 6–8, hold to expiry. No exit management. Drift-aware pricing with trade flow and micro-volatility signals. $30 base bets, $50 on high edge.
           </p>
 
           <div class="grid md:grid-cols-2 gap-6">
@@ -590,10 +590,11 @@ tailwind.config = {
               <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
               <tbody>
                 <tr><td>Min Edge</td><td class="text-hold-glow font-semibold">16%</td></tr>
-                <tr><td>Edge Floor</td><td>16%</td></tr>
-                <tr><td>Edge Ceiling</td><td>20%</td></tr>
-                <tr><td>High Edge Threshold</td><td>30%</td></tr>
-                <tr><td>High Edge Notional</td><td>$20</td></tr>
+                <tr><td>Edge Floor / Ceiling</td><td>18% / 25%</td></tr>
+                <tr><td>High Edge Threshold</td><td>28%</td></tr>
+                <tr><td>Target Notional</td><td>$30</td></tr>
+                <tr><td>High Edge Notional</td><td>$50</td></tr>
+                <tr><td>Kill Switch</td><td class="text-danger">$150</td></tr>
                 <tr><td>Funding Weight / Cap</td><td>200 / 5%</td></tr>
               </tbody>
             </table>
@@ -641,22 +642,24 @@ tailwind.config = {
           </div>
 
           <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Highest edge requirement for entry. Actively manages positions with take-profit (full 9-min exit window) and model-gated stop-loss (last 5 min only). Funding signal dampened to reduce overconfidence.
+            Actively manages positions with take-profit (8-min exit window) and model-gated stop-loss (last 6 min). Drift-aware pricing with trade flow and micro-volatility. $35 bets, $200/day max loss. Funding signal dampened.
           </p>
 
           <div class="grid md:grid-cols-2 gap-6 mb-8">
             <table class="data-table">
               <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
               <tbody>
-                <tr><td>Min Edge</td><td class="text-exit-glow font-semibold">25%</td></tr>
-                <tr><td>Edge Floor / Ceiling</td><td>25% (flat)</td></tr>
-                <tr><td>High Edge Threshold</td><td>40%</td></tr>
-                <tr><td>High Edge Notional</td><td>$20</td></tr>
-                <tr><td>Exit Window</td><td>540s (last 9 min)</td></tr>
-                <tr><td>Stop-Loss</td><td>50% of entry price</td></tr>
+                <tr><td>Min Edge</td><td class="text-exit-glow font-semibold">16%</td></tr>
+                <tr><td>Edge Floor / Ceiling</td><td>18% / 25%</td></tr>
+                <tr><td>High Edge Threshold</td><td>30%</td></tr>
+                <tr><td>Target Notional</td><td>$35</td></tr>
+                <tr><td>High Edge Notional</td><td>$60</td></tr>
+                <tr><td>Kill Switch</td><td class="text-danger">$200</td></tr>
+                <tr><td>Exit Window</td><td>480s (8 min)</td></tr>
+                <tr><td>Stop-Loss</td><td>45% of entry price</td></tr>
                 <tr><td>SL Model Gate</td><td>p_fair: 0.35</td></tr>
-                <tr><td>SL Time Window</td><td>300s (last 5 min)</td></tr>
-                <tr><td>Take-Profit Edge</td><td>5¢ over model EV</td></tr>
+                <tr><td>SL Time Window</td><td>360s (last 6 min)</td></tr>
+                <tr><td>Take-Profit Edge</td><td>4¢ over model EV</td></tr>
                 <tr><td>Sell Fee</td><td>7%</td></tr>
                 <tr><td>Funding Weight / Cap</td><td>50 / 2%</td></tr>
               </tbody>
@@ -681,7 +684,7 @@ tailwind.config = {
             <div class="space-y-6">
               <div class="flow-step">
                 <div class="flow-dot" style="border-color: #34d399; background: rgba(16,185,129,0.15);"></div>
-                <div class="font-display font-semibold text-sm text-exit-glow mb-1">① Take-Profit <span class="text-moon/30 font-normal">(full 540s window)</span></div>
+                <div class="font-display font-semibold text-sm text-exit-glow mb-1">① Take-Profit <span class="text-moon/30 font-normal">(full 480s window)</span></div>
                 <div class="text-xs text-moon/40 space-y-1 ml-0">
                   <div>• Net sell &gt; entry price (profitable after fees)</div>
                   <div>• Net sell &gt; model EV + edge (relaxes near expiry)</div>
@@ -689,7 +692,7 @@ tailwind.config = {
               </div>
               <div class="flow-step">
                 <div class="flow-dot" style="border-color: #ef4444; background: rgba(239,68,68,0.15);"></div>
-                <div class="font-display font-semibold text-sm text-danger mb-1">② Stop-Loss <span class="text-moon/30 font-normal">(last 300s only)</span></div>
+                <div class="font-display font-semibold text-sm text-danger mb-1">② Stop-Loss <span class="text-moon/30 font-normal">(last 360s only)</span></div>
                 <div class="text-xs text-moon/40 space-y-1 ml-0">
                   <div>• Unrealized loss &gt; stop threshold (tightens near expiry)</div>
                   <div>• <strong class="text-moon/60">Model gate:</strong> SL only fires if model confirms flip</div>
@@ -729,20 +732,21 @@ tailwind.config = {
           </div>
 
           <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Same as hold-to-expiry but with an ML gate filter. Vol model picks a side, then a logistic regression model (20 TA features on 15-min candles) must independently agree before the trade fires.
+            Same as hold-to-expiry but with an ML gate filter. Vol model picks a side, then a logistic regression model (24 features — 20 TA + 4 microstructure — on 1-min candles) must independently agree before the trade fires. Largest positions ($50), ~20 min warmup.
           </p>
 
           <div class="grid md:grid-cols-2 gap-6 mb-8">
             <table class="data-table">
               <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
               <tbody>
-                <tr><td>Min Edge</td><td class="text-ml-glow font-semibold">17%</td></tr>
-                <tr><td>Edge Floor</td><td>17%</td></tr>
-                <tr><td>Edge Ceiling</td><td>20%</td></tr>
-                <tr><td>High Edge Threshold</td><td>30%</td></tr>
-                <tr><td>High Edge Notional</td><td>$20</td></tr>
-                <tr><td>ML Candle Period</td><td>900s (15 min)</td></tr>
-                <tr><td>ML Warmup</td><td>50 candles</td></tr>
+                <tr><td>Min Edge</td><td class="text-ml-glow font-semibold">14%</td></tr>
+                <tr><td>Edge Floor / Ceiling</td><td>15% / 22%</td></tr>
+                <tr><td>High Edge Threshold</td><td>25%</td></tr>
+                <tr><td>Target Notional</td><td>$50</td></tr>
+                <tr><td>High Edge Notional</td><td>$80</td></tr>
+                <tr><td>Kill Switch</td><td class="text-danger">$200</td></tr>
+                <tr><td>ML Candle Period</td><td>60s (1 min)</td></tr>
+                <tr><td>ML Warmup</td><td>20 candles (~20 min)</td></tr>
                 <tr><td>ML Max Candles</td><td>250</td></tr>
                 <tr><td>Funding Weight / Cap</td><td>200 / 5%</td></tr>
               </tbody>
@@ -750,8 +754,8 @@ tailwind.config = {
             <div class="space-y-3">
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                <div class="font-mono text-lg text-ice">~12.5 hrs</div>
-                <div class="text-xs text-moon/30 mt-0.5">50 candles × 15 min (vol pricer instant)</div>
+                <div class="font-mono text-lg text-ice">~20 min</div>
+                <div class="text-xs text-moon/30 mt-0.5">20 candles × 1 min (vol pricer instant)</div>
               </div>
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
@@ -777,7 +781,7 @@ tailwind.config = {
                   <div class="w-5 h-5 rounded-full bg-ml-base/20 flex items-center justify-center text-xs font-mono text-ml-glow">2</div>
                   <span class="text-sm text-ice">ML Model</span>
                 </div>
-                <p class="text-xs text-moon/40">20 TA indicators → probability → side</p>
+                <p class="text-xs text-moon/40">24 features (20 TA + 4 micro) → probability → side</p>
               </div>
               <div class="stat-chip md:col-span-2 text-center">
                 <div class="text-sm text-ice mb-1">Both must agree → <span class="text-exit-glow font-semibold">TRADE FIRES</span></div>
@@ -808,25 +812,25 @@ tailwind.config = {
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="#06b6d4" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
                 Data Collection
               </span>
-              <span class="feat-pill">Flat $5 Sizing</span>
+              <span class="feat-pill">$10 Sizing</span>
               <span class="feat-pill">Hold to Expiry</span>
             </div>
           </div>
 
           <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Low-conviction data collection bot. Trades at 10% edge with flat $5 sizing regardless of edge strength. Hold-to-expiry, no exit management, no ML. Designed to gather trade outcome data at lower conviction levels.
+            Moderate-conviction data scout. Trades at 12% edge with $10 sizing. Hold-to-expiry, no exit management, no ML. 15% edge floor with drift-aware pricing. $100/day max loss.
           </p>
 
           <div class="grid md:grid-cols-2 gap-6">
             <table class="data-table">
               <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
               <tbody>
-                <tr><td>Min Edge</td><td class="text-data-glow font-semibold">10%</td></tr>
-                <tr><td>Edge Floor</td><td>10% (flat)</td></tr>
-                <tr><td>Edge Ceiling</td><td>10% (flat)</td></tr>
-                <tr><td>High Edge Threshold</td><td>30%</td></tr>
-                <tr><td>All Notional Tiers</td><td>$5 (flat)</td></tr>
-                <tr><td>Max Notional/Trade</td><td>$5</td></tr>
+                <tr><td>Min Edge</td><td class="text-data-glow font-semibold">12%</td></tr>
+                <tr><td>Edge Floor / Ceiling</td><td>15% / 20%</td></tr>
+                <tr><td>High Edge Threshold</td><td>25%</td></tr>
+                <tr><td>Target Notional</td><td>$10</td></tr>
+                <tr><td>High Edge Notional</td><td>$20</td></tr>
+                <tr><td>Kill Switch</td><td class="text-danger">$100</td></tr>
                 <tr><td>Funding Weight / Cap</td><td>200 / 5%</td></tr>
               </tbody>
             </table>
@@ -840,12 +844,12 @@ tailwind.config = {
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
                   <div class="font-mono text-lg text-data-glow">Highest</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Lowest edge threshold (10%)</div>
+                  <div class="text-xs text-moon/30 mt-0.5">Lowest edge threshold (12%)</div>
                 </div>
                 <div class="stat-chip">
                   <div class="text-xs text-moon/40 mb-1">Purpose</div>
-                  <div class="font-mono text-sm text-data-glow">Data Collection</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Gather outcomes at low conviction</div>
+                  <div class="font-mono text-sm text-data-glow">Data Scout</div>
+                  <div class="text-xs text-moon/30 mt-0.5">Moderate conviction data gathering</div>
                 </div>
               </div>
             </div>
@@ -873,31 +877,30 @@ tailwind.config = {
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="#ec4899" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
                 Low-Vol Specialist
               </span>
-              <span class="feat-pill">Flat $10 Sizing</span>
+              <span class="feat-pill">$5 Sizing</span>
               <span class="feat-pill">Auto-Scaled</span>
               <span class="feat-pill">Hold to Expiry</span>
             </div>
           </div>
 
           <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Low-volatility specialist designed for calm BTC markets. Uses ultra-smooth EWMA (lambda;=0.99) to prevent vol estimate collapse, a heavily relaxed vol divergence guard (15x), and book-heavy signal weighting. Auto-toggled by a CronJob that queries the 30-minute BTC price range from ClickHouse — active only when range &lt; $250.
+            Low-volatility breadcrumb bot for calm BTC markets. Cheapest contracts only (&le;25&cent;). Ultra-smooth EWMA (&lambda;=0.99), relaxed vol divergence (8x), and book-heavy signal weighting. 10% edge floor — model must think 35% at 25&cent;. $50/day max loss.
           </p>
 
           <div class="grid md:grid-cols-2 gap-6 mb-8">
             <table class="data-table">
               <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
               <tbody>
-                <tr><td>Min Edge</td><td class="text-dude-glow font-semibold">5%</td></tr>
-                <tr><td>Edge Floor</td><td>5%</td></tr>
-                <tr><td>Edge Ceiling</td><td>10%</td></tr>
+                <tr><td>Min Edge</td><td class="text-dude-glow font-semibold">8%</td></tr>
+                <tr><td>Edge Floor / Ceiling</td><td>10% / 15%</td></tr>
                 <tr><td>EWMA Lambda</td><td class="text-dude-glow">0.99</td></tr>
-                <tr><td>Vol Divergence Max</td><td class="text-dude-glow">15x</td></tr>
-                <tr><td>Vol Div Cooldown</td><td>5s</td></tr>
-                <tr><td>Momentum Weight</td><td>0.15 (halved)</td></tr>
+                <tr><td>Vol Divergence Max</td><td class="text-dude-glow">8x</td></tr>
+                <tr><td>Vol Div Cooldown</td><td>10s</td></tr>
                 <tr><td>Book Weight</td><td class="text-dude-glow">0.12 (2.4x normal)</td></tr>
-                <tr><td>Max Entry Price</td><td>55&cent;</td></tr>
-                <tr><td>All Notional Tiers</td><td>$10 (flat)</td></tr>
-                <tr><td>Max Notional/Trade</td><td>$15</td></tr>
+                <tr><td>Max Entry Price</td><td>25&cent;</td></tr>
+                <tr><td>Target Notional</td><td>$5</td></tr>
+                <tr><td>High Edge Notional</td><td>$8</td></tr>
+                <tr><td>Max Notional/Trade</td><td>$10</td></tr>
                 <tr><td>Kill Switch</td><td class="text-danger">$50</td></tr>
               </tbody>
             </table>
@@ -910,7 +913,7 @@ tailwind.config = {
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
                 <div class="font-mono text-lg text-dude-glow">High (in low vol)</div>
-                <div class="text-xs text-moon/30 mt-0.5">5% edge, relaxed guards</div>
+                <div class="text-xs text-moon/30 mt-0.5">8% edge, relaxed guards</div>
               </div>
               <div class="stat-chip">
                 <div class="text-xs text-moon/40 mb-1">Auto-Scaler</div>
@@ -963,7 +966,7 @@ tailwind.config = {
           <span class="font-display text-xs tracking-[0.2em] text-ml-base/50 uppercase">ML Deep Dive</span>
         </div>
         <h2 class="font-display font-bold text-3xl text-ice mb-3">Model Architecture</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">Logistic regression on 20 technical indicators, trained on 5.6M Bitfinex candles spanning 13 years with walk-forward validation.</p>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Logistic regression on 24 features (20 TA indicators + 4 microstructure), now on 1-minute candles for contract-timescale relevance. Trained on 5.6M Bitfinex candles spanning 13 years with walk-forward validation.</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-4 mb-8 reveal">
@@ -1025,8 +1028,8 @@ tailwind.config = {
 
       <!-- Features -->
       <div class="bot-card p-8 mb-8 reveal" style="--accent: #8b5cf6;">
-        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">20 TECHNICAL INDICATOR FEATURES</h4>
-        <p class="text-xs text-moon/30 mb-5">Computed from prior candles only (shifted by 1 to prevent data leakage).</p>
+        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">24 FEATURES (20 TA + 4 MICROSTRUCTURE)</h4>
+        <p class="text-xs text-moon/30 mb-5">TA features computed from prior 1-min candles (shifted by 1). Microstructure features injected from live Coinbase tick stream.</p>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
             <div class="flex items-center gap-2 mb-3">
@@ -1078,6 +1081,18 @@ tailwind.config = {
               <span class="feat-pill text-xs">Balance of Power</span>
               <span class="feat-pill text-xs">Price Change</span>
               <span class="feat-pill text-xs">Close/Open Ratio</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-data-base"></span>
+              <span class="font-display text-xs tracking-wider text-data-glow/80 uppercase">Microstructure (Live)</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Trade Flow 30s</span>
+              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Trade Flow 120s</span>
+              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Micro-Vol Ratio</span>
+              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Drift Estimate</span>
             </div>
           </div>
         </div>
@@ -1223,20 +1238,21 @@ tailwind.config = {
               </tr>
             </thead>
             <tbody>
-              <tr><td>Min Edge</td><td class="text-hold-glow">16%</td><td class="text-exit-glow">25%</td><td class="text-ml-glow">17%</td><td class="text-data-glow">10%</td><td class="text-dude-glow">5%</td></tr>
-              <tr><td>Edge Floor</td><td>16%</td><td>25%</td><td>17%</td><td>10% (flat)</td><td class="text-dude-glow">5%</td></tr>
-              <tr><td>Edge Ceiling</td><td>18%</td><td>25%</td><td>20%</td><td>10%</td><td class="text-dude-glow">10%</td></tr>
+              <tr><td>Min Edge</td><td class="text-hold-glow">16%</td><td class="text-exit-glow">16%</td><td class="text-ml-glow">14%</td><td class="text-data-glow">12%</td><td class="text-dude-glow">8%</td></tr>
+              <tr><td>Edge Floor</td><td>18%</td><td>18%</td><td>15%</td><td>15%</td><td class="text-dude-glow">10%</td></tr>
+              <tr><td>Edge Ceiling</td><td>25%</td><td>25%</td><td>22%</td><td>20%</td><td class="text-dude-glow">15%</td></tr>
+              <tr><td>Target Notional</td><td>$30</td><td>$35</td><td class="text-ml-glow">$50</td><td>$10</td><td class="text-dude-glow">$5</td></tr>
+              <tr><td>Kill Switch</td><td>$150</td><td>$200</td><td>$200</td><td>$100</td><td class="text-dude-glow">$50</td></tr>
+              <tr><td>Max Entry Price</td><td>35¢</td><td>30¢</td><td>35¢</td><td>30¢</td><td class="text-dude-glow">25¢</td></tr>
               <tr><td>EWMA Lambda</td><td>0.97</td><td>0.97</td><td>0.97</td><td>0.97</td><td class="text-dude-glow">0.99</td></tr>
-              <tr><td>Notional/Trade</td><td>$1–$20</td><td>$1–$20</td><td>$1–$20</td><td class="text-data-glow">$5 (flat)</td><td class="text-dude-glow">$10 (flat)</td></tr>
               <tr><td>Exit Management</td><td class="text-moon/30">No</td><td class="text-exit-glow">Yes</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
-              <tr><td>ML Gate</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-ml-glow">Yes</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
-              <tr><td>Max Entry Price</td><td>60¢</td><td>60¢</td><td>60¢</td><td>60¢</td><td class="text-dude-glow">55¢</td></tr>
-              <tr><td>Vol Div Max Ratio</td><td>4x</td><td>4x</td><td>4x</td><td>5x</td><td class="text-dude-glow">15x</td></tr>
-              <tr><td>Vol Div Cooldown</td><td>20s</td><td>20s</td><td>20s</td><td>15s</td><td class="text-dude-glow">5s</td></tr>
+              <tr><td>ML Gate</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-ml-glow">Yes (24 feat)</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
+              <tr><td>Vol Div Max Ratio</td><td>4x</td><td>4x</td><td>4x</td><td>4.5x</td><td class="text-dude-glow">8x</td></tr>
+              <tr><td>Vol Div Cooldown</td><td>20s</td><td>20s</td><td>20s</td><td>20s</td><td class="text-dude-glow">10s</td></tr>
               <tr><td>Book Weight</td><td>0.05</td><td>0.05</td><td>0.05</td><td>0.05</td><td class="text-dude-glow">0.12</td></tr>
-              <tr><td>Auto-Scaled</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-dude-glow">Yes</td></tr>
-              <tr><td>Trade Frequency</td><td class="text-hold-glow">High</td><td class="text-exit-glow">Lowest</td><td class="text-ml-glow">Medium</td><td class="text-data-glow font-semibold">Highest</td><td class="text-dude-glow">High (low vol)</td></tr>
-              <tr><td>Warmup</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td><td>~12.5 hr</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td></tr>
+              <tr><td>Drift / Trade Flow</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td></tr>
+              <tr><td>Trade Frequency</td><td class="text-hold-glow">High</td><td class="text-exit-glow">Moderate</td><td class="text-ml-glow">Medium</td><td class="text-data-glow font-semibold">Highest</td><td class="text-dude-glow">High (low vol)</td></tr>
+              <tr><td>Warmup</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td><td>~20 min</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td></tr>
             </tbody>
           </table>
         </div>
@@ -1248,7 +1264,7 @@ tailwind.config = {
   <footer class="py-12 px-6 border-t border-lunar/8">
     <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-moon/25 font-mono">
       <div>admin@macmini-cluster / hft-loc-dev</div>
-      <div>Kalshi BTC 15-Min Bots • 2026-02-12</div>
+      <div>Kalshi BTC 15-Min Bots • 2026-02-13</div>
     </div>
   </footer>
 
