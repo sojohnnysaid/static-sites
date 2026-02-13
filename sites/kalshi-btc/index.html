@@ -26,6 +26,7 @@ tailwind.config = {
         exit: { base: '#10b981', glow: '#34d399' },
         ml: { base: '#8b5cf6', glow: '#a78bfa' },
         data: { base: '#06b6d4', glow: '#22d3ee' },
+        dude: { base: '#ec4899', glow: '#f472b6' },
         danger: '#ef4444',
       },
       fontFamily: {
@@ -375,11 +376,11 @@ tailwind.config = {
         <span class="bg-gradient-to-r from-lunar via-moon to-glow bg-clip-text text-transparent">Control</span>
       </h1>
       <p class="font-body text-lg text-moon/50 max-w-xl mx-auto leading-relaxed mb-10">
-        Four autonomous trading bots navigating Kalshi's 15-minute BTC binary contracts. Real-time volatility pricing, ML-gated entries, active exit management, and low-edge data collection.
+        Five autonomous trading bots navigating Kalshi's 15-minute BTC binary contracts. Real-time volatility pricing, ML-gated entries, active exit management, low-edge data collection, and a low-vol specialist.
       </p>
       <div class="flex flex-wrap justify-center gap-3 mb-14">
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">4</div>
+          <div class="font-mono text-2xl font-semibold text-ice">5</div>
           <div class="text-xs text-moon/40 mt-1">Active Bots</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
@@ -411,7 +412,7 @@ tailwind.config = {
           <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Shared Configuration</span>
         </div>
         <h2 class="font-display font-bold text-3xl text-ice mb-3">System Parameters</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">Core settings shared across all four bots. These define the foundational constraints for every trade.</p>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Core settings shared across all bots (except The Dude, which has its own tuning). These define the foundational constraints for every trade.</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6">
@@ -532,7 +533,7 @@ tailwind.config = {
           <div class="w-8 h-[1px] bg-lunar/30"></div>
           <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Bot Profiles</span>
         </div>
-        <h2 class="font-display font-bold text-3xl text-ice mb-3">Four Strategies, One Market</h2>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">Five Strategies, One Market</h2>
         <p class="text-moon/40 text-sm max-w-2xl mb-10">Each bot targets the same 15-minute BTC contracts with different entry thresholds, sizing, exit behavior, and signal processing.</p>
       </div>
 
@@ -549,6 +550,9 @@ tailwind.config = {
         </button>
         <button class="tab-btn" onclick="switchTab('data')" id="tab-data">
           <span class="inline-block w-2 h-2 rounded-full bg-data-base mr-2"></span>Data Bot
+        </button>
+        <button class="tab-btn" onclick="switchTab('dude')" id="tab-dude">
+          <span class="inline-block w-2 h-2 rounded-full bg-dude-base mr-2"></span>The Dude
         </button>
       </div>
 
@@ -848,6 +852,103 @@ tailwind.config = {
           </div>
         </div>
       </div>
+
+      <!-- ── THE DUDE ── -->
+      <div class="tab-content" id="content-dude">
+        <div class="bot-card p-8" style="--accent: #ec4899;">
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+            <div>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-dude-base/10 border border-dude-base/20 flex items-center justify-center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+                </div>
+                <div>
+                  <h3 class="font-display font-bold text-xl text-ice">The Dude</h3>
+                  <code class="font-mono text-xs text-dude-base/70">the-dude</code>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="feat-pill" style="border-color: rgba(236,72,153,0.2); color: #f472b6;">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="#ec4899" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
+                Low-Vol Specialist
+              </span>
+              <span class="feat-pill">Flat $10 Sizing</span>
+              <span class="feat-pill">Auto-Scaled</span>
+              <span class="feat-pill">Hold to Expiry</span>
+            </div>
+          </div>
+
+          <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
+            Low-volatility specialist designed for calm BTC markets. Uses ultra-smooth EWMA (lambda;=0.99) to prevent vol estimate collapse, a heavily relaxed vol divergence guard (15x), and book-heavy signal weighting. Auto-toggled by a CronJob that queries the 30-minute BTC price range from ClickHouse — active only when range &lt; $250.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <table class="data-table">
+              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Min Edge</td><td class="text-dude-glow font-semibold">5%</td></tr>
+                <tr><td>Edge Floor</td><td>5%</td></tr>
+                <tr><td>Edge Ceiling</td><td>10%</td></tr>
+                <tr><td>EWMA Lambda</td><td class="text-dude-glow">0.99</td></tr>
+                <tr><td>Vol Divergence Max</td><td class="text-dude-glow">15x</td></tr>
+                <tr><td>Vol Div Cooldown</td><td>5s</td></tr>
+                <tr><td>Momentum Weight</td><td>0.15 (halved)</td></tr>
+                <tr><td>Book Weight</td><td class="text-dude-glow">0.12 (2.4x normal)</td></tr>
+                <tr><td>Max Entry Price</td><td>55&cent;</td></tr>
+                <tr><td>All Notional Tiers</td><td>$10 (flat)</td></tr>
+                <tr><td>Max Notional/Trade</td><td>$15</td></tr>
+                <tr><td>Kill Switch</td><td class="text-danger">$50</td></tr>
+              </tbody>
+            </table>
+            <div class="space-y-3">
+              <div class="stat-chip">
+                <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
+                <div class="font-mono text-lg text-exit-glow">Instant</div>
+                <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
+              </div>
+              <div class="stat-chip">
+                <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
+                <div class="font-mono text-lg text-dude-glow">High (in low vol)</div>
+                <div class="text-xs text-moon/30 mt-0.5">5% edge, relaxed guards</div>
+              </div>
+              <div class="stat-chip">
+                <div class="text-xs text-moon/40 mb-1">Auto-Scaler</div>
+                <div class="font-mono text-sm text-dude-glow">CronJob (every 15m)</div>
+                <div class="text-xs text-moon/30 mt-0.5">30-min BTC range &lt; $250 &rarr; ON</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Low-Vol Design -->
+          <div class="border-t border-lunar/10 pt-6">
+            <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">LOW-VOL DESIGN</h4>
+            <div class="grid md:grid-cols-3 gap-4">
+              <div class="stat-chip">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-5 h-5 rounded-full bg-dude-base/20 flex items-center justify-center text-xs font-mono text-dude-glow">1</div>
+                  <span class="text-sm text-ice">Smooth EWMA</span>
+                </div>
+                <p class="text-xs text-moon/40">&lambda;=0.99 prevents vol collapse on quiet 10s bars</p>
+              </div>
+              <div class="stat-chip">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-5 h-5 rounded-full bg-dude-base/20 flex items-center justify-center text-xs font-mono text-dude-glow">2</div>
+                  <span class="text-sm text-ice">Book-Heavy</span>
+                </div>
+                <p class="text-xs text-moon/40">Book imbalance weight 2.4x normal — more informative in calm markets</p>
+              </div>
+              <div class="stat-chip">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-5 h-5 rounded-full bg-dude-base/20 flex items-center justify-center text-xs font-mono text-dude-glow">3</div>
+                  <span class="text-sm text-ice">Auto-Toggle</span>
+                </div>
+                <p class="text-xs text-moon/40">CronJob scales to 0 when vol picks up, back to 1 when calm</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1080,7 +1181,7 @@ tailwind.config = {
           <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Comparison</span>
         </div>
         <h2 class="font-display font-bold text-3xl text-ice mb-3">Side by Side</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">All four strategies compared across key dimensions.</p>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">All five strategies compared across key dimensions.</p>
       </div>
 
       <div class="bot-card p-1 reveal" style="--accent: #4a7cf7;">
@@ -1113,22 +1214,29 @@ tailwind.config = {
                     <span class="text-data-glow text-sm">Data</span>
                   </div>
                 </th>
+                <th class="py-4 px-4">
+                  <div class="flex flex-col items-center gap-1">
+                    <span class="w-3 h-3 rounded-full bg-dude-base"></span>
+                    <span class="text-dude-glow text-sm">Dude</span>
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Min Edge</td><td class="text-hold-glow">16%</td><td class="text-exit-glow">25%</td><td class="text-ml-glow">17%</td><td class="text-data-glow">10%</td></tr>
-              <tr><td>Edge Floor</td><td>16%</td><td>25%</td><td>17%</td><td>10% (flat)</td></tr>
-              <tr><td>High Edge Thresh</td><td>30%</td><td>40%</td><td>30%</td><td>30%</td></tr>
-              <tr><td>Notional/Trade</td><td>$1–$20</td><td>$1–$20</td><td>$1–$20</td><td class="text-data-glow">$5 (flat)</td></tr>
-              <tr><td>Exit Management</td><td class="text-moon/30">No</td><td class="text-exit-glow">Yes</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
-              <tr><td>ML Gate</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-ml-glow">Yes</td><td class="text-moon/30">No</td></tr>
-              <tr><td>Max Entry Price</td><td>80¢</td><td>80¢</td><td>80¢</td><td class="text-data-glow">85¢</td></tr>
-              <tr><td>Vol Divergence Min</td><td>0.23</td><td>0.23</td><td>0.23</td><td class="text-data-glow">0.18</td></tr>
-              <tr><td>Vol Div Cooldown</td><td>60s</td><td>60s</td><td>60s</td><td>60s</td></tr>
-              <tr><td>Funding Weight</td><td>200</td><td>50</td><td>200</td><td>200</td></tr>
-              <tr><td>Funding Cap</td><td>5%</td><td>2%</td><td>5%</td><td>5%</td></tr>
-              <tr><td>Trade Frequency</td><td class="text-hold-glow">High</td><td class="text-exit-glow">Lowest</td><td class="text-ml-glow">Medium</td><td class="text-data-glow font-semibold">Highest</td></tr>
-              <tr><td>Warmup</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td><td>~12.5 hr</td><td class="text-exit-glow">Instant</td></tr>
+              <tr><td>Min Edge</td><td class="text-hold-glow">16%</td><td class="text-exit-glow">25%</td><td class="text-ml-glow">17%</td><td class="text-data-glow">10%</td><td class="text-dude-glow">5%</td></tr>
+              <tr><td>Edge Floor</td><td>16%</td><td>25%</td><td>17%</td><td>10% (flat)</td><td class="text-dude-glow">5%</td></tr>
+              <tr><td>Edge Ceiling</td><td>18%</td><td>25%</td><td>20%</td><td>10%</td><td class="text-dude-glow">10%</td></tr>
+              <tr><td>EWMA Lambda</td><td>0.97</td><td>0.97</td><td>0.97</td><td>0.97</td><td class="text-dude-glow">0.99</td></tr>
+              <tr><td>Notional/Trade</td><td>$1–$20</td><td>$1–$20</td><td>$1–$20</td><td class="text-data-glow">$5 (flat)</td><td class="text-dude-glow">$10 (flat)</td></tr>
+              <tr><td>Exit Management</td><td class="text-moon/30">No</td><td class="text-exit-glow">Yes</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
+              <tr><td>ML Gate</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-ml-glow">Yes</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
+              <tr><td>Max Entry Price</td><td>60¢</td><td>60¢</td><td>60¢</td><td>60¢</td><td class="text-dude-glow">55¢</td></tr>
+              <tr><td>Vol Div Max Ratio</td><td>4x</td><td>4x</td><td>4x</td><td>5x</td><td class="text-dude-glow">15x</td></tr>
+              <tr><td>Vol Div Cooldown</td><td>20s</td><td>20s</td><td>20s</td><td>15s</td><td class="text-dude-glow">5s</td></tr>
+              <tr><td>Book Weight</td><td>0.05</td><td>0.05</td><td>0.05</td><td>0.05</td><td class="text-dude-glow">0.12</td></tr>
+              <tr><td>Auto-Scaled</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-dude-glow">Yes</td></tr>
+              <tr><td>Trade Frequency</td><td class="text-hold-glow">High</td><td class="text-exit-glow">Lowest</td><td class="text-ml-glow">Medium</td><td class="text-data-glow font-semibold">Highest</td><td class="text-dude-glow">High (low vol)</td></tr>
+              <tr><td>Warmup</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td><td>~12.5 hr</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td></tr>
             </tbody>
           </table>
         </div>
