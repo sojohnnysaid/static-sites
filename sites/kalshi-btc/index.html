@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kalshi BTC Bots — Mission Control</title>
+<title>KXBTC15M Sniper — Mission Control</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -22,11 +22,7 @@ tailwind.config = {
         moon: '#8ab4ff',
         glow: '#b8d4ff',
         ice: '#d6e8ff',
-        hold: { base: '#f59e0b', glow: '#fbbf24' },
-        exit: { base: '#10b981', glow: '#34d399' },
-        ml: { base: '#8b5cf6', glow: '#a78bfa' },
-        data: { base: '#06b6d4', glow: '#22d3ee' },
-        dude: { base: '#ec4899', glow: '#f472b6' },
+        sniper: { base: '#f59e0b', glow: '#fbbf24' },
         danger: '#ef4444',
       },
       fontFamily: {
@@ -42,300 +38,85 @@ tailwind.config = {
   * { box-sizing: border-box; }
   body { font-family: 'Outfit', sans-serif; background: #050a18; color: #d6e8ff; overflow-x: hidden; }
 
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: #0a1128; }
   ::-webkit-scrollbar-thumb { background: #2a4494; border-radius: 3px; }
   ::-webkit-scrollbar-thumb:hover { background: #4a7cf7; }
 
-  /* Star canvas */
   #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-  /* Moon */
   .moon {
-    position: fixed;
-    top: 60px;
-    right: 80px;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
+    position: fixed; top: 60px; right: 80px; width: 140px; height: 140px; border-radius: 50%;
     background: radial-gradient(circle at 40% 35%, #e8f0ff 0%, #b8d4ff 30%, #6b9bdb 60%, #3a6ba8 100%);
-    box-shadow:
-      0 0 40px 15px rgba(138,180,255,0.25),
-      0 0 100px 40px rgba(138,180,255,0.12),
-      0 0 200px 80px rgba(74,124,247,0.06);
-    z-index: 1;
-    pointer-events: none;
-    animation: moonFloat 8s ease-in-out infinite;
+    box-shadow: 0 0 40px 15px rgba(138,180,255,0.25), 0 0 100px 40px rgba(138,180,255,0.12), 0 0 200px 80px rgba(74,124,247,0.06);
+    z-index: 1; pointer-events: none; animation: moonFloat 8s ease-in-out infinite;
   }
   .moon::before {
-    content: '';
-    position: absolute;
-    top: 18%; left: 25%;
-    width: 22px; height: 22px;
-    border-radius: 50%;
+    content: ''; position: absolute; top: 18%; left: 25%; width: 22px; height: 22px; border-radius: 50%;
     background: rgba(150,170,200,0.3);
-    box-shadow:
-      35px 15px 0 8px rgba(150,170,200,0.2),
-      -5px 40px 0 5px rgba(150,170,200,0.15),
-      50px 45px 0 3px rgba(150,170,200,0.2),
-      20px 60px 0 6px rgba(150,170,200,0.12);
+    box-shadow: 35px 15px 0 8px rgba(150,170,200,0.2), -5px 40px 0 5px rgba(150,170,200,0.15), 50px 45px 0 3px rgba(150,170,200,0.2), 20px 60px 0 6px rgba(150,170,200,0.12);
   }
-  @keyframes moonFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
+  @keyframes moonFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
-  /* Glow effects */
-  .glow-line {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(74,124,247,0.6), transparent);
-  }
-  .glow-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.4); }
-  }
+  .glow-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(74,124,247,0.6), transparent); }
+  .glow-dot { width: 6px; height: 6px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
 
-  /* Card */
   .bot-card {
     background: linear-gradient(135deg, rgba(15,26,62,0.85), rgba(10,17,40,0.95));
-    border: 1px solid rgba(74,124,247,0.15);
-    border-radius: 16px;
-    backdrop-filter: blur(20px);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
+    border: 1px solid rgba(74,124,247,0.15); border-radius: 16px; backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden;
   }
   .bot-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0;
-    transition: opacity 0.4s;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; transition: opacity 0.4s;
   }
   .bot-card:hover::before { opacity: 1; }
-  .bot-card:hover {
-    border-color: rgba(74,124,247,0.35);
-    box-shadow: 0 8px 40px rgba(74,124,247,0.08);
-    transform: translateY(-2px);
-  }
+  .bot-card:hover { border-color: rgba(74,124,247,0.35); box-shadow: 0 8px 40px rgba(74,124,247,0.08); transform: translateY(-2px); }
 
-  /* Data table */
-  .data-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-  }
-  .data-table th {
-    text-align: left;
-    padding: 10px 16px;
-    color: rgba(138,180,255,0.6);
-    font-weight: 400;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border-bottom: 1px solid rgba(74,124,247,0.1);
-  }
-  .data-table td {
-    padding: 8px 16px;
-    border-bottom: 1px solid rgba(74,124,247,0.05);
-    transition: background 0.2s;
-  }
-  .data-table tr:hover td {
-    background: rgba(74,124,247,0.04);
-  }
-  .data-table td:first-child {
-    color: rgba(184,212,255,0.7);
-  }
-  .data-table td:nth-child(2) {
-    color: #d6e8ff;
-  }
+  .data-table { width: 100%; border-collapse: separate; border-spacing: 0; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+  .data-table th { text-align: left; padding: 10px 16px; color: rgba(138,180,255,0.6); font-weight: 400; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid rgba(74,124,247,0.1); }
+  .data-table td { padding: 8px 16px; border-bottom: 1px solid rgba(74,124,247,0.05); transition: background 0.2s; }
+  .data-table tr:hover td { background: rgba(74,124,247,0.04); }
+  .data-table td:first-child { color: rgba(184,212,255,0.7); }
+  .data-table td:nth-child(2) { color: #d6e8ff; }
 
-  /* Comparison table */
-  .cmp-table { border-collapse: separate; border-spacing: 0; width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
-  .cmp-table th { padding: 12px 16px; text-align: center; font-weight: 500; letter-spacing: 0.05em; }
-  .cmp-table th:first-child { text-align: left; }
-  .cmp-table td { padding: 8px 16px; text-align: center; border-bottom: 1px solid rgba(74,124,247,0.06); }
-  .cmp-table td:first-child { text-align: left; color: rgba(184,212,255,0.7); }
-  .cmp-table tr:hover td { background: rgba(74,124,247,0.04); }
-
-  /* Nav */
   .nav-link {
-    position: relative;
-    padding: 8px 0;
-    color: rgba(184,212,255,0.5);
-    font-family: 'Chakra Petch', sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color 0.3s;
-    cursor: pointer;
-    text-decoration: none;
+    position: relative; padding: 8px 0; color: rgba(184,212,255,0.5);
+    font-family: 'Chakra Petch', sans-serif; font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; transition: color 0.3s; cursor: pointer; text-decoration: none;
   }
   .nav-link:hover, .nav-link.active { color: #8ab4ff; }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 1px;
-    background: #4a7cf7;
-    transition: width 0.3s;
-  }
+  .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: #4a7cf7; transition: width 0.3s; }
   .nav-link:hover::after, .nav-link.active::after { width: 100%; }
 
-  /* Badge */
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-  }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.04em; }
 
-  /* Section reveal */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* Tabs */
-  .tab-btn {
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-family: 'Chakra Petch', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 1px solid transparent;
-    background: transparent;
-    color: rgba(184,212,255,0.5);
-  }
-  .tab-btn:hover {
-    color: #d6e8ff;
-    background: rgba(74,124,247,0.06);
-  }
-  .tab-btn.active {
-    border-color: rgba(74,124,247,0.3);
-    color: #d6e8ff;
-  }
+  .stat-chip { background: rgba(74,124,247,0.06); border: 1px solid rgba(74,124,247,0.1); border-radius: 12px; padding: 16px 20px; transition: all 0.3s; }
+  .stat-chip:hover { border-color: rgba(74,124,247,0.25); background: rgba(74,124,247,0.1); }
 
-  .tab-content { display: none; }
-  .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes shimmer {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
-  }
+  .feat-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; background: rgba(74,124,247,0.06); border: 1px solid rgba(74,124,247,0.1); color: rgba(184,212,255,0.8); }
 
-  /* Stat chip */
-  .stat-chip {
-    background: rgba(74,124,247,0.06);
-    border: 1px solid rgba(74,124,247,0.1);
-    border-radius: 12px;
-    padding: 16px 20px;
-    transition: all 0.3s;
-  }
-  .stat-chip:hover {
-    border-color: rgba(74,124,247,0.25);
-    background: rgba(74,124,247,0.1);
-  }
+  .shooting-star { position: fixed; width: 100px; height: 1px; background: linear-gradient(90deg, rgba(138,180,255,0.8), transparent); z-index: 1; pointer-events: none; opacity: 0; }
+  .ambient-orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; opacity: 0.08; }
 
-  /* Feature pill */
-  .feat-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 0.78rem;
-    font-family: 'JetBrains Mono', monospace;
-    background: rgba(74,124,247,0.06);
-    border: 1px solid rgba(74,124,247,0.1);
-    color: rgba(184,212,255,0.8);
-  }
-
-  /* Shooting star */
-  .shooting-star {
-    position: fixed;
-    width: 100px;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(138,180,255,0.8), transparent);
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0;
-  }
-
-  /* Ambient orbs */
-  .ambient-orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.08;
-  }
-
-  /* Exit logic flow */
-  .flow-step {
-    position: relative;
-    padding-left: 28px;
-  }
-  .flow-step::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 28px;
-    bottom: -8px;
-    width: 1px;
-    background: linear-gradient(180deg, rgba(74,124,247,0.3), transparent);
-  }
-  .flow-step:last-child::before { display: none; }
-  .flow-dot {
-    position: absolute;
-    left: 2px;
-    top: 8px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid rgba(74,124,247,0.4);
-    background: #0a1128;
-  }
-
-  @media (max-width: 768px) {
-    .moon { width: 80px; height: 80px; top: 20px; right: 20px; }
-  }
+  @keyframes shimmer { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+  @media (max-width: 768px) { .moon { width: 80px; height: 80px; top: 20px; right: 20px; } }
 </style>
 </head>
 <body>
 
-<!-- Starfield Canvas -->
 <canvas id="starfield"></canvas>
 
-<!-- Ambient Orbs -->
 <div class="ambient-orb" style="width:600px;height:600px;background:#1a2d6b;top:-200px;left:-200px;"></div>
 <div class="ambient-orb" style="width:500px;height:500px;background:#2a4494;bottom:-100px;right:-150px;"></div>
 <div class="ambient-orb" style="width:400px;height:400px;background:#142252;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
 
-<!-- Moon -->
 <div class="moon"></div>
 
-<!-- Shooting Stars -->
 <div class="shooting-star" id="star1"></div>
 <div class="shooting-star" id="star2"></div>
 
@@ -346,14 +127,14 @@ tailwind.config = {
       <div class="w-7 h-7 rounded-full bg-gradient-to-br from-lunar to-moon flex items-center justify-center">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#050a18" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg>
       </div>
-      <span class="font-display font-semibold text-sm tracking-wider text-ice">KALSHI BTC</span>
+      <span class="font-display font-semibold text-sm tracking-wider text-ice">KXBTC15M SNIPER</span>
       <span class="badge bg-lunar/10 border border-lunar/20 text-moon">15-MIN</span>
     </div>
     <div class="hidden md:flex items-center gap-6">
       <a href="#overview" class="nav-link active" onclick="setActive(this)">Overview</a>
-      <a href="#bots" class="nav-link" onclick="setActive(this)">Bots</a>
-      <a href="#ml" class="nav-link" onclick="setActive(this)">ML Model</a>
-      <a href="#compare" class="nav-link" onclick="setActive(this)">Compare</a>
+      <a href="#strategy" class="nav-link" onclick="setActive(this)">Strategy</a>
+      <a href="#config" class="nav-link" onclick="setActive(this)">Config</a>
+      <a href="#infra" class="nav-link" onclick="setActive(this)">Infrastructure</a>
     </div>
     <div class="flex items-center gap-2">
       <div class="glow-dot bg-green-400"></div>
@@ -364,36 +145,36 @@ tailwind.config = {
 
 <main class="relative z-10 pt-14">
 
-  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <!-- HERO -->
   <section class="min-h-[85vh] flex items-center justify-center px-6 relative">
     <div class="text-center max-w-3xl reveal" id="hero">
       <div class="inline-flex items-center gap-2 badge bg-lunar/8 border border-lunar/15 text-moon/70 mb-6">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        2026-02-13 &middot; hft-loc-dev
+        hft-loc-dev &middot; admin@macmini-cluster
       </div>
       <h1 class="font-display font-bold text-5xl md:text-7xl tracking-tight text-ice leading-[1.1] mb-4">
-        Mission<br>
-        <span class="bg-gradient-to-r from-lunar via-moon to-glow bg-clip-text text-transparent">Control</span>
+        Sniper<br>
+        <span class="bg-gradient-to-r from-lunar via-moon to-glow bg-clip-text text-transparent">Bot</span>
       </h1>
       <p class="font-body text-lg text-moon/50 max-w-xl mx-auto leading-relaxed mb-10">
-        Five autonomous trading bots navigating Kalshi's 15-minute BTC binary contracts. Drift-aware volatility pricing, tick-level trade flow, microstructure signals, ML-gated entries, active exit management, and conviction-tiered sizing.
+        Pure distribution math. One bot prices Kalshi's 15-minute BTC binary contracts using a drift-aware log-normal model with EWMA volatility. No signal biases, no ML, no exit management. Fires near expiry where mispricing is largest. Holds to settlement.
       </p>
       <div class="flex flex-wrap justify-center gap-3 mb-14">
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">5</div>
-          <div class="text-xs text-moon/40 mt-1">Active Bots</div>
+          <div class="font-mono text-2xl font-semibold text-ice">1</div>
+          <div class="text-xs text-moon/40 mt-1">Bot</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">96</div>
-          <div class="text-xs text-moon/40 mt-1">Max Trades/Day</div>
+          <div class="font-mono text-2xl font-semibold text-ice">7%</div>
+          <div class="text-xs text-moon/40 mt-1">Min Edge</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">~125ms</div>
-          <div class="text-xs text-moon/40 mt-1">Signal→Order</div>
+          <div class="font-mono text-2xl font-semibold text-ice">15–90s</div>
+          <div class="text-xs text-moon/40 mt-1">Sniper Window</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">$50–200</div>
-          <div class="text-xs text-moon/40 mt-1">Kill Switch</div>
+          <div class="font-mono text-2xl font-semibold text-sniper-glow">$1</div>
+          <div class="text-xs text-moon/40 mt-1">Per Trade</div>
         </div>
       </div>
       <a href="#overview" class="inline-flex items-center gap-2 text-moon/50 hover:text-moon transition-colors text-sm">
@@ -403,858 +184,299 @@ tailwind.config = {
     </div>
   </section>
 
-  <!-- ═══════════════════ SHARED CONFIG ═══════════════════ -->
+  <!-- OVERVIEW -->
   <section id="overview" class="py-24 px-6">
     <div class="max-w-5xl mx-auto">
       <div class="reveal">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-8 h-[1px] bg-lunar/30"></div>
-          <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Shared Configuration</span>
+          <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Overview</span>
         </div>
-        <h2 class="font-display font-bold text-3xl text-ice mb-3">System Parameters</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">Core settings shared across all bots (except The Dude, which has its own tuning). These define the foundational constraints for every trade.</p>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">How It Works</h2>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">The sniper waits for the final seconds of each 15-minute window, when the vol model has maximum information and contracts are cheapest. Pure math, no heuristics.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 reveal">
+        <div class="bot-card p-6" style="--accent: #f59e0b;">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-sniper-base/10 border border-sniper-base/20 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </div>
+            <h3 class="font-display font-semibold text-ice">Spot</h3>
+          </div>
+          <p class="text-moon/50 text-sm leading-relaxed">Evaluates every 100ms starting 10s into each window. Computes P_fair from drift-aware log-normal model with EWMA vol. Looks for 7%+ edge after costs.</p>
+        </div>
+        <div class="bot-card p-6" style="--accent: #4a7cf7;">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-lunar/10 border border-lunar/20 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a7cf7" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <h3 class="font-display font-semibold text-ice">Fire</h3>
+          </div>
+          <p class="text-moon/50 text-sm leading-relaxed">When edge exceeds 7% and spread is under 8c, places a limit order. $1 notional sizing. One trade per market, 15 trades/day max. ~50ms order latency.</p>
+        </div>
+        <div class="bot-card p-6" style="--accent: #10b981;">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="font-display font-semibold text-ice">Hold</h3>
+          </div>
+          <p class="text-moon/50 text-sm leading-relaxed">No exit management. Holds to settlement. The contract resolves in under 2 minutes. Win = $1 per contract, lose = entry cost. Pure binary outcome.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- STRATEGY -->
+  <section id="strategy" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-[1px] bg-sniper-base/30"></div>
+          <span class="font-display text-xs tracking-[0.2em] text-sniper-base/50 uppercase">Strategy</span>
+        </div>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">The Math</h2>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Drift-aware log-normal digital option pricing. No signal biases bolted on &mdash; just the vol model and a skew adjustment.</p>
+      </div>
+
+      <div class="bot-card p-8 mb-8 reveal" style="--accent: #f59e0b;">
+        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">CORE MODEL</h4>
+        <div class="bg-void/60 rounded-lg p-5 mb-6">
+          <code class="font-mono text-sm text-ice leading-relaxed">
+            P_fair = 1 - &Phi;((ln(S<sub>0</sub>/S<sub>t</sub>) - &mu;&tau; + 0.5&sigma;<sup>2</sup>&tau;) / (&sigma;&radic;&tau;))
+          </code>
+          <div class="mt-4 space-y-1 text-xs text-moon/40 font-mono">
+            <div>&sigma; = EWMA realized vol per 10s bar (&lambda;=0.97)</div>
+            <div>&mu; = drift (EMA of recent log returns, 12-bar lookback)</div>
+            <div>&tau; = time remaining in bar units</div>
+            <div>skew_beta = 0.40 (log-moneyness adjustment)</div>
+          </div>
+        </div>
+
+        <h4 class="font-display font-semibold text-sm text-moon/60 mb-4 tracking-wide">WHAT'S STRIPPED</h4>
+        <div class="flex flex-wrap gap-2">
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">Momentum bias</span>
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">Book imbalance</span>
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">Funding rate bias</span>
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">Trade flow bias</span>
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">Micro-vol bias</span>
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">ML meta-model</span>
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">Active exits</span>
+          <span class="feat-pill text-xs" style="border-color: rgba(239,68,68,0.2); color: rgba(239,68,68,0.6); text-decoration: line-through;">Dynamic edge threshold</span>
+        </div>
+      </div>
+
+      <div class="bot-card p-8 reveal" style="--accent: #4a7cf7;">
+        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">WHY NEAR EXPIRY?</h4>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-4 text-sm text-moon/50">
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">1.</span>
+              <span><strong class="text-ice">Maximum information.</strong> With 13+ minutes of price action observed, the vol model's estimate of P_fair is most accurate.</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">2.</span>
+              <span><strong class="text-ice">Cheapest contracts.</strong> If one side is winning, the losing side trades at deep discounts (5-30c). Small edge = large % return.</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">3.</span>
+              <span><strong class="text-ice">Minimal time risk.</strong> Only 2 minutes to settlement. Less time for the market to move against the position.</span>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="stat-chip">
+              <div class="text-xs text-moon/40 mb-1">Eval Window</div>
+              <div class="font-mono text-lg text-sniper-glow">10s &rarr; 13min</div>
+              <div class="text-xs text-moon/30 mt-0.5">Start 10s in, stop at 2min to expiry</div>
+            </div>
+            <div class="stat-chip">
+              <div class="text-xs text-moon/40 mb-1">Warmup</div>
+              <div class="font-mono text-lg text-green-400">Instant</div>
+              <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse on boot</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- CONFIG -->
+  <section id="config" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-[1px] bg-lunar/30"></div>
+          <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Configuration</span>
+        </div>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">Bot Parameters</h2>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Single deployment: <code class="font-mono text-xs text-sniper-glow bg-midnight/60 px-1.5 py-0.5 rounded">kalshi-bot-hold</code> &middot; bot_id: <code class="font-mono text-xs text-sniper-glow bg-midnight/60 px-1.5 py-0.5 rounded">hold-to-expiry</code></p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6">
-        <!-- Market Config -->
-        <div class="bot-card p-6 reveal" style="--accent: #4a7cf7;">
+        <div class="bot-card p-6 reveal" style="--accent: #f59e0b;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7cf7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-            Market &amp; Timing
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            Strategy
           </h3>
           <table class="data-table">
-            <tr><td>Asset</td><td class="text-lunar font-semibold">BTC (KXBTC15M)</td></tr>
+            <tr><td>Min Edge</td><td class="text-sniper-glow font-semibold">7% (fixed)</td></tr>
+            <tr><td>Max Spread</td><td>8&cent;</td></tr>
             <tr><td>Bar Duration</td><td>10s</td></tr>
-            <tr><td>Vol Lookback</td><td>1200s (120 bars)</td></tr>
-            <tr><td>Eval Loop</td><td>100ms</td></tr>
-            <tr><td>Entry Window</td><td>360–480s (min 6–8)</td></tr>
-            <tr><td>Expiry Cutoff</td><td>60s before close</td></tr>
-            <tr><td>Cooldown</td><td>15–60s (per bot)</td></tr>
+            <tr><td>Vol Lookback</td><td>900s (90 bars)</td></tr>
             <tr><td>EWMA Lambda</td><td>0.97</td></tr>
+            <tr><td>Drift Lookback</td><td>12 bars (2 min)</td></tr>
+            <tr><td>Drift Weight / Cap</td><td>0.5 / 0.3%</td></tr>
+            <tr><td>Skew Beta</td><td>0.40</td></tr>
           </table>
         </div>
 
-        <!-- Risk Limits -->
-        <div class="bot-card p-6 reveal" style="--accent: #ef4444; animation-delay: 0.1s;">
+        <div class="bot-card p-6 reveal" style="--accent: #4a7cf7;">
+          <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7cf7" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Sniper Window
+          </h3>
+          <table class="data-table">
+            <tr><td>Eval Start</td><td>10s into window</td></tr>
+            <tr><td>Min Tau</td><td>120s (stop at 2min to expiry)</td></tr>
+            <tr><td>Eval Loop</td><td>100ms</td></tr>
+            <tr><td>Exit Management</td><td class="text-moon/30">Disabled</td></tr>
+            <tr><td>ML Model</td><td class="text-moon/30">Disabled</td></tr>
+          </table>
+        </div>
+
+        <div class="bot-card p-6 reveal" style="--accent: #ef4444;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
             Risk Limits
           </h3>
           <table class="data-table">
-            <tr><td>Entry Price Filter</td><td>5–35¢ (25¢ Dude)</td></tr>
-            <tr><td>Max Spread</td><td>6¢</td></tr>
-            <tr><td>Target Notional</td><td>$5–50 (per bot)</td></tr>
-            <tr><td>Max Notional/Trade</td><td>$10–100 (per bot)</td></tr>
-            <tr><td>Max Loss (Kill Switch)</td><td class="text-danger font-semibold">$50–200</td></tr>
-            <tr><td>Max Trades/Day</td><td>40–96</td></tr>
-            <tr><td>Max Trades/Market</td><td>1 per window</td></tr>
+            <tr><td>Target Notional</td><td>$1 per trade</td></tr>
+            <tr><td>Max Notional/Trade</td><td>$20</td></tr>
+            <tr><td>Trades per Market</td><td>1</td></tr>
+            <tr><td>Trades per Day</td><td>15</td></tr>
+            <tr><td>Cooldown</td><td>0s</td></tr>
+            <tr><td>Expiry Cutoff</td><td>60s</td></tr>
+            <tr><td>Kill Switch</td><td class="text-danger font-semibold">$50</td></tr>
           </table>
         </div>
 
-        <!-- Signal Weights -->
-        <div class="bot-card p-6 reveal" style="--accent: #8ab4ff; animation-delay: 0.2s;">
+        <div class="bot-card p-6 reveal" style="--accent: #10b981;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8ab4ff" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            Signal Engine
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Market
           </h3>
           <table class="data-table">
-            <tr><td>Drift (replaces momentum)</td><td>weight 0.5, cap 0.3%</td></tr>
-            <tr><td>Drift Lookback</td><td>12 bars (2 min)</td></tr>
-            <tr><td>Trade Flow Weight / Cap</td><td>0.10 / 8%</td></tr>
-            <tr><td>Trade Flow Window</td><td>60s</td></tr>
-            <tr><td>Micro-Vol Weight / Cap</td><td>0.05 / 5%</td></tr>
-            <tr><td>Book Imbalance Weight</td><td>0.05 (0.12 Dude)</td></tr>
-            <tr><td>Funding Weight / Cap</td><td>200 / 5% (50 / 2% Exit)</td></tr>
+            <tr><td>Asset</td><td class="text-lunar font-semibold">BTC (KXBTC15M)</td></tr>
+            <tr><td>Frequency</td><td>Every 15 minutes, 24/7</td></tr>
+            <tr><td>Strike</td><td>60s BRTI avg before open</td></tr>
+            <tr><td>Resolution</td><td>YES if close &ge; strike</td></tr>
+            <tr><td>Settlement</td><td>CF Benchmarks BRTI</td></tr>
           </table>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Data Sources -->
-        <div class="bot-card p-6 reveal" style="--accent: #34d399; animation-delay: 0.3s;">
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- INFRASTRUCTURE -->
+  <section id="infra" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-[1px] bg-lunar/30"></div>
+          <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Infrastructure</span>
+        </div>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">Stack</h2>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">C++23 single binary on a 3-node Mac Mini cluster running Talos OS. Sub-100ms tick ingestion, ~50ms order placement.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 reveal">
+        <div class="bot-card p-6" style="--accent: #34d399;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
-            Data &amp; Infrastructure
+            Data Sources
           </h3>
           <div class="space-y-4">
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-green-400 mt-1.5 shrink-0"></div>
               <div>
                 <div class="font-mono text-sm text-ice">Coinbase WebSocket</div>
-                <div class="text-xs text-moon/40 mt-0.5">BTC-USD ticker + trade flow (side/size) • sub-100ms</div>
-              </div>
-            </div>
-            <div class="flex items-start gap-3">
-              <div class="glow-dot bg-blue-400 mt-1.5 shrink-0"></div>
-              <div>
-                <div class="font-mono text-sm text-ice">OKX REST API</div>
-                <div class="text-xs text-moon/40 mt-0.5">Funding rate • 5-min poll • No auth</div>
+                <div class="text-xs text-moon/40 mt-0.5">BTC-USD ticker + trades &middot; sub-100ms</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-orange-400 mt-1.5 shrink-0"></div>
               <div>
-                <div class="font-mono text-sm text-ice">ClickHouse (10Gi PVC)</div>
-                <div class="text-xs text-moon/40 mt-0.5">btc_ticks 7d • signals 30d • trades 90d</div>
-              </div>
-            </div>
-            <div class="flex items-start gap-3">
-              <div class="glow-dot bg-cyan-400 mt-1.5 shrink-0"></div>
-              <div>
-                <div class="font-mono text-sm text-ice">Vol Warmup: Tick Replay</div>
-                <div class="text-xs text-moon/40 mt-0.5">Replays ~1200s of ticks on boot • 0s warmup</div>
+                <div class="font-mono text-sm text-ice">Kalshi REST + WebSocket</div>
+                <div class="text-xs text-moon/40 mt-0.5">Market scanning, order book, order placement</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-yellow-400 mt-1.5 shrink-0"></div>
               <div>
                 <div class="font-mono text-sm text-ice">Persistent HTTPS</div>
-                <div class="text-xs text-moon/40 mt-0.5">DNS cached • TLS reused • ~5ms per order</div>
+                <div class="text-xs text-moon/40 mt-0.5">DNS cached &middot; TLS reused &middot; ~5ms per order</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bot-card p-6" style="--accent: #4a7cf7;">
+          <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7cf7" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+            Storage &amp; Monitoring
+          </h3>
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <div class="glow-dot bg-cyan-400 mt-1.5 shrink-0"></div>
+              <div>
+                <div class="font-mono text-sm text-ice">ClickHouse (10Gi PVC)</div>
+                <div class="text-xs text-moon/40 mt-0.5">btc_ticks 7d &middot; signals 30d &middot; trades 90d</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-purple-400 mt-1.5 shrink-0"></div>
               <div>
                 <div class="font-mono text-sm text-ice">Grafana Dashboard</div>
-                <div class="text-xs text-moon/40 mt-0.5">hft.trading:30300</div>
+                <div class="text-xs text-moon/40 mt-0.5">Single live dashboard &middot; 6 rows &middot; 5s refresh</div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="glow-line max-w-5xl mx-auto"></div>
-
-  <!-- ═══════════════════ BOT PROFILES ═══════════════════ -->
-  <section id="bots" class="py-24 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="reveal">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-[1px] bg-lunar/30"></div>
-          <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Bot Profiles</span>
-        </div>
-        <h2 class="font-display font-bold text-3xl text-ice mb-3">Five Strategies, One Market</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">Each bot targets the same 15-minute BTC contracts with different entry thresholds, sizing, exit behavior, and signal processing.</p>
-      </div>
-
-      <!-- Bot Tabs -->
-      <div class="flex flex-wrap gap-2 mb-8 reveal">
-        <button class="tab-btn active" onclick="switchTab('hold')" id="tab-hold" style="--accent-c: #f59e0b">
-          <span class="inline-block w-2 h-2 rounded-full bg-hold-base mr-2"></span>Hold Bot
-        </button>
-        <button class="tab-btn" onclick="switchTab('exit')" id="tab-exit">
-          <span class="inline-block w-2 h-2 rounded-full bg-exit-base mr-2"></span>Exit Bot
-        </button>
-        <button class="tab-btn" onclick="switchTab('ml')" id="tab-ml">
-          <span class="inline-block w-2 h-2 rounded-full bg-ml-base mr-2"></span>ML Bot
-        </button>
-        <button class="tab-btn" onclick="switchTab('data')" id="tab-data">
-          <span class="inline-block w-2 h-2 rounded-full bg-data-base mr-2"></span>Data Bot
-        </button>
-        <button class="tab-btn" onclick="switchTab('dude')" id="tab-dude">
-          <span class="inline-block w-2 h-2 rounded-full bg-dude-base mr-2"></span>The Dude
-        </button>
-      </div>
-
-      <!-- ── HOLD BOT ── -->
-      <div class="tab-content active" id="content-hold">
-        <div class="bot-card p-8" style="--accent: #f59e0b;">
-          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-            <div>
-              <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-xl bg-hold-base/10 border border-hold-base/20 flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <div>
-                  <h3 class="font-display font-bold text-xl text-ice">Hold Bot</h3>
-                  <code class="font-mono text-xs text-hold-base/70">hold-to-expiry</code>
-                </div>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <span class="feat-pill" style="border-color: rgba(245,158,11,0.2); color: #fbbf24;">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
-                Pure Hold
-              </span>
-              <span class="feat-pill">No Exit Mgmt</span>
-              <span class="feat-pill">No ML</span>
-            </div>
-          </div>
-
-          <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Enter during minutes 6–8, hold to expiry. No exit management. Drift-aware pricing with trade flow and micro-volatility signals. $30 base bets, $50 on high edge.
-          </p>
-
-          <div class="grid md:grid-cols-2 gap-6">
-            <table class="data-table">
-              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
-              <tbody>
-                <tr><td>Min Edge</td><td class="text-hold-glow font-semibold">16%</td></tr>
-                <tr><td>Edge Floor / Ceiling</td><td>18% / 25%</td></tr>
-                <tr><td>High Edge Threshold</td><td>28%</td></tr>
-                <tr><td>Target Notional</td><td>$30</td></tr>
-                <tr><td>High Edge Notional</td><td>$50</td></tr>
-                <tr><td>Kill Switch</td><td class="text-danger">$150</td></tr>
-                <tr><td>Funding Weight / Cap</td><td>200 / 5%</td></tr>
-              </tbody>
-            </table>
-            <div class="flex flex-col justify-between">
-              <div class="space-y-3">
-                <div class="stat-chip">
-                  <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                  <div class="font-mono text-lg text-exit-glow">Instant</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
-                </div>
-                <div class="stat-chip">
-                  <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
-                  <div class="font-mono text-lg text-hold-glow">Highest</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Lowest edge threshold</div>
-                </div>
+            <div class="flex items-start gap-3">
+              <div class="glow-dot bg-blue-400 mt-1.5 shrink-0"></div>
+              <div>
+                <div class="font-mono text-sm text-ice">Vol Warmup: Tick Replay</div>
+                <div class="text-xs text-moon/40 mt-0.5">Replays ~1200s of ticks on boot &middot; 0s warmup</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ── EXIT BOT ── -->
-      <div class="tab-content" id="content-exit">
-        <div class="bot-card p-8" style="--accent: #10b981;">
-          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-            <div>
-              <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-xl bg-exit-base/10 border border-exit-base/20 flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-                </div>
-                <div>
-                  <h3 class="font-display font-bold text-xl text-ice">Exit Bot</h3>
-                  <code class="font-mono text-xs text-exit-base/70">active-exit</code>
-                </div>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <span class="feat-pill" style="border-color: rgba(16,185,129,0.2); color: #34d399;">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#10b981" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
-                Active Exit
-              </span>
-              <span class="feat-pill">Take-Profit</span>
-              <span class="feat-pill">Model-Gated SL</span>
-            </div>
+      <div class="mt-6 reveal">
+        <div class="bot-card p-6" style="--accent: #8ab4ff;">
+          <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8ab4ff" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
+            Cluster
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="feat-pill">C++23</span>
+            <span class="feat-pill">Boost.Beast</span>
+            <span class="feat-pill">OpenSSL (RSA-PSS)</span>
+            <span class="feat-pill">clickhouse-cpp</span>
+            <span class="feat-pill">spdlog</span>
+            <span class="feat-pill">simdjson</span>
+            <span class="feat-pill">Talos OS</span>
+            <span class="feat-pill">3x Mac Mini (amd64)</span>
+            <span class="feat-pill">K8s &middot; hft-loc-dev</span>
+            <span class="feat-pill">In-cluster registry</span>
+            <span class="feat-pill">crane push</span>
           </div>
-
-          <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Actively manages positions with take-profit (8-min exit window) and model-gated stop-loss (last 6 min). Drift-aware pricing with trade flow and micro-volatility. $35 bets, $200/day max loss. Funding signal dampened.
-          </p>
-
-          <div class="grid md:grid-cols-2 gap-6 mb-8">
-            <table class="data-table">
-              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
-              <tbody>
-                <tr><td>Min Edge</td><td class="text-exit-glow font-semibold">16%</td></tr>
-                <tr><td>Edge Floor / Ceiling</td><td>18% / 25%</td></tr>
-                <tr><td>High Edge Threshold</td><td>30%</td></tr>
-                <tr><td>Target Notional</td><td>$35</td></tr>
-                <tr><td>High Edge Notional</td><td>$60</td></tr>
-                <tr><td>Kill Switch</td><td class="text-danger">$200</td></tr>
-                <tr><td>Exit Window</td><td>480s (8 min)</td></tr>
-                <tr><td>Stop-Loss</td><td>45% of entry price</td></tr>
-                <tr><td>SL Model Gate</td><td>p_fair: 0.35</td></tr>
-                <tr><td>SL Time Window</td><td>360s (last 6 min)</td></tr>
-                <tr><td>Take-Profit Edge</td><td>4¢ over model EV</td></tr>
-                <tr><td>Sell Fee</td><td>7%</td></tr>
-                <tr><td>Funding Weight / Cap</td><td>50 / 2%</td></tr>
-              </tbody>
-            </table>
-            <div class="space-y-3">
-              <div class="stat-chip">
-                <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                <div class="font-mono text-lg text-exit-glow">Instant</div>
-                <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
-              </div>
-              <div class="stat-chip">
-                <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
-                <div class="font-mono text-lg text-exit-glow">Lowest</div>
-                <div class="text-xs text-moon/30 mt-0.5">Highest edge requirement</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Exit Logic Flow -->
-          <div class="border-t border-lunar/10 pt-6">
-            <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">EXIT LOGIC FLOW</h4>
-            <div class="space-y-6">
-              <div class="flow-step">
-                <div class="flow-dot" style="border-color: #34d399; background: rgba(16,185,129,0.15);"></div>
-                <div class="font-display font-semibold text-sm text-exit-glow mb-1">① Take-Profit <span class="text-moon/30 font-normal">(full 480s window)</span></div>
-                <div class="text-xs text-moon/40 space-y-1 ml-0">
-                  <div>• Net sell &gt; entry price (profitable after fees)</div>
-                  <div>• Net sell &gt; model EV + edge (relaxes near expiry)</div>
-                </div>
-              </div>
-              <div class="flow-step">
-                <div class="flow-dot" style="border-color: #ef4444; background: rgba(239,68,68,0.15);"></div>
-                <div class="font-display font-semibold text-sm text-danger mb-1">② Stop-Loss <span class="text-moon/30 font-normal">(last 360s only)</span></div>
-                <div class="text-xs text-moon/40 space-y-1 ml-0">
-                  <div>• Unrealized loss &gt; stop threshold (tightens near expiry)</div>
-                  <div>• <strong class="text-moon/60">Model gate:</strong> SL only fires if model confirms flip</div>
-                  <div class="ml-4">Holding YES → fires only if p_fair &lt; 0.35</div>
-                  <div class="ml-4">Holding NO → fires only if p_fair &gt; 0.65</div>
-                  <div>• Model disagrees → <code class="font-mono text-xs text-moon/50 bg-midnight/60 px-1.5 py-0.5 rounded">SL_PRICE_HIT_MODEL_HOLD</code></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── ML BOT ── -->
-      <div class="tab-content" id="content-ml">
-        <div class="bot-card p-8" style="--accent: #8b5cf6;">
-          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-            <div>
-              <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-xl bg-ml-base/10 border border-ml-base/20 flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 0-4 4c0 1.95 1.4 3.58 3.25 3.93"/><path d="M16 6a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93"/></svg>
-                </div>
-                <div>
-                  <h3 class="font-display font-bold text-xl text-ice">ML Bot</h3>
-                  <code class="font-mono text-xs text-ml-base/70">ml-gate</code>
-                </div>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <span class="feat-pill" style="border-color: rgba(139,92,246,0.2); color: #a78bfa;">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#8b5cf6" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
-                ML Gate
-              </span>
-              <span class="feat-pill">Dual Agreement</span>
-              <span class="feat-pill">Hold to Expiry</span>
-            </div>
-          </div>
-
-          <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Same as hold-to-expiry but with an ML gate filter. Vol model picks a side, then a logistic regression model (24 features — 20 TA + 4 microstructure — on 1-min candles) must independently agree before the trade fires. Largest positions ($50), ~20 min warmup.
-          </p>
-
-          <div class="grid md:grid-cols-2 gap-6 mb-8">
-            <table class="data-table">
-              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
-              <tbody>
-                <tr><td>Min Edge</td><td class="text-ml-glow font-semibold">14%</td></tr>
-                <tr><td>Edge Floor / Ceiling</td><td>15% / 22%</td></tr>
-                <tr><td>High Edge Threshold</td><td>25%</td></tr>
-                <tr><td>Target Notional</td><td>$50</td></tr>
-                <tr><td>High Edge Notional</td><td>$80</td></tr>
-                <tr><td>Kill Switch</td><td class="text-danger">$200</td></tr>
-                <tr><td>ML Candle Period</td><td>60s (1 min)</td></tr>
-                <tr><td>ML Warmup</td><td>20 candles (~20 min)</td></tr>
-                <tr><td>ML Max Candles</td><td>250</td></tr>
-                <tr><td>Funding Weight / Cap</td><td>200 / 5%</td></tr>
-              </tbody>
-            </table>
-            <div class="space-y-3">
-              <div class="stat-chip">
-                <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                <div class="font-mono text-lg text-ice">~20 min</div>
-                <div class="text-xs text-moon/30 mt-0.5">20 candles × 1 min (vol pricer instant)</div>
-              </div>
-              <div class="stat-chip">
-                <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
-                <div class="font-mono text-lg text-ml-glow">Medium</div>
-                <div class="text-xs text-moon/30 mt-0.5">Dual model agreement filter</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Gate Logic -->
-          <div class="border-t border-lunar/10 pt-6">
-            <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">ML GATE LOGIC</h4>
-            <div class="grid md:grid-cols-2 gap-4">
-              <div class="stat-chip">
-                <div class="flex items-center gap-2 mb-2">
-                  <div class="w-5 h-5 rounded-full bg-lunar/20 flex items-center justify-center text-xs font-mono text-lunar">1</div>
-                  <span class="text-sm text-ice">Vol Model</span>
-                </div>
-                <p class="text-xs text-moon/40">Computes edge, picks a side (YES/NO)</p>
-              </div>
-              <div class="stat-chip">
-                <div class="flex items-center gap-2 mb-2">
-                  <div class="w-5 h-5 rounded-full bg-ml-base/20 flex items-center justify-center text-xs font-mono text-ml-glow">2</div>
-                  <span class="text-sm text-ice">ML Model</span>
-                </div>
-                <p class="text-xs text-moon/40">24 features (20 TA + 4 micro) → probability → side</p>
-              </div>
-              <div class="stat-chip md:col-span-2 text-center">
-                <div class="text-sm text-ice mb-1">Both must agree → <span class="text-exit-glow font-semibold">TRADE FIRES</span></div>
-                <div class="text-xs text-moon/30">Disagree → <code class="font-mono text-moon/40 bg-midnight/60 px-1.5 py-0.5 rounded">GATE_BLOCKED: vol=X ml=Y</code></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── DATA BOT ── -->
-      <div class="tab-content" id="content-data">
-        <div class="bot-card p-8" style="--accent: #06b6d4;">
-          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-            <div>
-              <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-xl bg-data-base/10 border border-data-base/20 flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
-                </div>
-                <div>
-                  <h3 class="font-display font-bold text-xl text-ice">Data Bot</h3>
-                  <code class="font-mono text-xs text-data-base/70">hold-data-collect</code>
-                </div>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <span class="feat-pill" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#06b6d4" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
-                Data Collection
-              </span>
-              <span class="feat-pill">$10 Sizing</span>
-              <span class="feat-pill">Hold to Expiry</span>
-            </div>
-          </div>
-
-          <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Moderate-conviction data scout. Trades at 12% edge with $10 sizing. Hold-to-expiry, no exit management, no ML. 15% edge floor with drift-aware pricing. $100/day max loss.
-          </p>
-
-          <div class="grid md:grid-cols-2 gap-6">
-            <table class="data-table">
-              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
-              <tbody>
-                <tr><td>Min Edge</td><td class="text-data-glow font-semibold">12%</td></tr>
-                <tr><td>Edge Floor / Ceiling</td><td>15% / 20%</td></tr>
-                <tr><td>High Edge Threshold</td><td>25%</td></tr>
-                <tr><td>Target Notional</td><td>$10</td></tr>
-                <tr><td>High Edge Notional</td><td>$20</td></tr>
-                <tr><td>Kill Switch</td><td class="text-danger">$100</td></tr>
-                <tr><td>Funding Weight / Cap</td><td>200 / 5%</td></tr>
-              </tbody>
-            </table>
-            <div class="flex flex-col justify-between">
-              <div class="space-y-3">
-                <div class="stat-chip">
-                  <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                  <div class="font-mono text-lg text-exit-glow">Instant</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
-                </div>
-                <div class="stat-chip">
-                  <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
-                  <div class="font-mono text-lg text-data-glow">Highest</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Lowest edge threshold (12%)</div>
-                </div>
-                <div class="stat-chip">
-                  <div class="text-xs text-moon/40 mb-1">Purpose</div>
-                  <div class="font-mono text-sm text-data-glow">Data Scout</div>
-                  <div class="text-xs text-moon/30 mt-0.5">Moderate conviction data gathering</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── THE DUDE ── -->
-      <div class="tab-content" id="content-dude">
-        <div class="bot-card p-8" style="--accent: #ec4899;">
-          <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
-            <div>
-              <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-xl bg-dude-base/10 border border-dude-base/20 flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
-                </div>
-                <div>
-                  <h3 class="font-display font-bold text-xl text-ice">The Dude</h3>
-                  <code class="font-mono text-xs text-dude-base/70">the-dude</code>
-                </div>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <span class="feat-pill" style="border-color: rgba(236,72,153,0.2); color: #f472b6;">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="#ec4899" stroke="none"><circle cx="12" cy="12" r="6"/></svg>
-                Low-Vol Specialist
-              </span>
-              <span class="feat-pill">$5 Sizing</span>
-              <span class="feat-pill">Auto-Scaled</span>
-              <span class="feat-pill">Hold to Expiry</span>
-            </div>
-          </div>
-
-          <p class="text-moon/50 text-sm mb-6 leading-relaxed max-w-2xl">
-            Low-volatility breadcrumb bot for calm BTC markets. Cheapest contracts only (&le;25&cent;). Ultra-smooth EWMA (&lambda;=0.99), relaxed vol divergence (8x), and book-heavy signal weighting. 10% edge floor — model must think 35% at 25&cent;. $50/day max loss.
-          </p>
-
-          <div class="grid md:grid-cols-2 gap-6 mb-8">
-            <table class="data-table">
-              <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
-              <tbody>
-                <tr><td>Min Edge</td><td class="text-dude-glow font-semibold">8%</td></tr>
-                <tr><td>Edge Floor / Ceiling</td><td>10% / 15%</td></tr>
-                <tr><td>EWMA Lambda</td><td class="text-dude-glow">0.99</td></tr>
-                <tr><td>Vol Divergence Max</td><td class="text-dude-glow">8x</td></tr>
-                <tr><td>Vol Div Cooldown</td><td>10s</td></tr>
-                <tr><td>Book Weight</td><td class="text-dude-glow">0.12 (2.4x normal)</td></tr>
-                <tr><td>Max Entry Price</td><td>25&cent;</td></tr>
-                <tr><td>Target Notional</td><td>$5</td></tr>
-                <tr><td>High Edge Notional</td><td>$8</td></tr>
-                <tr><td>Max Notional/Trade</td><td>$10</td></tr>
-                <tr><td>Kill Switch</td><td class="text-danger">$50</td></tr>
-              </tbody>
-            </table>
-            <div class="space-y-3">
-              <div class="stat-chip">
-                <div class="text-xs text-moon/40 mb-1">Warmup Time</div>
-                <div class="font-mono text-lg text-exit-glow">Instant</div>
-                <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse</div>
-              </div>
-              <div class="stat-chip">
-                <div class="text-xs text-moon/40 mb-1">Expected Frequency</div>
-                <div class="font-mono text-lg text-dude-glow">High (in low vol)</div>
-                <div class="text-xs text-moon/30 mt-0.5">8% edge, relaxed guards</div>
-              </div>
-              <div class="stat-chip">
-                <div class="text-xs text-moon/40 mb-1">Auto-Scaler</div>
-                <div class="font-mono text-sm text-dude-glow">CronJob (every 15m)</div>
-                <div class="text-xs text-moon/30 mt-0.5">30-min BTC range &lt; $250 &rarr; ON</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Low-Vol Design -->
-          <div class="border-t border-lunar/10 pt-6">
-            <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">LOW-VOL DESIGN</h4>
-            <div class="grid md:grid-cols-3 gap-4">
-              <div class="stat-chip">
-                <div class="flex items-center gap-2 mb-2">
-                  <div class="w-5 h-5 rounded-full bg-dude-base/20 flex items-center justify-center text-xs font-mono text-dude-glow">1</div>
-                  <span class="text-sm text-ice">Smooth EWMA</span>
-                </div>
-                <p class="text-xs text-moon/40">&lambda;=0.99 prevents vol collapse on quiet 10s bars</p>
-              </div>
-              <div class="stat-chip">
-                <div class="flex items-center gap-2 mb-2">
-                  <div class="w-5 h-5 rounded-full bg-dude-base/20 flex items-center justify-center text-xs font-mono text-dude-glow">2</div>
-                  <span class="text-sm text-ice">Book-Heavy</span>
-                </div>
-                <p class="text-xs text-moon/40">Book imbalance weight 2.4x normal — more informative in calm markets</p>
-              </div>
-              <div class="stat-chip">
-                <div class="flex items-center gap-2 mb-2">
-                  <div class="w-5 h-5 rounded-full bg-dude-base/20 flex items-center justify-center text-xs font-mono text-dude-glow">3</div>
-                  <span class="text-sm text-ice">Auto-Toggle</span>
-                </div>
-                <p class="text-xs text-moon/40">CronJob scales to 0 when vol picks up, back to 1 when calm</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="glow-line max-w-5xl mx-auto"></div>
-
-  <!-- ═══════════════════ ML MODEL DEEP DIVE ═══════════════════ -->
-  <section id="ml" class="py-24 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="reveal">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-[1px] bg-ml-base/30"></div>
-          <span class="font-display text-xs tracking-[0.2em] text-ml-base/50 uppercase">ML Deep Dive</span>
-        </div>
-        <h2 class="font-display font-bold text-3xl text-ice mb-3">Model Architecture</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">Logistic regression on 24 features (20 TA indicators + 4 microstructure), now on 1-minute candles for contract-timescale relevance. Trained on 5.6M Bitfinex candles spanning 13 years with walk-forward validation.</p>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-4 mb-8 reveal">
-        <div class="stat-chip">
-          <div class="text-xs text-moon/40 mb-1">Algorithm</div>
-          <div class="font-mono text-sm text-ice">Logistic Regression</div>
-          <div class="text-xs text-moon/30 mt-0.5">scikit-learn • C=0.1 • LBFGS</div>
-        </div>
-        <div class="stat-chip">
-          <div class="text-xs text-moon/40 mb-1">Training Data</div>
-          <div class="font-mono text-sm text-ice">Bitfinex BTC/USD</div>
-          <div class="text-xs text-moon/30 mt-0.5">5.6M 1-min candles → 373k 15-min</div>
-        </div>
-        <div class="stat-chip">
-          <div class="text-xs text-moon/40 mb-1">Target</div>
-          <div class="font-mono text-sm text-ice">Close[t] &gt; Open[t]</div>
-          <div class="text-xs text-moon/30 mt-0.5">Binary: did BTC go up?</div>
-        </div>
-      </div>
-
-      <!-- Training Data -->
-      <div class="bot-card p-8 mb-8 reveal" style="--accent: #4a7cf7;">
-        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">TRAINING DATA</h4>
-        <div class="grid md:grid-cols-3 gap-4 mb-6">
-          <div class="stat-chip text-center">
-            <div class="font-mono text-2xl font-semibold text-ice">5.6M</div>
-            <div class="text-xs text-moon/40 mt-1">1-Minute Candles</div>
-          </div>
-          <div class="stat-chip text-center">
-            <div class="font-mono text-2xl font-semibold text-ice">373K</div>
-            <div class="text-xs text-moon/40 mt-1">15-Min Candles</div>
-          </div>
-          <div class="stat-chip text-center">
-            <div class="font-mono text-2xl font-semibold text-ice">~13 yrs</div>
-            <div class="text-xs text-moon/40 mt-1">Apr 2013 — Feb 2026</div>
-          </div>
-        </div>
-        <div class="bg-void/60 rounded-lg p-5">
-          <div class="flex items-center gap-3 mb-4">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7cf7" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
-            <span class="font-mono text-sm text-ice">Bitfinex BTC/USD</span>
-          </div>
-          <!-- Timeline bar -->
-          <div class="relative mb-3">
-            <div class="w-full h-2 rounded-full bg-midnight overflow-hidden">
-              <div class="h-full rounded-full bg-gradient-to-r from-lunar/40 via-lunar to-moon" style="width: 100%; animation: shimmer 3s ease-in-out infinite;"></div>
-            </div>
-            <div class="flex justify-between mt-2">
-              <span class="font-mono text-[10px] text-moon/30">APR 2013</span>
-              <span class="font-mono text-[10px] text-moon/30">2016</span>
-              <span class="font-mono text-[10px] text-moon/30">2019</span>
-              <span class="font-mono text-[10px] text-moon/30">2022</span>
-              <span class="font-mono text-[10px] text-moon/40">FEB 2026</span>
-            </div>
-          </div>
-          <p class="text-xs text-moon/35 leading-relaxed mt-3">Raw 1-minute OHLCV candles resampled to 15-minute intervals to match Kalshi's contract resolution window. Covers multiple full market cycles including the 2017 bull run, 2018 bear, 2020–21 rally, 2022 drawdown, and 2024–25 recovery.</p>
-        </div>
-      </div>
-
-      <!-- Features -->
-      <div class="bot-card p-8 mb-8 reveal" style="--accent: #8b5cf6;">
-        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">24 FEATURES (20 TA + 4 MICROSTRUCTURE)</h4>
-        <p class="text-xs text-moon/30 mb-5">TA features computed from prior 1-min candles (shifted by 1). Microstructure features injected from live Coinbase tick stream.</p>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2 h-2 rounded-full bg-hold-base"></span>
-              <span class="font-display text-xs tracking-wider text-hold-glow/80 uppercase">Momentum</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="feat-pill text-xs">RSI(14)</span>
-              <span class="feat-pill text-xs">MACD</span>
-              <span class="feat-pill text-xs">MACD Histogram</span>
-              <span class="feat-pill text-xs">CCI(14)</span>
-              <span class="feat-pill text-xs">Momentum(10)</span>
-              <span class="feat-pill text-xs">ROC(10)</span>
-              <span class="feat-pill text-xs">Williams %R(14)</span>
-              <span class="feat-pill text-xs">CMO(14)</span>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2 h-2 rounded-full bg-lunar"></span>
-              <span class="font-display text-xs tracking-wider text-lunar/80 uppercase">Volatility</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="feat-pill text-xs">ATR(14)</span>
-              <span class="feat-pill text-xs">NATR(14)</span>
-              <span class="feat-pill text-xs">BB Upper</span>
-              <span class="feat-pill text-xs">BB Lower</span>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2 h-2 rounded-full bg-exit-base"></span>
-              <span class="font-display text-xs tracking-wider text-exit-glow/80 uppercase">Trend</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="feat-pill text-xs">ADX(14)</span>
-              <span class="feat-pill text-xs">+DI</span>
-              <span class="feat-pill text-xs">-DI</span>
-              <span class="feat-pill text-xs">Aroon Osc</span>
-              <span class="feat-pill text-xs">Lin Reg Slope</span>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2 h-2 rounded-full bg-ml-base"></span>
-              <span class="font-display text-xs tracking-wider text-ml-glow/80 uppercase">Price Action</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="feat-pill text-xs">Balance of Power</span>
-              <span class="feat-pill text-xs">Price Change</span>
-              <span class="feat-pill text-xs">Close/Open Ratio</span>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="w-2 h-2 rounded-full bg-data-base"></span>
-              <span class="font-display text-xs tracking-wider text-data-glow/80 uppercase">Microstructure (Live)</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Trade Flow 30s</span>
-              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Trade Flow 120s</span>
-              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Micro-Vol Ratio</span>
-              <span class="feat-pill text-xs" style="border-color: rgba(6,182,212,0.2); color: #22d3ee;">Drift Estimate</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Top Features -->
-      <div class="bot-card p-8 mb-8 reveal" style="--accent: #a78bfa;">
-        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">TOP FEATURES BY WEIGHT</h4>
-        <div class="space-y-3">
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-mono text-sm text-ice">CLOSE_OPEN_RATIO</span>
-              <span class="font-mono text-sm text-ml-glow">6.240</span>
-            </div>
-            <div class="w-full h-1.5 rounded-full bg-midnight">
-              <div class="h-full rounded-full bg-gradient-to-r from-ml-base to-ml-glow" style="width: 100%;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-mono text-sm text-ice">BOP</span>
-              <span class="font-mono text-sm text-ml-glow/60">0.016</span>
-            </div>
-            <div class="w-full h-1.5 rounded-full bg-midnight">
-              <div class="h-full rounded-full bg-gradient-to-r from-ml-base/60 to-ml-glow/60" style="width: 18%;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-mono text-sm text-ice">NATR_14</span>
-              <span class="font-mono text-sm text-ml-glow/50">0.009</span>
-            </div>
-            <div class="w-full h-1.5 rounded-full bg-midnight">
-              <div class="h-full rounded-full bg-gradient-to-r from-ml-base/50 to-ml-glow/50" style="width: 12%;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-mono text-sm text-ice">RSI_14</span>
-              <span class="font-mono text-sm text-ml-glow/40">0.005</span>
-            </div>
-            <div class="w-full h-1.5 rounded-full bg-midnight">
-              <div class="h-full rounded-full bg-gradient-to-r from-ml-base/40 to-ml-glow/40" style="width: 8%;"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-mono text-sm text-ice">ROC_10</span>
-              <span class="font-mono text-sm text-ml-glow/35">0.004</span>
-            </div>
-            <div class="w-full h-1.5 rounded-full bg-midnight">
-              <div class="h-full rounded-full bg-gradient-to-r from-ml-base/35 to-ml-glow/35" style="width: 6%;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Validation & Inference -->
-      <div class="grid md:grid-cols-2 gap-6 reveal">
-        <div class="bot-card p-6" style="--accent: #4a7cf7;">
-          <h4 class="font-display font-semibold text-sm text-moon/60 mb-4 tracking-wide">VALIDATION</h4>
-          <div class="space-y-3 text-sm text-moon/50">
-            <div class="flex items-start gap-2">
-              <span class="text-lunar mt-0.5">→</span>
-              <span>5-fold expanding-window walk-forward</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-lunar mt-0.5">→</span>
-              <span>No random shuffling</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-lunar mt-0.5">→</span>
-              <span>No future data leakage</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-lunar mt-0.5">→</span>
-              <span>Final model retrained on all data</span>
-            </div>
-          </div>
-        </div>
-        <div class="bot-card p-6" style="--accent: #34d399;">
-          <h4 class="font-display font-semibold text-sm text-moon/60 mb-4 tracking-wide">C++ INFERENCE</h4>
-          <div class="bg-void/60 rounded-lg p-4 font-mono text-xs text-moon/60 leading-relaxed">
-            <span class="text-ml-glow/60">// StandardScaler baked into weights</span><br>
-            <span class="text-exit-glow">sigmoid</span>(<span class="text-lunar">dot</span>(features, weights) + bias)<br>
-            <span class="text-ml-glow/60">// No runtime normalization needed</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="glow-line max-w-5xl mx-auto"></div>
-
-  <!-- ═══════════════════ COMPARISON ═══════════════════ -->
-  <section id="compare" class="py-24 px-6">
-    <div class="max-w-5xl mx-auto">
-      <div class="reveal">
-        <div class="flex items-center gap-3 mb-2">
-          <div class="w-8 h-[1px] bg-lunar/30"></div>
-          <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Comparison</span>
-        </div>
-        <h2 class="font-display font-bold text-3xl text-ice mb-3">Side by Side</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">All five strategies compared across key dimensions.</p>
-      </div>
-
-      <div class="bot-card p-1 reveal" style="--accent: #4a7cf7;">
-        <div class="overflow-x-auto">
-          <table class="cmp-table">
-            <thead>
-              <tr>
-                <th class="text-moon/40 font-normal text-xs tracking-wider uppercase py-4 px-4"></th>
-                <th class="py-4 px-4">
-                  <div class="flex flex-col items-center gap-1">
-                    <span class="w-3 h-3 rounded-full bg-hold-base"></span>
-                    <span class="text-hold-glow text-sm">Hold</span>
-                  </div>
-                </th>
-                <th class="py-4 px-4">
-                  <div class="flex flex-col items-center gap-1">
-                    <span class="w-3 h-3 rounded-full bg-exit-base"></span>
-                    <span class="text-exit-glow text-sm">Exit</span>
-                  </div>
-                </th>
-                <th class="py-4 px-4">
-                  <div class="flex flex-col items-center gap-1">
-                    <span class="w-3 h-3 rounded-full bg-ml-base"></span>
-                    <span class="text-ml-glow text-sm">ML</span>
-                  </div>
-                </th>
-                <th class="py-4 px-4">
-                  <div class="flex flex-col items-center gap-1">
-                    <span class="w-3 h-3 rounded-full bg-data-base"></span>
-                    <span class="text-data-glow text-sm">Data</span>
-                  </div>
-                </th>
-                <th class="py-4 px-4">
-                  <div class="flex flex-col items-center gap-1">
-                    <span class="w-3 h-3 rounded-full bg-dude-base"></span>
-                    <span class="text-dude-glow text-sm">Dude</span>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>Min Edge</td><td class="text-hold-glow">16%</td><td class="text-exit-glow">16%</td><td class="text-ml-glow">14%</td><td class="text-data-glow">12%</td><td class="text-dude-glow">8%</td></tr>
-              <tr><td>Edge Floor</td><td>18%</td><td>18%</td><td>15%</td><td>15%</td><td class="text-dude-glow">10%</td></tr>
-              <tr><td>Edge Ceiling</td><td>25%</td><td>25%</td><td>22%</td><td>20%</td><td class="text-dude-glow">15%</td></tr>
-              <tr><td>Target Notional</td><td>$30</td><td>$35</td><td class="text-ml-glow">$50</td><td>$10</td><td class="text-dude-glow">$5</td></tr>
-              <tr><td>Kill Switch</td><td>$150</td><td>$200</td><td>$200</td><td>$100</td><td class="text-dude-glow">$50</td></tr>
-              <tr><td>Max Entry Price</td><td>35¢</td><td>30¢</td><td>35¢</td><td>30¢</td><td class="text-dude-glow">25¢</td></tr>
-              <tr><td>EWMA Lambda</td><td>0.97</td><td>0.97</td><td>0.97</td><td>0.97</td><td class="text-dude-glow">0.99</td></tr>
-              <tr><td>Exit Management</td><td class="text-moon/30">No</td><td class="text-exit-glow">Yes</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
-              <tr><td>ML Gate</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td><td class="text-ml-glow">Yes (24 feat)</td><td class="text-moon/30">No</td><td class="text-moon/30">No</td></tr>
-              <tr><td>Vol Div Max Ratio</td><td>4x</td><td>4x</td><td>4x</td><td>4.5x</td><td class="text-dude-glow">8x</td></tr>
-              <tr><td>Vol Div Cooldown</td><td>20s</td><td>20s</td><td>20s</td><td>20s</td><td class="text-dude-glow">10s</td></tr>
-              <tr><td>Book Weight</td><td>0.05</td><td>0.05</td><td>0.05</td><td>0.05</td><td class="text-dude-glow">0.12</td></tr>
-              <tr><td>Drift / Trade Flow</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td><td>0.5 / 0.10</td></tr>
-              <tr><td>Trade Frequency</td><td class="text-hold-glow">High</td><td class="text-exit-glow">Moderate</td><td class="text-ml-glow">Medium</td><td class="text-data-glow font-semibold">Highest</td><td class="text-dude-glow">High (low vol)</td></tr>
-              <tr><td>Warmup</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td><td>~20 min</td><td class="text-exit-glow">Instant</td><td class="text-exit-glow">Instant</td></tr>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
@@ -1264,37 +486,26 @@ tailwind.config = {
   <footer class="py-12 px-6 border-t border-lunar/8">
     <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-moon/25 font-mono">
       <div>admin@macmini-cluster / hft-loc-dev</div>
-      <div>Kalshi BTC 15-Min Bots • 2026-02-13</div>
+      <div>KXBTC15M Sniper</div>
     </div>
   </footer>
 
 </main>
 
 <script>
-// ═══════════════════ STARFIELD ═══════════════════
 const canvas = document.getElementById('starfield');
 const ctx = canvas.getContext('2d');
 let stars = [];
 let W, H;
 
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight * 3;
-}
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight * 3; }
 resize();
 window.addEventListener('resize', resize);
 
 function createStars(count) {
   stars = [];
   for (let i = 0; i < count; i++) {
-    stars.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 1.5 + 0.2,
-      a: Math.random() * 0.8 + 0.2,
-      twinkleSpeed: Math.random() * 0.02 + 0.005,
-      twinklePhase: Math.random() * Math.PI * 2,
-    });
+    stars.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.5 + 0.2, a: Math.random() * 0.8 + 0.2, twinkleSpeed: Math.random() * 0.02 + 0.005, twinklePhase: Math.random() * Math.PI * 2 });
   }
 }
 createStars(300);
@@ -1304,31 +515,23 @@ function drawStars(time) {
   const scrollY = window.scrollY;
   for (const s of stars) {
     const t = Math.sin(time * s.twinkleSpeed + s.twinklePhase) * 0.5 + 0.5;
-    const alpha = s.a * (0.3 + t * 0.7);
     ctx.beginPath();
     ctx.arc(s.x, s.y - scrollY * 0.15, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(184, 212, 255, ${alpha})`;
+    ctx.fillStyle = `rgba(184, 212, 255, ${s.a * (0.3 + t * 0.7)})`;
     ctx.fill();
   }
 }
 
-function animate(time) {
-  drawStars(time);
-  requestAnimationFrame(animate);
-}
+function animate(time) { drawStars(time); requestAnimationFrame(animate); }
 requestAnimationFrame(animate);
 
-// ═══════════════════ SHOOTING STARS ═══════════════════
 function shootStar(el) {
   const x = Math.random() * W * 0.6 + W * 0.2;
   const y = Math.random() * H * 0.3;
   const angle = 20 + Math.random() * 30;
   const duration = 800 + Math.random() * 600;
-  el.style.left = x + 'px';
-  el.style.top = y + 'px';
-  el.style.transform = `rotate(${angle}deg)`;
-  el.style.opacity = '0';
-  el.style.transition = `none`;
+  el.style.left = x + 'px'; el.style.top = y + 'px';
+  el.style.transform = `rotate(${angle}deg)`; el.style.opacity = '0'; el.style.transition = 'none';
   requestAnimationFrame(() => {
     el.style.transition = `opacity 0.15s, transform ${duration}ms linear`;
     el.style.opacity = '0.7';
@@ -1338,53 +541,29 @@ function shootStar(el) {
 }
 
 function scheduleShootingStar() {
-  const delay = 3000 + Math.random() * 8000;
   setTimeout(() => {
-    const el = Math.random() > 0.5 ? document.getElementById('star1') : document.getElementById('star2');
-    shootStar(el);
+    shootStar(Math.random() > 0.5 ? document.getElementById('star1') : document.getElementById('star2'));
     scheduleShootingStar();
-  }, delay);
+  }, 3000 + Math.random() * 8000);
 }
 scheduleShootingStar();
 
-// ═══════════════════ SCROLL REVEALS ═══════════════════
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 80);
-    }
-  });
+  entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
 }, { threshold: 0.1 });
-
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Trigger hero immediately
 setTimeout(() => document.getElementById('hero')?.classList.add('visible'), 200);
 
-// ═══════════════════ TABS ═══════════════════
-function switchTab(id) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.getElementById('tab-' + id)?.classList.add('active');
-  document.getElementById('content-' + id)?.classList.add('active');
-}
-
-// ═══════════════════ NAV ═══════════════════
 function setActive(el) {
   document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
   el.classList.add('active');
 }
 
-// Active nav on scroll
 const sections = document.querySelectorAll('section[id]');
 window.addEventListener('scroll', () => {
   let current = '';
-  sections.forEach(s => {
-    if (window.scrollY >= s.offsetTop - 100) current = s.id;
-  });
-  document.querySelectorAll('.nav-link').forEach(n => {
-    n.classList.toggle('active', n.getAttribute('href') === '#' + current);
-  });
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  document.querySelectorAll('.nav-link').forEach(n => { n.classList.toggle('active', n.getAttribute('href') === '#' + current); });
 });
 </script>
 </body>
