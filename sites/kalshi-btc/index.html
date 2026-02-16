@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KXBTC15M Sniper — Mission Control</title>
+<title>K-Model — Mission Control</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
@@ -127,12 +127,13 @@ tailwind.config = {
       <div class="w-7 h-7 rounded-full bg-gradient-to-br from-lunar to-moon flex items-center justify-center">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#050a18" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg>
       </div>
-      <span class="font-display font-semibold text-sm tracking-wider text-ice">KXBTC15M SNIPER</span>
-      <span class="badge bg-lunar/10 border border-lunar/20 text-moon">15-MIN</span>
+      <span class="font-display font-semibold text-sm tracking-wider text-ice">K-MODEL</span>
+      <span class="badge bg-lunar/10 border border-lunar/20 text-moon">STAT ARB</span>
     </div>
     <div class="hidden md:flex items-center gap-6">
       <a href="#overview" class="nav-link active" onclick="setActive(this)">Overview</a>
       <a href="#strategy" class="nav-link" onclick="setActive(this)">Strategy</a>
+      <a href="#pipeline" class="nav-link" onclick="setActive(this)">Pipeline</a>
       <a href="#config" class="nav-link" onclick="setActive(this)">Config</a>
       <a href="#infra" class="nav-link" onclick="setActive(this)">Infrastructure</a>
     </div>
@@ -153,24 +154,24 @@ tailwind.config = {
         hft-loc-dev &middot; admin@macmini-cluster
       </div>
       <h1 class="font-display font-bold text-5xl md:text-7xl tracking-tight text-ice leading-[1.1] mb-4">
-        Sniper<br>
-        <span class="bg-gradient-to-r from-lunar via-moon to-glow bg-clip-text text-transparent">Bot</span>
+        K-Model<br>
+        <span class="bg-gradient-to-r from-lunar via-moon to-glow bg-clip-text text-transparent">Sniper</span>
       </h1>
       <p class="font-body text-lg text-moon/50 max-w-xl mx-auto leading-relaxed mb-10">
-        Pure distribution math. One bot prices Kalshi's 15-minute BTC binary contracts using a drift-aware log-normal model with EWMA volatility. No signal biases, no ML, no exit management. Fires near expiry where mispricing is largest. Holds to settlement.
+        Statistical arbitrage on Kalshi 15-minute crypto binaries. Normal CDF probability model with rolling realized volatility. Computes edge at the actual ask, fires when the market is mispriced by &gt;10%. Most of the time, does nothing. That's the strategy working correctly.
       </p>
       <div class="flex flex-wrap justify-center gap-3 mb-14">
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">1</div>
-          <div class="text-xs text-moon/40 mt-1">Bot</div>
+          <div class="font-mono text-2xl font-semibold text-ice">4</div>
+          <div class="text-xs text-moon/40 mt-1">Assets</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">7%</div>
+          <div class="font-mono text-2xl font-semibold text-ice">10%</div>
           <div class="text-xs text-moon/40 mt-1">Min Edge</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
-          <div class="font-mono text-2xl font-semibold text-ice">15–90s</div>
-          <div class="text-xs text-moon/40 mt-1">Sniper Window</div>
+          <div class="font-mono text-2xl font-semibold text-ice">10&ndash;15m</div>
+          <div class="text-xs text-moon/40 mt-1">Entry Window</div>
         </div>
         <div class="stat-chip text-center min-w-[120px]">
           <div class="font-mono text-2xl font-semibold text-sniper-glow">$1</div>
@@ -178,7 +179,7 @@ tailwind.config = {
         </div>
       </div>
       <a href="#overview" class="inline-flex items-center gap-2 text-moon/50 hover:text-moon transition-colors text-sm">
-        <span>Explore Configuration</span>
+        <span>Explore</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="animate-bounce"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
       </a>
     </div>
@@ -192,8 +193,8 @@ tailwind.config = {
           <div class="w-8 h-[1px] bg-lunar/30"></div>
           <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Overview</span>
         </div>
-        <h2 class="font-display font-bold text-3xl text-ice mb-3">How It Works</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">The sniper waits for the final seconds of each 15-minute window, when the vol model has maximum information and contracts are cheapest. Pure math, no heuristics.</p>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">The Sniper Mindset</h2>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Like counting cards in blackjack. 95% of the time the deck is neutral and the bot sits out. 5% of the time the market drifts far enough from statistical reality that the bot fires a single aggressive limit order. If it goes hours without trading, that's not a bug &mdash; that's the strategy saving you from bad bets.</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-6 reveal">
@@ -202,9 +203,9 @@ tailwind.config = {
             <div class="w-10 h-10 rounded-xl bg-sniper-base/10 border border-sniper-base/20 flex items-center justify-center">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
             </div>
-            <h3 class="font-display font-semibold text-ice">Spot</h3>
+            <h3 class="font-display font-semibold text-ice">Compute</h3>
           </div>
-          <p class="text-moon/50 text-sm leading-relaxed">Evaluates every 100ms starting 10s into each window. Computes P_fair from drift-aware log-normal model with EWMA vol. Looks for 7%+ edge after costs.</p>
+          <p class="text-moon/50 text-sm leading-relaxed">On every Coinbase tick (50ms throttle), computes fair probability via Normal CDF using rolling 30s realized vol. Scans all eligible markets across BTC, ETH, SOL, and XRP simultaneously.</p>
         </div>
         <div class="bot-card p-6" style="--accent: #4a7cf7;">
           <div class="flex items-center gap-3 mb-4">
@@ -213,7 +214,7 @@ tailwind.config = {
             </div>
             <h3 class="font-display font-semibold text-ice">Fire</h3>
           </div>
-          <p class="text-moon/50 text-sm leading-relaxed">When edge exceeds 7% and spread is under 8c, places a limit order. $1 notional sizing. One trade per market, 15 trades/day max. ~50ms order latency.</p>
+          <p class="text-moon/50 text-sm leading-relaxed">When edge exceeds 10% after fees, places an aggressive limit order at ask + 2c. The matching engine gives best price regardless. One shot per market window, one direction per contract.</p>
         </div>
         <div class="bot-card p-6" style="--accent: #10b981;">
           <div class="flex items-center gap-3 mb-4">
@@ -222,7 +223,7 @@ tailwind.config = {
             </div>
             <h3 class="font-display font-semibold text-ice">Hold</h3>
           </div>
-          <p class="text-moon/50 text-sm leading-relaxed">No exit management. Holds to settlement. The contract resolves in under 2 minutes. Win = $1 per contract, lose = entry cost. Pure binary outcome.</p>
+          <p class="text-moon/50 text-sm leading-relaxed">No exit management. Holds to settlement. The contract resolves at expiry. Win = $1 per contract minus entry cost. Lose = entry cost. Pure binary outcome, pure math.</p>
         </div>
       </div>
     </div>
@@ -239,52 +240,144 @@ tailwind.config = {
           <span class="font-display text-xs tracking-[0.2em] text-sniper-base/50 uppercase">Strategy</span>
         </div>
         <h2 class="font-display font-bold text-3xl text-ice mb-3">The Math</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">Drift-aware log-normal digital option pricing. No signal biases bolted on &mdash; just the vol model and a skew adjustment.</p>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Each Kalshi contract is a binary bet: "Will BTC be above $X in 15 minutes?" The market prices this as a probability. The bot computes its own probability and only trades when the market is screamingly wrong.</p>
       </div>
 
       <div class="bot-card p-8 mb-8 reveal" style="--accent: #f59e0b;">
-        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">CORE MODEL</h4>
+        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">PROBABILITY MODEL</h4>
         <div class="bg-void/60 rounded-lg p-5 mb-6">
           <code class="font-mono text-sm text-ice leading-relaxed">
-            P_fair = 1 - &Phi;((ln(S<sub>0</sub>/S<sub>t</sub>) - &mu;&tau; + 0.5&sigma;<sup>2</sup>&tau;) / (&sigma;&radic;&tau;))
+            z = (strike - spot) / (spot &times; realized_vol &times; &radic;periods)<br>
+            prob_yes = 1 - &Phi;(z)
           </code>
           <div class="mt-4 space-y-1 text-xs text-moon/40 font-mono">
-            <div>&sigma; = EWMA realized vol per 10s bar (&lambda;=0.97)</div>
-            <div>&mu; = drift (EMA of recent log returns, 12-bar lookback)</div>
-            <div>&tau; = time remaining in bar units</div>
-            <div>skew_beta = 0.40 (log-moneyness adjustment)</div>
+            <div>&Phi; = standard Normal CDF</div>
+            <div>realized_vol = rolling std of 30s log returns (30-bar window)</div>
+            <div>periods = seconds_remaining / 30</div>
+            <div>spot = live Coinbase mid price per asset</div>
           </div>
         </div>
-
+        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">EDGE CALCULATION</h4>
+        <div class="bg-void/60 rounded-lg p-5">
+          <code class="font-mono text-sm text-ice leading-relaxed">
+            limit_price = ask + fill_buffer (2c)<br>
+            fee = 0.07 &times; p &times; (1 - p)<br>
+            edge = model_prob - (limit_price / 100) - fee
+          </code>
+          <div class="mt-4 space-y-1 text-xs text-moon/40 font-mono">
+            <div>Edge computed at the actual ask &mdash; what you'd really pay to enter</div>
+            <div>Wide spreads naturally kill the edge. No separate spread filter needed</div>
+            <div>If edge &lt; 10%: do nothing. The market isn't wrong enough</div>
+          </div>
+        </div>
       </div>
 
       <div class="bot-card p-8 reveal" style="--accent: #4a7cf7;">
-        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">WHY NEAR EXPIRY?</h4>
+        <h4 class="font-display font-semibold text-sm text-moon/60 mb-5 tracking-wide">WHY DOES THE BOT USUALLY DO NOTHING?</h4>
         <div class="grid md:grid-cols-2 gap-6">
           <div class="space-y-4 text-sm text-moon/50">
             <div class="flex items-start gap-2">
               <span class="text-sniper-glow mt-0.5">1.</span>
-              <span><strong class="text-ice">Maximum information.</strong> With 13+ minutes of price action observed, the vol model's estimate of P_fair is most accurate.</span>
+              <span><strong class="text-ice">Market is efficient.</strong> Model says 48%, market says 48c. Edge = 0. No trade. This is the most common state.</span>
             </div>
             <div class="flex items-start gap-2">
               <span class="text-sniper-glow mt-0.5">2.</span>
-              <span><strong class="text-ice">Cheapest contracts.</strong> If one side is winning, the losing side trades at deep discounts (5-30c). Small edge = large % return.</span>
+              <span><strong class="text-ice">Spread kills the edge.</strong> Model says 60% fair value, but the ask is 62c. You'd be paying 62c for a 60c ticket. Negative edge after fees.</span>
             </div>
             <div class="flex items-start gap-2">
               <span class="text-sniper-glow mt-0.5">3.</span>
-              <span><strong class="text-ice">Minimal time risk.</strong> Only 2 minutes to settlement. Less time for the market to move against the position.</span>
+              <span><strong class="text-ice">Edge too small.</strong> Model says 55%, ask is 47c. 8% edge doesn't clear the 10% threshold. A small edge can be erased by slippage or vol model error.</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">4.</span>
+              <span><strong class="text-ice">Fires when it matters.</strong> Model says 72%, ask is 45c. Edge = 23% after fees. One aggressive limit, wait for the fill.</span>
             </div>
           </div>
           <div class="space-y-3">
             <div class="stat-chip">
-              <div class="text-xs text-moon/40 mb-1">Eval Window</div>
-              <div class="font-mono text-lg text-sniper-glow">10s &rarr; 13min</div>
-              <div class="text-xs text-moon/30 mt-0.5">Start 10s in, stop at 2min to expiry</div>
+              <div class="text-xs text-moon/40 mb-1">Entry Window</div>
+              <div class="font-mono text-lg text-sniper-glow">10 &rarr; 15 min</div>
+              <div class="text-xs text-moon/30 mt-0.5">Before expiry (600-900s remaining)</div>
             </div>
             <div class="stat-chip">
-              <div class="text-xs text-moon/40 mb-1">Warmup</div>
+              <div class="text-xs text-moon/40 mb-1">Vol Warmup</div>
               <div class="font-mono text-lg text-green-400">Instant</div>
-              <div class="text-xs text-moon/30 mt-0.5">Tick replay from ClickHouse on boot</div>
+              <div class="text-xs text-moon/30 mt-0.5">Replays 960s of ticks from ClickHouse on boot</div>
+            </div>
+            <div class="stat-chip">
+              <div class="text-xs text-moon/40 mb-1">Direction</div>
+              <div class="font-mono text-lg text-lunar">Model is Law</div>
+              <div class="text-xs text-moon/30 mt-0.5">YES if prob &gt; 0.5, NO otherwise</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- PIPELINE -->
+  <section id="pipeline" class="py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-8 h-[1px] bg-lunar/30"></div>
+          <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Pipeline</span>
+        </div>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">Data Flow</h2>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Tick-driven architecture with 3-way fan-out. Every Coinbase trade fires the full pipeline in parallel.</p>
+      </div>
+
+      <div class="bot-card p-8 mb-6 reveal" style="--accent: #8ab4ff;">
+        <div class="bg-void/60 rounded-lg p-5 font-mono text-sm text-moon/70 leading-loose">
+          <div class="text-ice">Coinbase WS ticks (BTC, ETH, SOL, XRP)</div>
+          <div class="text-moon/30 ml-4">&boxvr;&mdash; CandleBuilder &rarr; 30s OHLCV &rarr; log returns &rarr; rolling vol &rarr; <span class="text-sniper-glow">VolState</span></div>
+          <div class="text-moon/30 ml-4">&boxvr;&mdash; ChWriter &rarr; ClickHouse (tick persistence)</div>
+          <div class="text-moon/30 ml-4">&boxur;&mdash; Evaluator &rarr; reads <span class="text-sniper-glow">VolState</span> + <span class="text-lunar">QuoteCache</span> &rarr; Kalshi REST orders</div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 reveal">
+        <div class="bot-card p-6" style="--accent: #f59e0b;">
+          <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-4">Volatility Pipeline</h3>
+          <div class="space-y-3 text-sm text-moon/50">
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">&bull;</span>
+              <span>30-second candles from raw Coinbase ticks</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">&bull;</span>
+              <span>Log returns between consecutive candle closes</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">&bull;</span>
+              <span>Rolling standard deviation over 30-bar window (15 min)</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-sniper-glow mt-0.5">&bull;</span>
+              <span>Published via lock-free AtomicU64 &mdash; zero contention</span>
+            </div>
+          </div>
+        </div>
+        <div class="bot-card p-6" style="--accent: #4a7cf7;">
+          <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-4">Order Book Pipeline</h3>
+          <div class="space-y-3 text-sm text-moon/50">
+            <div class="flex items-start gap-2">
+              <span class="text-lunar mt-0.5">&bull;</span>
+              <span>Kalshi WS <code class="font-mono text-xs text-lunar bg-midnight/60 px-1 py-0.5 rounded">orderbook_delta</code> feed for live book updates</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-lunar mt-0.5">&bull;</span>
+              <span>Kalshi only exposes bids &mdash; asks are derived:<br><code class="font-mono text-xs text-moon/60">yes_ask = 100 - best_no_bid</code></span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-lunar mt-0.5">&bull;</span>
+              <span>Requires live WS snapshot before trading any market</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-lunar mt-0.5">&bull;</span>
+              <span>Eager discovery predicts next ticker, pre-seeds cache</span>
             </div>
           </div>
         </div>
@@ -302,8 +395,8 @@ tailwind.config = {
           <div class="w-8 h-[1px] bg-lunar/30"></div>
           <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Configuration</span>
         </div>
-        <h2 class="font-display font-bold text-3xl text-ice mb-3">Bot Parameters</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">Single deployment: <code class="font-mono text-xs text-sniper-glow bg-midnight/60 px-1.5 py-0.5 rounded">kalshi-bot-hold</code> &middot; bot_id: <code class="font-mono text-xs text-sniper-glow bg-midnight/60 px-1.5 py-0.5 rounded">hold-to-expiry</code></p>
+        <h2 class="font-display font-bold text-3xl text-ice mb-3">Parameters</h2>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Deployment: <code class="font-mono text-xs text-sniper-glow bg-midnight/60 px-1.5 py-0.5 rounded">kmodel-bot</code> &middot; bot_id: <code class="font-mono text-xs text-sniper-glow bg-midnight/60 px-1.5 py-0.5 rounded">kmodel</code></p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6">
@@ -313,58 +406,56 @@ tailwind.config = {
             Strategy
           </h3>
           <table class="data-table">
-            <tr><td>Min Edge</td><td class="text-sniper-glow font-semibold">7% (fixed)</td></tr>
-            <tr><td>Max Spread</td><td>8&cent;</td></tr>
-            <tr><td>Bar Duration</td><td>10s</td></tr>
-            <tr><td>Vol Lookback</td><td>900s (90 bars)</td></tr>
-            <tr><td>EWMA Lambda</td><td>0.97</td></tr>
-            <tr><td>Drift Lookback</td><td>12 bars (2 min)</td></tr>
-            <tr><td>Drift Weight / Cap</td><td>0.5 / 0.3%</td></tr>
-            <tr><td>Skew Beta</td><td>0.40</td></tr>
+            <tr><td>Edge Threshold</td><td class="text-sniper-glow font-semibold">10%</td></tr>
+            <tr><td>Model</td><td>Normal CDF</td></tr>
+            <tr><td>Vol Source</td><td>30s log returns, 30-bar window</td></tr>
+            <tr><td>Fee Model</td><td>7% of max payoff</td></tr>
+            <tr><td>Fill Buffer</td><td>+2c above ask</td></tr>
+            <tr><td>Max Price</td><td>95c (sanity ceiling)</td></tr>
           </table>
         </div>
 
         <div class="bot-card p-6 reveal" style="--accent: #4a7cf7;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a7cf7" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            Sniper Window
+            Entry Window
           </h3>
           <table class="data-table">
-            <tr><td>Eval Start</td><td>10s into window</td></tr>
-            <tr><td>Min Tau</td><td>120s (stop at 2min to expiry)</td></tr>
-            <tr><td>Eval Loop</td><td>100ms</td></tr>
-            <tr><td>Exit Management</td><td class="text-moon/30">Disabled</td></tr>
-            <tr><td>ML Model</td><td class="text-moon/30">Disabled</td></tr>
+            <tr><td>Window Opens</td><td>900s before expiry (15 min)</td></tr>
+            <tr><td>Window Closes</td><td>600s before expiry (10 min)</td></tr>
+            <tr><td>Eval Throttle</td><td>50ms per tick</td></tr>
+            <tr><td>Order Type</td><td>Aggressive limit (ask+2c)</td></tr>
+            <tr><td>Resting Poll</td><td>1s interval</td></tr>
+            <tr><td>Exit Management</td><td class="text-moon/30">None &mdash; hold to settlement</td></tr>
           </table>
         </div>
 
         <div class="bot-card p-6 reveal" style="--accent: #ef4444;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-            Risk Limits
+            Risk Guards
           </h3>
           <table class="data-table">
             <tr><td>Target Notional</td><td>$1 per trade</td></tr>
-            <tr><td>Max Notional/Trade</td><td>$20</td></tr>
-            <tr><td>Trades per Market</td><td>1</td></tr>
-            <tr><td>Trades per Day</td><td>15</td></tr>
-            <tr><td>Cooldown</td><td>0s</td></tr>
-            <tr><td>Expiry Cutoff</td><td>60s</td></tr>
-            <tr><td>Kill Switch</td><td class="text-danger font-semibold">$50</td></tr>
+            <tr><td>Trades per Window</td><td>1 per (asset, expiry)</td></tr>
+            <tr><td>Edge Guard</td><td class="text-sniper-glow font-semibold">Always enforced (10%)</td></tr>
+            <tr><td>Price Ceiling</td><td>95c max limit price</td></tr>
+            <tr><td>Stale Book Guard</td><td>Requires live WS snapshot</td></tr>
+            <tr><td>Cancel on Close</td><td>Resting orders at window end</td></tr>
           </table>
         </div>
 
         <div class="bot-card p-6 reveal" style="--accent: #10b981;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-            Market
+            Markets
           </h3>
           <table class="data-table">
-            <tr><td>Asset</td><td class="text-lunar font-semibold">BTC (KXBTC15M)</td></tr>
+            <tr><td>Assets</td><td class="text-lunar font-semibold">BTC &middot; ETH &middot; SOL &middot; XRP</td></tr>
+            <tr><td>Series</td><td>KXBTC15M, KXETH15M, KXSOL15M, KXXRP15M</td></tr>
             <tr><td>Frequency</td><td>Every 15 minutes, 24/7</td></tr>
-            <tr><td>Strike</td><td>60s BRTI avg before open</td></tr>
             <tr><td>Resolution</td><td>YES if close &ge; strike</td></tr>
-            <tr><td>Settlement</td><td>CF Benchmarks BRTI</td></tr>
+            <tr><td>Direction</td><td>YES or NO &mdash; model decides</td></tr>
           </table>
         </div>
       </div>
@@ -382,7 +473,7 @@ tailwind.config = {
           <span class="font-display text-xs tracking-[0.2em] text-lunar/50 uppercase">Infrastructure</span>
         </div>
         <h2 class="font-display font-bold text-3xl text-ice mb-3">Stack</h2>
-        <p class="text-moon/40 text-sm max-w-2xl mb-10">C++23 single binary on a 3-node Mac Mini cluster running Talos OS. Sub-100ms tick ingestion, ~50ms order placement.</p>
+        <p class="text-moon/40 text-sm max-w-2xl mb-10">Rust async binary on a 3-node Mac Mini cluster running Talos OS. Lock-free vol sharing, 50ms tick-to-eval latency, ~50ms order placement.</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6 reveal">
@@ -396,21 +487,21 @@ tailwind.config = {
               <div class="glow-dot bg-green-400 mt-1.5 shrink-0"></div>
               <div>
                 <div class="font-mono text-sm text-ice">Coinbase WebSocket</div>
-                <div class="text-xs text-moon/40 mt-0.5">BTC-USD ticker + trades &middot; sub-100ms</div>
+                <div class="text-xs text-moon/40 mt-0.5">BTC, ETH, SOL, XRP trades &middot; 50ms throttle</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-orange-400 mt-1.5 shrink-0"></div>
               <div>
-                <div class="font-mono text-sm text-ice">Kalshi REST + WebSocket</div>
-                <div class="text-xs text-moon/40 mt-0.5">Market scanning, order book, order placement</div>
+                <div class="font-mono text-sm text-ice">Kalshi WebSocket</div>
+                <div class="text-xs text-moon/40 mt-0.5">Live orderbook_delta &middot; bid snapshots &middot; derived asks</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-yellow-400 mt-1.5 shrink-0"></div>
               <div>
-                <div class="font-mono text-sm text-ice">Persistent HTTPS</div>
-                <div class="text-xs text-moon/40 mt-0.5">DNS cached &middot; TLS reused &middot; ~5ms per order</div>
+                <div class="font-mono text-sm text-ice">Kalshi REST</div>
+                <div class="text-xs text-moon/40 mt-0.5">Market discovery &middot; order placement &middot; ~50ms ack</div>
               </div>
             </div>
           </div>
@@ -425,22 +516,22 @@ tailwind.config = {
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-cyan-400 mt-1.5 shrink-0"></div>
               <div>
-                <div class="font-mono text-sm text-ice">ClickHouse (10Gi PVC)</div>
-                <div class="text-xs text-moon/40 mt-0.5">btc_ticks 7d &middot; signals 30d &middot; trades 90d</div>
+                <div class="font-mono text-sm text-ice">ClickHouse</div>
+                <div class="text-xs text-moon/40 mt-0.5">btc_ticks &middot; kmodel_executions &middot; kmodel_settlements</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-purple-400 mt-1.5 shrink-0"></div>
               <div>
                 <div class="font-mono text-sm text-ice">Grafana Dashboard</div>
-                <div class="text-xs text-moon/40 mt-0.5">Single live dashboard &middot; 6 rows &middot; 5s refresh</div>
+                <div class="text-xs text-moon/40 mt-0.5">K-Model dashboard &middot; hft.trading:30300</div>
               </div>
             </div>
             <div class="flex items-start gap-3">
               <div class="glow-dot bg-blue-400 mt-1.5 shrink-0"></div>
               <div>
-                <div class="font-mono text-sm text-ice">Vol Warmup: Tick Replay</div>
-                <div class="text-xs text-moon/40 mt-0.5">Replays ~1200s of ticks on boot &middot; 0s warmup</div>
+                <div class="font-mono text-sm text-ice">Vol Warmup</div>
+                <div class="text-xs text-moon/40 mt-0.5">Replays 960s of ticks from ClickHouse on boot &middot; instant ready</div>
               </div>
             </div>
           </div>
@@ -451,15 +542,16 @@ tailwind.config = {
         <div class="bot-card p-6" style="--accent: #8ab4ff;">
           <h3 class="font-display font-semibold text-sm tracking-wide text-moon/70 mb-5 flex items-center gap-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8ab4ff" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
-            Cluster
+            Tech Stack
           </h3>
           <div class="flex flex-wrap gap-2">
-            <span class="feat-pill">C++23</span>
-            <span class="feat-pill">Boost.Beast</span>
-            <span class="feat-pill">OpenSSL (RSA-PSS)</span>
-            <span class="feat-pill">clickhouse-cpp</span>
-            <span class="feat-pill">spdlog</span>
-            <span class="feat-pill">simdjson</span>
+            <span class="feat-pill">Rust</span>
+            <span class="feat-pill">tokio</span>
+            <span class="feat-pill">axum</span>
+            <span class="feat-pill">statrs (Normal CDF)</span>
+            <span class="feat-pill">tungstenite</span>
+            <span class="feat-pill">reqwest</span>
+            <span class="feat-pill">tracing (JSON)</span>
             <span class="feat-pill">Talos OS</span>
             <span class="feat-pill">3x Mac Mini (amd64)</span>
             <span class="feat-pill">K8s &middot; hft-loc-dev</span>
@@ -475,7 +567,7 @@ tailwind.config = {
   <footer class="py-12 px-6 border-t border-lunar/8">
     <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs text-moon/25 font-mono">
       <div>admin@macmini-cluster / hft-loc-dev</div>
-      <div>KXBTC15M Sniper</div>
+      <div>K-Model &middot; BTC &middot; ETH &middot; SOL &middot; XRP</div>
     </div>
   </footer>
 
