@@ -14,6 +14,8 @@ resources:
   - k8s/diagram/service.yaml
   - k8s/kalshi-btc/deployment.yaml
   - k8s/kalshi-btc/service.yaml
+  - k8s/test-site/deployment.yaml
+  - k8s/test-site/service.yaml
   - k8s/networkpolicy.yaml
 
 configMapGenerator:
@@ -32,6 +34,9 @@ configMapGenerator:
   - name: kalshi-btc-html
     files:
       - index.html=sites/kalshi-btc/index.html
+  - name: test-site-html
+    files:
+      - index.html=sites/test-site/index.html
 
 generatorOptions:
   disableNameSuffixHash: true

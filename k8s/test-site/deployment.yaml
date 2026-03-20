@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-site
+  namespace: static-sites
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-site
+  template:
+    metadata:
+      labels:
+        app: test-site
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: python-server
+        image: python:3.11-alpine
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          cd /html
+          python -m http.server 8080
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: html
+          mountPath: /html
+          readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+      volumes:
+      - name: html
+        configMap:
+          name: test-site-html
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
