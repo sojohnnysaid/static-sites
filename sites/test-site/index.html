@@ -166,8 +166,8 @@
       border-color: rgba(233,69,96,0.35);
     }
     .cast-avatar {
-      width: 52px;
-      height: 52px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       background: var(--card);
       display: flex;
@@ -176,6 +176,14 @@
       font-size: 1.4rem;
       margin-bottom: 14px;
       border: 2px solid var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .cast-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
     }
     .cast-actor {
       font-weight: 700;
@@ -282,7 +290,7 @@
       <div class="synopsis-grid">
         <div class="poster-wrap">
           <img
-            src="https://upload.wikimedia.org/wikipedia/en/6/62/Office_Space_poster.jpg"
+            src="https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p22554_p_v8_ai.jpg"
             alt="Office Space (1999) movie poster"
             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
           >
@@ -334,49 +342,49 @@
       <h2 class="section-title">Main Cast</h2>
       <div class="cast-grid">
         <div class="cast-card">
-          <div class="cast-avatar">&#128104;&#8205;&#128187;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/SXSW-2024-alih-OB7A0752-Office_Space_Ron_Livingston_crop.jpg/330px-SXSW-2024-alih-OB7A0752-Office_Space_Ron_Livingston_crop.jpg" alt="Ron Livingston"></div>
           <div class="cast-actor">Ron Livingston</div>
           <div class="cast-role">Peter Gibbons</div>
           <p class="cast-desc">The fed-up programmer at Initech whose post-hypnotherapy epiphany transforms him from anxious drone to zen slacker — and accidental corporate darling.</p>
         </div>
         <div class="cast-card">
-          <div class="cast-avatar">&#128105;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/JenniferAnistonHWoFFeb2012.jpg/330px-JenniferAnistonHWoFFeb2012.jpg" alt="Jennifer Aniston"></div>
           <div class="cast-actor">Jennifer Aniston</div>
           <div class="cast-role">Joanna</div>
           <p class="cast-desc">A waitress at Chotchkie's restaurant locked in her own battle against corporate absurdity — specifically the mandatory "pieces of flair" dress code.</p>
         </div>
         <div class="cast-card">
-          <div class="cast-avatar">&#128084;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Gary_Cole_2011_Shankbone.JPG/330px-Gary_Cole_2011_Shankbone.JPG" alt="Gary Cole"></div>
           <div class="cast-actor">Gary Cole</div>
           <div class="cast-role">Bill Lumbergh</div>
           <p class="cast-desc">The passive-aggressive VP of Initech, coffee mug perpetually in hand, who delivers every soul-crushing request with infuriating politeness. "Yeah, I'm gonna need you to go ahead and come in on Saturday."</p>
         </div>
         <div class="cast-card">
-          <div class="cast-avatar">&#128203;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Stephen_Root_2024.jpg/330px-Stephen_Root_2024.jpg" alt="Stephen Root"></div>
           <div class="cast-actor">Stephen Root</div>
           <div class="cast-role">Milton Waddams</div>
           <p class="cast-desc">The soft-spoken, perpetually aggrieved office outcast who guards his Swingline stapler with fierce devotion. Do not touch his stapler. Seriously.</p>
         </div>
         <div class="cast-card">
-          <div class="cast-avatar">&#127926;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/SXSW-2024-alih-OB7A0785-Office_Space_David_Herman_%28cropped%29.jpg/330px-SXSW-2024-alih-OB7A0785-Office_Space_David_Herman_%28cropped%29.jpg" alt="David Herman"></div>
           <div class="cast-actor">David Herman</div>
           <div class="cast-role">Michael Bolton</div>
           <p class="cast-desc">Peter's programmer friend who harbors a deep hatred for the singer sharing his name and an equally deep love for gangsta rap. He is not going to change his name.</p>
         </div>
         <div class="cast-card">
-          <div class="cast-avatar">&#128270;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/SXSW-2024-alih-OB7A0786-Office_Space_Ajay_Naidu.jpg/330px-SXSW-2024-alih-OB7A0786-Office_Space_Ajay_Naidu.jpg" alt="Ajay Naidu"></div>
           <div class="cast-actor">Ajay Naidu</div>
           <div class="cast-role">Samir Nagheenanajar</div>
           <p class="cast-desc">The third member of the reluctant heist crew, perpetually frustrated that no one at Initech can pronounce his last name correctly.</p>
         </div>
         <div class="cast-card">
-          <div class="cast-avatar">&#128296;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Diedrich_Bader_at_Big_Lick_ComicCon_2026_%2855086186420%29_%28cropped%29.jpg/330px-Diedrich_Bader_at_Big_Lick_ComicCon_2026_%2855086186420%29_%28cropped%29.jpg" alt="Diedrich Bader"></div>
           <div class="cast-actor">Diedrich Bader</div>
           <div class="cast-role">Lawrence</div>
           <p class="cast-desc">Peter's earthy, straight-talking next-door neighbor whose simple philosophy on life and money is genuinely profound compared to everything happening at Initech.</p>
         </div>
         <div class="cast-card">
-          <div class="cast-avatar">&#128300;</div>
+          <div class="cast-avatar"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Germann_with_Sircar_and_McGinley_2022_%28edited%29.png/330px-Germann_with_Sircar_and_McGinley_2022_%28edited%29.png" alt="John C. McGinley"></div>
           <div class="cast-actor">John C. McGinley</div>
           <div class="cast-role">Bob Slydell</div>
           <p class="cast-desc">One half of the efficiency-consultant "two Bobs" duo brought in to downsize Initech — who inexplicably falls for Peter's honesty and promotes him instead.</p>
