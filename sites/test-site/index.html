@@ -1,11 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Site</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office Space — Fan Site</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #1a1a2e;
+      --surface:      #16213e;
+      --card:         #0f3460;
+      --accent:       #e94560;
+      --accent-dim:   #a8324a;
+      --gold:         #f5a623;
+      --text:         #e0e0e0;
+      --text-muted:   #9090a8;
+      --border:       rgba(255,255,255,0.08);
+      --radius:       12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(233,69,96,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #fff 30%, var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .hero-tagline {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+    .hero-meta strong { color: var(--gold); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    section { padding: 64px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    /* ── POSTER + SYNOPSIS ── */
+    .synopsis-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .synopsis-grid { grid-template-columns: 1fr; }
+    }
+    .poster-wrap {
+      position: sticky;
+      top: 24px;
+    }
+    .poster-wrap img {
+      width: 100%;
+      border-radius: var(--radius);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--border);
+      display: block;
+    }
+    .poster-caption {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .synopsis p { color: var(--text-muted); margin-bottom: 18px; font-size: 1.05rem; }
+    .synopsis p:last-child { margin-bottom: 0; }
+
+    .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .tag {
+      background: rgba(233,69,96,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(233,69,96,0.25);
+      border-radius: 99px;
+      padding: 3px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ── CAST ── */
+    .cast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 20px;
+    }
+    .cast-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    }
+    .cast-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+      border-color: rgba(233,69,96,0.35);
+    }
+    .cast-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 14px;
+      border: 2px solid var(--border);
+    }
+    .cast-actor {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+    .cast-role {
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .cast-desc {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+    /* ── QUOTES ── */
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .quote-card {
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 24px 22px;
+    }
+    .quote-text {
+      font-size: 0.98rem;
+      font-style: italic;
+      color: var(--text);
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+    .quote-text::before { content: '\201C'; color: var(--accent); font-size: 1.4em; line-height: 0; vertical-align: -0.3em; margin-right: 3px; }
+    .quote-text::after  { content: '\201D'; color: var(--accent); font-size: 1.4em; line-height: 0; vertical-align: -0.3em; margin-left: 3px; }
+    .quote-author {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── FACTS ── */
+    .facts-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .fact-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .fact-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .fact-item p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    footer strong { color: var(--accent); }
+  </style>
 </head>
 <body>
-    <p>Hello, world!</p>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">Fan Site</div>
+    <h1>Office Space</h1>
+    <p class="hero-tagline">Work Sucks</p>
+    <div class="hero-meta">
+      <span>&#128197; <strong>1999</strong></span>
+      <span>&#127916; <strong>Comedy</strong></span>
+      <span>&#9989; <strong>Directed by Mike Judge</strong></span>
+      <span>&#11088; <strong>Cult Classic</strong></span>
+    </div>
+  </header>
+
+  <!-- SYNOPSIS -->
+  <section>
+    <div class="container">
+      <div class="synopsis-grid">
+        <div class="poster-wrap">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/6/62/Office_Space_poster.jpg"
+            alt="Office Space (1999) movie poster"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <div style="display:none; width:100%; aspect-ratio:2/3; background:var(--card); border-radius:var(--radius); align-items:center; justify-content:center; font-size:3rem;">&#127916;</div>
+          <p class="poster-caption">Office Space (1999) &mdash; 20th Century Fox</p>
+        </div>
+
+        <div class="synopsis">
+          <p class="section-label">The Movie</p>
+          <h2 class="section-title">About the Film</h2>
+          <div class="tag-row">
+            <span class="tag">Comedy</span>
+            <span class="tag">Satire</span>
+            <span class="tag">Cult Classic</span>
+            <span class="tag">Mike Judge</span>
+          </div>
+          <p>
+            <em>Office Space</em> is a 1999 American workplace comedy written and directed by Mike Judge,
+            based on his earlier animated Milton shorts. The film stars Ron Livingston as Peter Gibbons,
+            a disgruntled software engineer at the fictional Initech Corporation who is stuck in a
+            soul-crushing cubicle job with overbearing bosses and meaningless TPS reports.
+          </p>
+          <p>
+            After a hypnotherapy session goes unexpectedly sideways — the hypnotherapist dies mid-session,
+            leaving Peter in a state of blissful indifference — Peter simply stops caring about work
+            altogether. His newfound attitude paradoxically impresses corporate downsizers, earning him
+            a promotion while his friends Michael Bolton and Samir Nagheenanajar face layoffs.
+          </p>
+          <p>
+            In retaliation, the trio hatches a scheme to plant a virus in Initech's accounting system
+            to siphon fractions of pennies into their own bank account. A rounding error causes the
+            virus to steal over $300,000 — far more than intended. Meanwhile, the long-suffering Milton,
+            whose stapler has been confiscated one too many times, takes matters into his own hands.
+          </p>
+          <p>
+            Released to modest box office returns, <em>Office Space</em> became a massive hit on home
+            video and cable television, cementing its status as one of the defining cult comedies of
+            its generation — and an enduring mirror held up to corporate America.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAST -->
+  <section>
+    <div class="container">
+      <p class="section-label">The Players</p>
+      <h2 class="section-title">Main Cast</h2>
+      <div class="cast-grid">
+        <div class="cast-card">
+          <div class="cast-avatar">&#128104;&#8205;&#128187;</div>
+          <div class="cast-actor">Ron Livingston</div>
+          <div class="cast-role">Peter Gibbons</div>
+          <p class="cast-desc">The fed-up programmer at Initech whose post-hypnotherapy epiphany transforms him from anxious drone to zen slacker — and accidental corporate darling.</p>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">&#128105;</div>
+          <div class="cast-actor">Jennifer Aniston</div>
+          <div class="cast-role">Joanna</div>
+          <p class="cast-desc">A waitress at Chotchkie's restaurant locked in her own battle against corporate absurdity — specifically the mandatory "pieces of flair" dress code.</p>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">&#128084;</div>
+          <div class="cast-actor">Gary Cole</div>
+          <div class="cast-role">Bill Lumbergh</div>
+          <p class="cast-desc">The passive-aggressive VP of Initech, coffee mug perpetually in hand, who delivers every soul-crushing request with infuriating politeness. "Yeah, I'm gonna need you to go ahead and come in on Saturday."</p>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">&#128203;</div>
+          <div class="cast-actor">Stephen Root</div>
+          <div class="cast-role">Milton Waddams</div>
+          <p class="cast-desc">The soft-spoken, perpetually aggrieved office outcast who guards his Swingline stapler with fierce devotion. Do not touch his stapler. Seriously.</p>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">&#127926;</div>
+          <div class="cast-actor">David Herman</div>
+          <div class="cast-role">Michael Bolton</div>
+          <p class="cast-desc">Peter's programmer friend who harbors a deep hatred for the singer sharing his name and an equally deep love for gangsta rap. He is not going to change his name.</p>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">&#128270;</div>
+          <div class="cast-actor">Ajay Naidu</div>
+          <div class="cast-role">Samir Nagheenanajar</div>
+          <p class="cast-desc">The third member of the reluctant heist crew, perpetually frustrated that no one at Initech can pronounce his last name correctly.</p>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">&#128296;</div>
+          <div class="cast-actor">Diedrich Bader</div>
+          <div class="cast-role">Lawrence</div>
+          <p class="cast-desc">Peter's earthy, straight-talking next-door neighbor whose simple philosophy on life and money is genuinely profound compared to everything happening at Initech.</p>
+        </div>
+        <div class="cast-card">
+          <div class="cast-avatar">&#128300;</div>
+          <div class="cast-actor">John C. McGinley</div>
+          <div class="cast-role">Bob Slydell</div>
+          <p class="cast-desc">One half of the efficiency-consultant "two Bobs" duo brought in to downsize Initech — who inexplicably falls for Peter's honesty and promotes him instead.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTES -->
+  <section>
+    <div class="container">
+      <p class="section-label">Iconic Lines</p>
+      <h2 class="section-title">Memorable Quotes</h2>
+      <div class="quotes-grid">
+        <div class="quote-card">
+          <p class="quote-text">It's not that I'm lazy, it's that I just don't care. It's a problem of motivation.</p>
+          <p class="quote-author">— Peter Gibbons</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">I did nothing. I did absolutely nothing, and it was everything I thought it could be.</p>
+          <p class="quote-author">— Peter Gibbons</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Yeah, I'm gonna need you to go ahead and come in on Saturday. Oh, oh, and I almost forgot — I'm also gonna need you to go ahead and come in on Sunday too.</p>
+          <p class="quote-author">— Bill Lumbergh</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">If things go wrong, don't go with them.</p>
+          <p class="quote-author">— Peter Gibbons</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">I believe you'd get your ass kicked sayin' something like that, man.</p>
+          <p class="quote-author">— Lawrence</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">Every day of my life has been worse than the day before, so that every day you see me is the worst day of my life.</p>
+          <p class="quote-author">— Peter Gibbons</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">PC Load Letter? What the f*** does that mean?</p>
+          <p class="quote-author">— Michael Bolton</p>
+        </div>
+        <div class="quote-card">
+          <p class="quote-text">I was told there would be no layoffs. And I was also told that I would be moved back to my original office space.</p>
+          <p class="quote-author">— Milton Waddams</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUN FACTS -->
+  <section>
+    <div class="container">
+      <p class="section-label">Did You Know?</p>
+      <h2 class="section-title">Fun Facts</h2>
+      <div class="facts-list">
+        <div class="fact-item">
+          <span class="fact-icon">&#127916;</span>
+          <p>The film originated as a series of animated shorts about the character Milton that Mike Judge created for <em>Saturday Night Live</em> and <em>Liquid Television</em> in the early 1990s.</p>
+        </div>
+        <div class="fact-item">
+          <span class="fact-icon">&#128176;</span>
+          <p>Office Space was a box office disappointment on release, grossing just $12.2 million on a $10 million budget — but became a massive cult hit through DVD and cable television.</p>
+        </div>
+        <div class="fact-item">
+          <span class="fact-icon">&#128247;</span>
+          <p>The printer destruction scene — set to "Still" by Geto Boys — was filmed in an actual abandoned building and took multiple takes. The crew genuinely enjoyed smashing the printer.</p>
+        </div>
+        <div class="fact-item">
+          <span class="fact-icon">&#129386;</span>
+          <p>Swingline did not make a red stapler at the time of filming. After the movie's cult success, they began producing them to meet overwhelming fan demand.</p>
+        </div>
+        <div class="fact-item">
+          <span class="fact-icon">&#127926;</span>
+          <p>Actor David Herman (Michael Bolton) had to convince director Mike Judge he could convincingly lip-sync rap songs. The Geto Boys scenes became some of the film's most beloved moments.</p>
+        </div>
+        <div class="fact-item">
+          <span class="fact-icon">&#127970;</span>
+          <p>The Initech office was filmed in Austin, Texas, where Mike Judge was based. Judge insisted on authentic cubicle culture — many crew members said it felt uncomfortably familiar.</p>
+        </div>
+        <div class="fact-item">
+          <span class="fact-icon">&#128084;</span>
+          <p>Gary Cole based Bill Lumbergh's infuriating delivery on a real person — a corporate type he had observed whose tone made every request sound simultaneously polite and soul-crushing.</p>
+        </div>
+        <div class="fact-item">
+          <span class="fact-icon">&#9996;&#65039;</span>
+          <p>The concept of "pieces of flair" has entered the cultural lexicon as shorthand for any pointless, mandated display of enthusiasm — a testament to the film's lasting resonance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>A fan tribute to <strong>Office Space</strong> (1999) &mdash; Directed by Mike Judge &mdash; &copy; 20th Century Fox</p>
+    <p style="margin-top:8px;">This is an unofficial fan site. All rights belong to their respective owners.</p>
+  </footer>
+
 </body>
 </html>
