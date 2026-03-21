@@ -3,51 +3,672 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello World | gardening.sogos.io</title>
+  <title>Gardening by Sogo — Find Your Perfect Plants 🌱</title>
+  <meta name="description" content="A step-by-step garden wizard that helps you discover the perfect herbs and flowers for your new home.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            garden: {
+              50:  '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .fade-in { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .card-check { animation: popIn 0.25s ease-out; }
+    @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+    .progress-fill { transition: width 0.5s ease-in-out; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50">
-  <div class="flex flex-col items-center justify-center min-h-screen px-6">
-    <!-- Decorative leaf icon -->
-    <div class="mb-8">
-      <svg class="w-16 h-16 text-emerald-500" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/>
-      </svg>
+<body class="min-h-screen bg-gradient-to-br from-garden-50 via-green-50 to-emerald-50">
+
+  <!-- Sticky Header -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-garden-100">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">🌱</span>
+        <span class="font-bold text-garden-800 text-lg">Gardening by Sogo</span>
+      </div>
+      <button id="restart-btn" onclick="restartWizard()" class="text-sm text-stone-400 hover:text-garden-600 transition-colors hidden">
+        Start Over
+      </button>
     </div>
+  </header>
 
-    <!-- Main heading -->
-    <h1 class="text-5xl md:text-7xl font-bold text-emerald-900 tracking-tight mb-4">
-      Hello World
-    </h1>
-
-    <!-- Subdomain badge -->
-    <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 rounded-full mb-8">
-      <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-      <span class="text-sm font-medium text-emerald-700">gardening.sogos.io</span>
+  <!-- Progress Bar -->
+  <div id="progress-section" class="max-w-3xl mx-auto px-4 pt-6 pb-2">
+    <div class="flex items-center justify-between mb-2">
+      <div id="step-indicators" class="flex gap-2"></div>
+      <span id="step-label" class="text-sm text-stone-400 font-medium"></span>
     </div>
-
-    <!-- Description -->
-    <p class="text-lg text-emerald-700/80 max-w-md text-center leading-relaxed mb-12">
-      A fresh start for something that grows. Built with SvelteKit &amp; Tailwind CSS, deployed via GitOps.
-    </p>
-
-    <!-- Tech stack pills -->
-    <div class="flex flex-wrap justify-center gap-3">
-      <span class="px-3 py-1.5 bg-white/80 backdrop-blur border border-emerald-200 rounded-lg text-xs font-medium text-emerald-600 shadow-sm">SvelteKit</span>
-      <span class="px-3 py-1.5 bg-white/80 backdrop-blur border border-emerald-200 rounded-lg text-xs font-medium text-emerald-600 shadow-sm">Tailwind CSS</span>
-      <span class="px-3 py-1.5 bg-white/80 backdrop-blur border border-emerald-200 rounded-lg text-xs font-medium text-emerald-600 shadow-sm">Kubernetes</span>
-      <span class="px-3 py-1.5 bg-white/80 backdrop-blur border border-emerald-200 rounded-lg text-xs font-medium text-emerald-600 shadow-sm">Argo CD</span>
-      <span class="px-3 py-1.5 bg-white/80 backdrop-blur border border-emerald-200 rounded-lg text-xs font-medium text-emerald-600 shadow-sm">Cloudflare</span>
+    <div class="w-full h-2 bg-garden-100 rounded-full overflow-hidden">
+      <div id="progress-bar" class="h-full bg-gradient-to-r from-garden-400 to-garden-600 rounded-full progress-fill" style="width: 0%"></div>
     </div>
   </div>
 
+  <!-- Main Content Area -->
+  <main id="app" class="max-w-3xl mx-auto px-4 py-6"></main>
+
   <!-- Footer -->
-  <footer class="absolute bottom-0 w-full py-4 text-center text-xs text-emerald-400">
-    Deployed to homelab via GitOps
+  <footer class="text-center py-8 text-xs text-stone-300">
+    Built with 💚 for the garden at your new home
   </footer>
+
+  <script>
+  // ============================================================
+  // PLANT CATALOG (18 plants)
+  // ============================================================
+  const PLANTS = [
+    {
+      id: 'basil', name: 'Basil', emoji: '🌿',
+      description: 'The king of herbs — fragrant, fast-growing, and the secret to incredible homemade pesto. There\'s nothing quite like tearing fresh basil leaves over a caprese salad.',
+      difficulty: 'beginner',
+      climate: ['tropical', 'subtropical', 'temperate'],
+      sunlight: ['full-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['regular'],
+      goals: ['food'],
+      tip: 'Pinch off flower buds as soon as they appear — this keeps the leaves flavourful and the plant bushy for longer.',
+      harvestTime: '3–4 weeks from planting for first leaves'
+    },
+    {
+      id: 'lavender', name: 'Lavender', emoji: '💜',
+      description: 'Beautiful, fragrant, and utterly low-fuss. Lavender fills your garden with calming scent and gorgeous purple spikes that bees absolutely adore.',
+      difficulty: 'beginner',
+      climate: ['temperate', 'subtropical'],
+      sunlight: ['full-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['rarely'],
+      goals: ['flowers', 'wildlife', 'low-maintenance'],
+      tip: 'Don\'t overwater! Lavender thrives on neglect. Let the soil dry out between waterings and it\'ll reward you with stronger fragrance.',
+      harvestTime: 'Blooms in late spring to summer'
+    },
+    {
+      id: 'rosemary', name: 'Rosemary', emoji: '🌿',
+      description: 'A Mediterranean powerhouse that smells heavenly and tastes even better. Toss a sprig on roast potatoes and thank yourself later.',
+      difficulty: 'beginner',
+      climate: ['subtropical', 'temperate'],
+      sunlight: ['full-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['rarely'],
+      goals: ['food', 'wildlife', 'low-maintenance'],
+      tip: 'Rosemary hates wet feet. Plant it in well-draining soil and skip watering when in doubt — it\'s tougher than you think.',
+      harvestTime: 'Ready to harvest anytime once established'
+    },
+    {
+      id: 'sunflowers', name: 'Sunflowers', emoji: '🌻',
+      description: 'Pure joy on a stem. Sunflowers shoot up fast, turn their faces to follow the sun, and make every garden feel like a celebration.',
+      difficulty: 'beginner',
+      climate: ['temperate', 'subtropical'],
+      sunlight: ['full-sun'],
+      space: ['small-bed', 'medium-garden', 'large-garden'],
+      water: ['occasionally', 'rarely'],
+      goals: ['flowers', 'wildlife'],
+      tip: 'Sow seeds directly where they\'ll grow — sunflowers don\'t love being transplanted. Stake tall varieties once they hit waist height.',
+      harvestTime: '8–10 weeks from seed to bloom'
+    },
+    {
+      id: 'echinacea', name: 'Echinacea', emoji: '🌸',
+      description: 'Tough, beautiful, and beloved by butterflies. Echinacea (coneflower) brings bold colour and attracts pollinators all summer long.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate'],
+      sunlight: ['full-sun', 'partial-sun'],
+      space: ['small-bed', 'medium-garden', 'large-garden'],
+      water: ['rarely', 'occasionally'],
+      goals: ['flowers', 'wildlife', 'low-maintenance'],
+      tip: 'Leave spent flower heads through winter — birds love the seeds, and they look beautiful frosted with snow.',
+      harvestTime: 'Blooms first summer, better in year two'
+    },
+    {
+      id: 'hostas', name: 'Hostas', emoji: '🌱',
+      description: 'The shade garden\'s best friend. Hostas bring lush, sculptural foliage to spots where other plants give up, and they come back stronger every year.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate'],
+      sunlight: ['full-shade', 'partial-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['occasionally', 'regular'],
+      goals: ['flowers', 'low-maintenance'],
+      tip: 'Slugs love hostas as much as you do. A ring of crushed eggshells around the base helps keep them at bay.',
+      harvestTime: 'Fills out beautifully in the first season'
+    },
+    {
+      id: 'hellebores', name: 'Hellebores', emoji: '🌺',
+      description: 'Winter\'s gift to gardeners. When everything else is dormant, hellebores bloom with elegant, nodding flowers in the most gorgeous colours.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate'],
+      sunlight: ['full-shade', 'partial-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['occasionally', 'rarely'],
+      goals: ['flowers', 'low-maintenance'],
+      tip: 'Trim away last year\'s leaves in late winter so the new flowers can shine. They look stunning in a simple vase indoors.',
+      harvestTime: 'Blooms late winter to early spring'
+    },
+    {
+      id: 'succulents', name: 'Succulents', emoji: '🪴',
+      description: 'Modern, sculptural, and nearly indestructible. Succulents come in an incredible range of shapes and colours — perfect for creative arrangements.',
+      difficulty: 'beginner',
+      climate: ['subtropical', 'tropical', 'temperate'],
+      sunlight: ['full-sun', 'partial-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['rarely'],
+      goals: ['flowers', 'low-maintenance'],
+      tip: 'When in doubt, don\'t water. Overwatering is the #1 succulent killer. Let soil dry completely between drinks.',
+      harvestTime: 'Look great immediately, grow slowly over months'
+    },
+    {
+      id: 'ornamental-grasses', name: 'Ornamental Grasses', emoji: '🌾',
+      description: 'Movement, texture, and year-round beauty. Ornamental grasses sway in the breeze and add an effortless, natural feel to any garden.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate', 'subtropical'],
+      sunlight: ['full-sun', 'partial-sun'],
+      space: ['medium-garden', 'large-garden'],
+      water: ['rarely', 'occasionally'],
+      goals: ['flowers', 'low-maintenance', 'privacy'],
+      tip: 'Cut grasses back hard in late winter before new growth appears. They\'ll bounce back fuller and more beautiful than ever.',
+      harvestTime: 'Full effect from first growing season'
+    },
+    {
+      id: 'ferns', name: 'Ferns', emoji: '🌿',
+      description: 'Ancient, elegant, and perfectly happy in the darkest corners of your garden. Ferns bring lush, tropical vibes to shady spots.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate', 'subtropical'],
+      sunlight: ['full-shade', 'partial-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['regular', 'occasionally'],
+      goals: ['low-maintenance'],
+      tip: 'Mist ferns regularly if growing indoors — they love humidity. Outdoors, a shady spot with moist soil is their happy place.',
+      harvestTime: 'Lush fronds from the first season'
+    },
+    {
+      id: 'tomatoes', name: 'Tomatoes', emoji: '🍅',
+      description: 'Nothing beats the flavour of a sun-warmed tomato picked fresh from your own vines. Once you grow your own, you\'ll never look back.',
+      difficulty: 'intermediate',
+      climate: ['temperate', 'subtropical'],
+      sunlight: ['full-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['regular'],
+      goals: ['food'],
+      tip: 'Remove the "suckers" — small shoots that grow between the main stem and branches — to direct energy into bigger, tastier fruit.',
+      harvestTime: '60–80 days from transplant to harvest'
+    },
+    {
+      id: 'lettuce', name: 'Lettuce', emoji: '🥬',
+      description: 'The quickest win in the garden. Lettuce grows fast, tastes incredible when fresh-picked, and you can harvest leaves as you need them.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate'],
+      sunlight: ['full-sun', 'partial-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['regular', 'occasionally'],
+      goals: ['food', 'low-maintenance'],
+      tip: 'Harvest outer leaves first and let the centre keep growing — this "cut and come again" method gives you weeks of salads.',
+      harvestTime: '30–45 days from seed to first harvest'
+    },
+    {
+      id: 'chillies', name: 'Chillies', emoji: '🌶️',
+      description: 'From gentle warmth to face-melting heat — there\'s a chilli for everyone. They\'re gorgeous plants too, with jewel-coloured fruit.',
+      difficulty: 'intermediate',
+      climate: ['subtropical', 'tropical', 'temperate'],
+      sunlight: ['full-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['occasionally', 'regular'],
+      goals: ['food'],
+      tip: 'A little stress makes hotter chillies. Let the soil dry slightly between waterings and the fruit will pack more punch.',
+      harvestTime: '60–90 days from transplant to harvest'
+    },
+    {
+      id: 'strawberries', name: 'Strawberries', emoji: '🍓',
+      description: 'Sweet, jewel-red berries that taste like summer itself. Strawberries are perfect for containers, hanging baskets, or a dedicated berry patch.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate'],
+      sunlight: ['full-sun', 'partial-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['regular'],
+      goals: ['food', 'flowers'],
+      tip: 'Tuck straw under the fruit to keep berries clean and slug-free. Net the plants too — birds will race you to every ripe berry!',
+      harvestTime: 'First fruit 4–6 weeks after flowering'
+    },
+    {
+      id: 'zucchini', name: 'Zucchini', emoji: '🥒',
+      description: 'The most generous plant you\'ll ever grow. One or two zucchini plants will keep you (and your neighbours) supplied all summer.',
+      difficulty: 'beginner',
+      climate: ['temperate', 'subtropical'],
+      sunlight: ['full-sun'],
+      space: ['medium-garden', 'large-garden'],
+      water: ['regular'],
+      goals: ['food', 'wildlife'],
+      tip: 'Pick zucchini small (15–20 cm) for the best flavour. Check daily — they grow shockingly fast and can become marrows overnight!',
+      harvestTime: '45–55 days from seed to harvest'
+    },
+    {
+      id: 'pumpkins', name: 'Pumpkins', emoji: '🎃',
+      description: 'There\'s something magical about growing your own pumpkins. Whether for cooking, carving, or just admiring, they\'re pure autumn joy.',
+      difficulty: 'intermediate',
+      climate: ['temperate', 'subtropical'],
+      sunlight: ['full-sun'],
+      space: ['large-garden'],
+      water: ['regular', 'occasionally'],
+      goals: ['food'],
+      tip: 'Slide a piece of cardboard under each growing pumpkin to prevent rot. For giant pumpkins, limit each vine to just one or two fruit.',
+      harvestTime: '90–120 days from seed to harvest'
+    },
+    {
+      id: 'kale', name: 'Kale', emoji: '🥦',
+      description: 'The superfood that practically grows itself. Kale laughs at cold weather, produces for months, and gets sweeter after a frost.',
+      difficulty: 'beginner',
+      climate: ['cool', 'temperate'],
+      sunlight: ['full-sun', 'partial-sun'],
+      space: ['containers', 'small-bed', 'medium-garden', 'large-garden'],
+      water: ['occasionally', 'regular'],
+      goals: ['food', 'low-maintenance'],
+      tip: 'Harvest lower leaves first, working your way up the stem. The plant will keep producing new leaves from the top for months.',
+      harvestTime: '55–65 days from seed, then ongoing'
+    },
+    {
+      id: 'clumping-bamboo', name: 'Clumping Bamboo', emoji: '🎋',
+      description: 'Instant tropical vibes and natural privacy. Clumping bamboo stays where you plant it (unlike the running kind) and creates a gorgeous living screen.',
+      difficulty: 'beginner',
+      climate: ['subtropical', 'tropical', 'temperate'],
+      sunlight: ['full-sun', 'partial-sun'],
+      space: ['medium-garden', 'large-garden'],
+      water: ['occasionally'],
+      goals: ['privacy', 'low-maintenance'],
+      tip: 'Always choose clumping varieties (Bambusa, Fargesia) — never running bamboo, which can invade your entire garden and beyond.',
+      harvestTime: 'Noticeable screening within 1–2 growing seasons'
+    }
+  ];
+
+  // ============================================================
+  // WIZARD STEPS CONFIGURATION
+  // ============================================================
+  const STEPS = [
+    {
+      id: 'climate',
+      title: 'Where do you garden?',
+      subtitle: 'Different climates suit different plants. Pick the one closest to where you live.',
+      type: 'single',
+      options: [
+        { value: 'tropical', emoji: '🌴', label: 'Tropical', desc: 'Hot and humid year-round, no frost' },
+        { value: 'subtropical', emoji: '☀️', label: 'Subtropical', desc: 'Warm winters, hot summers, rare frost' },
+        { value: 'temperate', emoji: '🍂', label: 'Temperate', desc: 'Distinct seasons, mild winters' },
+        { value: 'cool', emoji: '❄️', label: 'Cool / Cold', desc: 'Cold winters, short summers, frost common' }
+      ]
+    },
+    {
+      id: 'sunlight',
+      title: 'How much sun does your space get?',
+      subtitle: 'Take a look at your growing spot at midday — how much direct sunshine lands there?',
+      type: 'single',
+      options: [
+        { value: 'full-sun', emoji: '🌞', label: 'Full Sun', desc: '6+ hours of direct sunlight daily' },
+        { value: 'partial-sun', emoji: '⛅', label: 'Partial Sun', desc: '3–6 hours of direct sunlight daily' },
+        { value: 'full-shade', emoji: '🌥️', label: 'Full Shade', desc: 'Less than 3 hours, or indirect light only' }
+      ]
+    },
+    {
+      id: 'space',
+      title: 'How much growing space do you have?',
+      subtitle: 'Don\'t worry — amazing gardens come in every size. Even a windowsill counts!',
+      type: 'single',
+      options: [
+        { value: 'containers', emoji: '🪴', label: 'Containers / Pots', desc: 'Balcony, patio, or indoor pots' },
+        { value: 'small-bed', emoji: '🌱', label: 'Small Bed', desc: 'Up to 4 sq ft / 0.4 m²' },
+        { value: 'medium-garden', emoji: '🌿', label: 'Medium Garden', desc: '4–20 sq ft / 0.4–2 m²' },
+        { value: 'large-garden', emoji: '🌳', label: 'Large Garden', desc: 'Over 20 sq ft / 2+ m²' }
+      ]
+    },
+    {
+      id: 'water',
+      title: 'How often can you water?',
+      subtitle: 'Be honest — plants do better when matched to your real routine, not your ideal one.',
+      type: 'single',
+      options: [
+        { value: 'regular', emoji: '💧', label: 'Regularly', desc: 'Daily or every other day' },
+        { value: 'occasionally', emoji: '🚿', label: 'Occasionally', desc: 'A couple of times per week' },
+        { value: 'rarely', emoji: '🏜️', label: 'Rarely', desc: 'Once a week or less' }
+      ]
+    },
+    {
+      id: 'goals',
+      title: 'What are your gardening goals?',
+      subtitle: 'Pick as many as you like — your garden can do it all!',
+      type: 'multi',
+      options: [
+        { value: 'food', emoji: '🍽️', label: 'Grow Food', desc: 'Vegetables, fruit, herbs to eat' },
+        { value: 'flowers', emoji: '💐', label: 'Beautiful Flowers', desc: 'Colour, texture, seasonal interest' },
+        { value: 'wildlife', emoji: '🐝', label: 'Support Wildlife', desc: 'Bees, butterflies, and birds' },
+        { value: 'privacy', emoji: '🌲', label: 'Privacy & Screening', desc: 'Screen fences, walls, or neighbours' },
+        { value: 'low-maintenance', emoji: '😌', label: 'Low Maintenance', desc: 'Beautiful without a lot of effort' }
+      ]
+    }
+  ];
+
+  // ============================================================
+  // STATE
+  // ============================================================
+  const STORAGE_KEY = 'gardening-wizard-answers';
+  let state = loadState();
+
+  function defaultState() {
+    return { step: 0, answers: { climate: null, sunlight: null, space: null, water: null, goals: [] } };
+  }
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch(e) {}
+    return defaultState();
+  }
+
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+
+  function restartWizard() {
+    state = defaultState();
+    saveState();
+    render();
+  }
+
+  // ============================================================
+  // SCORING
+  // ============================================================
+  function scorePlants(answers) {
+    return PLANTS
+      .filter(p => p.climate.includes(answers.climate))
+      .map(p => {
+        let score = 0;
+        if (p.sunlight.includes(answers.sunlight)) score += 2;
+        if (p.space.includes(answers.space)) score += 2;
+        if (p.water.includes(answers.water)) score += 1;
+        const matchedGoals = answers.goals.filter(g => p.goals.includes(g));
+        score += matchedGoals.length * 2;
+        return { ...p, score, matchedGoals };
+      })
+      .sort((a, b) => b.score - a.score);
+  }
+
+  function matchLabel(score) {
+    if (score >= 9) return { text: 'Perfect Match', emoji: '✨', color: 'bg-garden-100 text-garden-800' };
+    if (score >= 6) return { text: 'Great Match', emoji: '🌟', color: 'bg-emerald-100 text-emerald-800' };
+    if (score >= 3) return { text: 'Good Match', emoji: '👍', color: 'bg-amber-100 text-amber-800' };
+    return { text: 'Worth Considering', emoji: '🤔', color: 'bg-stone-100 text-stone-600' };
+  }
+
+  function difficultyBadge(d) {
+    if (d === 'beginner') return { text: 'Beginner-friendly', color: 'bg-green-100 text-green-700' };
+    if (d === 'intermediate') return { text: 'Intermediate', color: 'bg-amber-100 text-amber-700' };
+    return { text: 'Advanced', color: 'bg-red-100 text-red-700' };
+  }
+
+  // ============================================================
+  // RENDERING
+  // ============================================================
+  function render() {
+    const app = document.getElementById('app');
+    const progressSection = document.getElementById('progress-section');
+    const restartBtn = document.getElementById('restart-btn');
+
+    if (state.step === 'results') {
+      progressSection.classList.add('hidden');
+      restartBtn.classList.remove('hidden');
+      renderResults(app);
+    } else if (state.step === 'welcome') {
+      progressSection.classList.add('hidden');
+      restartBtn.classList.add('hidden');
+      renderWelcome(app);
+    } else {
+      progressSection.classList.remove('hidden');
+      restartBtn.classList.remove('hidden');
+      renderStep(app, state.step);
+      updateProgress(state.step);
+    }
+    saveState();
+  }
+
+  function updateProgress(stepIdx) {
+    const total = STEPS.length;
+    const pct = ((stepIdx + 1) / total) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('step-label').textContent = `Step ${stepIdx + 1} of ${total}`;
+
+    const indicators = document.getElementById('step-indicators');
+    indicators.innerHTML = STEPS.map((s, i) => {
+      const done = i < stepIdx;
+      const active = i === stepIdx;
+      let cls = 'w-8 h-2 rounded-full transition-all duration-300 ';
+      if (done) cls += 'bg-garden-500';
+      else if (active) cls += 'bg-garden-400';
+      else cls += 'bg-garden-200';
+      return `<div class="${cls}"></div>`;
+    }).join('');
+  }
+
+  function renderWelcome(app) {
+    app.innerHTML = `
+      <div class="fade-in text-center py-12">
+        <div class="text-6xl mb-6">🌱</div>
+        <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-4">Let's find your perfect plants</h1>
+        <p class="text-lg text-stone-500 max-w-lg mx-auto mb-8 leading-relaxed">
+          Answer a few quick questions about your garden, and we'll recommend herbs, flowers, and edibles that'll thrive in your space.
+        </p>
+        <button onclick="state.step = 0; render()" class="inline-flex items-center gap-2 rounded-xl bg-garden-600 hover:bg-garden-700 px-8 py-4 font-semibold text-white text-lg shadow-lg shadow-garden-200 transition-all hover:shadow-xl hover:shadow-garden-200">
+          Get Started
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+        </button>
+      </div>`;
+  }
+
+  function renderStep(app, stepIdx) {
+    const step = STEPS[stepIdx];
+    const currentVal = state.answers[step.id];
+    const isMulti = step.type === 'multi';
+    const hasSelection = isMulti ? (currentVal && currentVal.length > 0) : currentVal !== null;
+
+    app.innerHTML = `
+      <div class="fade-in">
+        <div class="mb-8">
+          <h2 class="text-2xl md:text-3xl font-bold text-stone-900 mb-2">${step.title}</h2>
+          <p class="text-stone-500 leading-relaxed">${step.subtitle}</p>
+          ${isMulti ? '<p class="text-sm text-garden-600 mt-1 font-medium">Select one or more</p>' : ''}
+        </div>
+        <div class="grid gap-3 ${step.options.length <= 3 ? '' : 'sm:grid-cols-2'}">
+          ${step.options.map(opt => {
+            const selected = isMulti
+              ? (currentVal || []).includes(opt.value)
+              : currentVal === opt.value;
+            return `
+              <button onclick="selectOption('${step.id}', '${opt.value}', ${isMulti})"
+                class="relative flex items-start gap-4 rounded-2xl border-2 p-4 text-left transition-all duration-200
+                  ${selected
+                    ? 'border-garden-500 bg-garden-50 shadow-md'
+                    : 'border-stone-200 bg-white hover:border-garden-300 hover:shadow-md'}">
+                ${selected ? '<div class="card-check absolute top-3 right-3 w-6 h-6 rounded-full bg-garden-500 flex items-center justify-center"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>' : ''}
+                <span class="text-3xl flex-shrink-0 mt-0.5">${opt.emoji}</span>
+                <div>
+                  <div class="font-semibold text-stone-900">${opt.label}</div>
+                  <div class="text-sm text-stone-500">${opt.desc}</div>
+                </div>
+              </button>`;
+          }).join('')}
+        </div>
+        <div class="flex items-center justify-between mt-8">
+          ${stepIdx > 0
+            ? `<button onclick="goBack()" class="rounded-xl border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700 hover:bg-stone-50 transition-colors">Back</button>`
+            : '<div></div>'}
+          <button onclick="goNext()" ${!hasSelection ? 'disabled' : ''}
+            class="rounded-xl px-6 py-3 font-semibold text-white transition-all
+              ${hasSelection ? 'bg-garden-600 hover:bg-garden-700 shadow-lg shadow-garden-200' : 'bg-garden-600/40 cursor-not-allowed'}">
+            ${stepIdx === STEPS.length - 1 ? 'See My Plants 🌿' : 'Next'}
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function selectOption(stepId, value, isMulti) {
+    if (isMulti) {
+      if (!state.answers[stepId]) state.answers[stepId] = [];
+      const idx = state.answers[stepId].indexOf(value);
+      if (idx >= 0) state.answers[stepId].splice(idx, 1);
+      else state.answers[stepId].push(value);
+    } else {
+      state.answers[stepId] = value;
+    }
+    render();
+  }
+
+  function goBack() {
+    if (state.step > 0) { state.step--; render(); }
+  }
+
+  function goNext() {
+    const step = STEPS[state.step];
+    const val = state.answers[step.id];
+    const hasSelection = step.type === 'multi' ? (val && val.length > 0) : val !== null;
+    if (!hasSelection) return;
+    if (state.step < STEPS.length - 1) {
+      state.step++;
+    } else {
+      state.step = 'results';
+    }
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderResults(app) {
+    const answers = state.answers;
+    const results = scorePlants(answers);
+
+    // Build answer label map
+    const labelMap = {};
+    STEPS.forEach(s => s.options.forEach(o => { labelMap[o.value] = o.emoji + ' ' + o.label; }));
+
+    const allSelected = [answers.climate, answers.sunlight, answers.space, answers.water, ...(answers.goals || [])];
+    const pills = allSelected.filter(Boolean).map(v => `<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-garden-100 text-garden-800 text-sm font-medium">${labelMap[v] || v}</span>`).join('');
+
+    const climateLabel = STEPS[0].options.find(o => o.value === answers.climate)?.label || answers.climate;
+
+    app.innerHTML = `
+      <div class="fade-in">
+        <div class="text-center mb-8">
+          <div class="text-5xl mb-4">🌿</div>
+          <h2 class="text-2xl md:text-3xl font-bold text-stone-900 mb-2">Your Plant Recommendations</h2>
+          <p class="text-stone-500">We found <strong class="text-garden-700">${results.length} plant${results.length !== 1 ? 's' : ''}</strong> suited to your ${climateLabel.toLowerCase()} climate</p>
+        </div>
+        <div class="flex flex-wrap gap-2 justify-center mb-8">${pills}</div>
+        <div class="space-y-4">
+          ${results.map(p => renderPlantCard(p, answers)).join('')}
+        </div>
+        <div class="text-center mt-12 mb-8 p-8 rounded-2xl bg-white border border-garden-200">
+          <div class="text-4xl mb-3">🌻</div>
+          <h3 class="text-xl font-bold text-stone-900 mb-2">Ready to get growing?</h3>
+          <p class="text-stone-500 mb-6">Save this page, take it to your local nursery, and start your garden adventure!</p>
+          <button onclick="restartWizard()" class="rounded-xl border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700 hover:bg-stone-50 transition-colors">
+            Start a New Search
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function renderPlantCard(plant, answers) {
+    const ml = matchLabel(plant.score);
+    const db = difficultyBadge(plant.difficulty);
+
+    // Sun/water labels
+    const sunLabel = plant.sunlight.map(s => {
+      if (s === 'full-sun') return '☀️ Full Sun';
+      if (s === 'partial-sun') return '⛅ Partial';
+      return '🌥️ Shade';
+    }).join(', ');
+    const waterLabel = plant.water.map(w => {
+      if (w === 'regular') return '💧 Regular';
+      if (w === 'occasionally') return '🚿 Occasional';
+      return '🏜️ Low';
+    }).join(', ');
+
+    // Goal tags
+    const goalLabelMap = { food: '🍽️ Food', flowers: '💐 Flowers', wildlife: '🐝 Wildlife', privacy: '🌲 Privacy', 'low-maintenance': '😌 Low-Maintenance' };
+    const goalTags = plant.goals.map(g => {
+      const isMatched = plant.matchedGoals.includes(g);
+      return `<span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium ${isMatched ? 'bg-garden-100 text-garden-700 ring-1 ring-garden-300' : 'bg-stone-100 text-stone-500'}">${goalLabelMap[g] || g}</span>`;
+    }).join(' ');
+
+    // Why it matches
+    const reasons = [];
+    if (plant.sunlight.includes(answers.sunlight)) reasons.push('sun needs match');
+    if (plant.space.includes(answers.space)) reasons.push('fits your space');
+    if (plant.water.includes(answers.water)) reasons.push('suits your watering routine');
+    if (plant.matchedGoals.length > 0) reasons.push(`matches ${plant.matchedGoals.length} of your goals`);
+    const reasonText = reasons.length > 0
+      ? reasons.map(r => r.charAt(0).toUpperCase() + r.slice(1)).join(' · ')
+      : 'Grows well in your climate';
+
+    return `
+      <div class="rounded-2xl bg-white border border-stone-200 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-3">
+            <span class="text-4xl">${plant.emoji}</span>
+            <div>
+              <h3 class="font-bold text-lg text-stone-900">${plant.name}</h3>
+              <div class="flex flex-wrap gap-2 mt-1">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${ml.color}">${ml.emoji} ${ml.text}</span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${db.color}">${db.text}</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <div class="text-xs text-stone-400 font-medium">Score</div>
+            <div class="text-lg font-bold text-garden-700">${plant.score}</div>
+          </div>
+        </div>
+        <p class="text-stone-600 text-sm leading-relaxed mb-3">${plant.description}</p>
+        <p class="text-xs text-garden-600 font-medium mb-3">${reasonText}</p>
+        <div class="flex flex-wrap gap-1.5 mb-3">${goalTags}</div>
+        <div class="grid grid-cols-2 gap-2 text-xs text-stone-500 mb-3">
+          <div><span class="font-medium text-stone-700">Sun:</span> ${sunLabel}</div>
+          <div><span class="font-medium text-stone-700">Water:</span> ${waterLabel}</div>
+          <div class="col-span-2"><span class="font-medium text-stone-700">Timeline:</span> ${plant.harvestTime}</div>
+        </div>
+        <div class="rounded-xl bg-amber-50 border border-amber-200 p-3">
+          <p class="text-sm text-amber-800"><span class="font-semibold">💡 Pro tip:</span> ${plant.tip}</p>
+        </div>
+      </div>`;
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  // If user has completed answers, show results; if fresh, show step 0
+  if (state.step === 'results') {
+    // Validate we still have all answers
+    if (!state.answers.climate || !state.answers.sunlight || !state.answers.space || !state.answers.water || !state.answers.goals?.length) {
+      state = defaultState();
+    }
+  } else if (typeof state.step !== 'number' || state.step < 0 || state.step >= STEPS.length) {
+    state.step = 0;
+  }
+  render();
+  </script>
 </body>
 </html>
