@@ -109,17 +109,16 @@
     /* ── POSTER + SYNOPSIS ── */
     .synopsis-grid {
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 1fr;
       gap: 48px;
       align-items: start;
     }
-    @media (max-width: 700px) {
-      .synopsis-grid { grid-template-columns: 1fr; }
-      .poster-wrap { position: static; }
-    }
     .poster-wrap {
-      position: sticky;
-      top: 24px;
+      position: static;
+    }
+    @media (min-width: 701px) {
+      .synopsis-grid { grid-template-columns: 260px 1fr; }
+      .poster-wrap { position: sticky; top: 24px; }
     }
     .poster-wrap img {
       width: 100%;

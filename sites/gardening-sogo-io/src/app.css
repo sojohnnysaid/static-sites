@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .wizard-card {
+    @apply cursor-pointer rounded-2xl border-2 p-4 transition-all duration-200 text-left;
+    @apply border-stone-200 bg-white hover:border-garden-400 hover:shadow-md;
+  }
+  .wizard-card.selected {
+    @apply border-garden-500 bg-garden-50 shadow-md;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-xl bg-garden-600 px-6 py-3 font-semibold text-white shadow-sm;
+    @apply hover:bg-garden-700 active:bg-garden-800 disabled:opacity-40 disabled:cursor-not-allowed;
+    @apply transition-colors duration-150;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-6 py-3 font-semibold text-stone-700;
+    @apply hover:bg-stone-50 active:bg-stone-100;
+    @apply transition-colors duration-150;
+  }
+}

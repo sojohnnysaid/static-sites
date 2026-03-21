@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gardening
+  namespace: static-sites
+spec:
+  selector:
+    app: gardening
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP

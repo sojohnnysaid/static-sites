@@ -16,6 +16,8 @@ resources:
   - k8s/kalshi-btc/service.yaml
   - k8s/test-site/deployment.yaml
   - k8s/test-site/service.yaml
+  - k8s/gardening/deployment.yaml
+  - k8s/gardening/service.yaml
   - k8s/networkpolicy.yaml
 
 configMapGenerator:
@@ -37,6 +39,12 @@ configMapGenerator:
   - name: test-site-html
     files:
       - index.html=sites/test-site/index.html
+  - name: gardening-html
+    files:
+      - build.tar.gz=sites/gardening-sogo-io/build.tar.gz
+  - name: gardening-nginx-conf
+    files:
+      - nginx.conf=sites/gardening-sogo-io/nginx.conf
 
 generatorOptions:
   disableNameSuffixHash: true
