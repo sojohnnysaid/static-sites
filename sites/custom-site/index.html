@@ -3,158 +3,704 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Site</title>
+  <title>Forge & Form — Artisan Ironwork Tables</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --color-bg: #0c0a09;
+      --color-bg-elevated: #1c1917;
+      --color-bg-card: #292524;
+      --color-border: #44403c;
+      --color-border-subtle: #292524;
+      --color-text: #fafaf9;
+      --color-text-muted: #a8a29e;
+      --color-text-subtle: #78716c;
+      --color-accent: #b45309;
+      --color-accent-light: #d97706;
+      --color-accent-glow: rgba(217, 119, 6, 0.15);
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(12, 10, 9, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span { color: var(--color-accent-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--color-accent-light); }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--color-text);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* ── Hero ── */
+    .hero {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background:
+        radial-gradient(ellipse at 50% 0%, var(--color-accent-glow) 0%, transparent 60%),
+        var(--color-bg);
     }
 
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      color: #f8fafc;
-    }
-
-    p.subtitle {
-      color: #94a3b8;
-      margin-bottom: 2rem;
-      font-size: 1rem;
-    }
-
-    .table-container {
-      width: 100%;
-      max-width: 800px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-      border: 1px solid #1e293b;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #1e293b;
-    }
-
-    thead th {
-      background: #334155;
-      padding: 0.875rem 1.25rem;
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #94a3b8;
-      border-bottom: 2px solid #475569;
-    }
-
-    tbody td {
-      padding: 0.875rem 1.25rem;
-      border-bottom: 1px solid #334155;
-      font-size: 0.9rem;
-    }
-
-    tbody tr:last-child td {
-      border-bottom: none;
-    }
-
-    tbody tr:hover {
-      background: #334155;
-    }
-
-    .status {
+    .hero-badge {
       display: inline-block;
-      padding: 0.2rem 0.6rem;
+      padding: 0.4rem 1.2rem;
+      border: 1px solid var(--color-border);
       border-radius: 9999px;
       font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent-light);
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      max-width: 700px;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--color-text-muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.4rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
       font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.25s;
+      cursor: pointer;
     }
 
-    .status--active {
-      background: rgba(34, 197, 94, 0.15);
-      color: #4ade80;
+    .btn-primary {
+      background: var(--color-accent);
+      color: var(--color-text);
+      border: 1px solid var(--color-accent);
     }
 
-    .status--pending {
-      background: rgba(234, 179, 8, 0.15);
-      color: #facc15;
+    .btn-primary:hover {
+      background: var(--color-accent-light);
+      border-color: var(--color-accent-light);
     }
 
-    .status--inactive {
-      background: rgba(239, 68, 68, 0.15);
-      color: #f87171;
+    .btn-outline {
+      background: transparent;
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
     }
 
-    footer {
-      margin-top: 2rem;
-      color: #475569;
+    .btn-outline:hover {
+      border-color: var(--color-accent-light);
+      color: var(--color-accent-light);
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    /* ── Sections ── */
+    section { padding: 6rem 2rem; }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      color: var(--color-text-muted);
+      max-width: 560px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    /* ── Product Grid ── */
+    #collection { background: var(--color-bg); }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .product-card:hover {
+      border-color: var(--color-border);
+      transform: translateY(-4px);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+      background: var(--color-bg-card);
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .product-info .desc {
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      font-weight: 300;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .price {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-accent-light);
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      background: var(--color-accent-glow);
+      color: var(--color-accent-light);
+    }
+
+    /* ── Pricing Table ── */
+    #pricing { background: var(--color-bg-elevated); }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .pricing-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 8px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: border-color 0.3s;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--color-accent);
+      position: relative;
+    }
+
+    .pricing-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-accent);
+      color: var(--color-text);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      border-radius: 9999px;
+    }
+
+    .pricing-card:hover { border-color: var(--color-border); }
+
+    .pricing-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .pricing-card .price-range {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-accent-light);
+      margin: 1rem 0;
+    }
+
+    .pricing-card .price-range span {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--color-text-muted);
+    }
+
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .pricing-features li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--color-border-subtle);
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    .pricing-features li::before {
+      content: '\2713';
+      color: var(--color-accent-light);
+      font-weight: 700;
+      margin-right: 0.75rem;
+    }
+
+    /* ── Contact ── */
+    #contact { background: var(--color-bg); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .contact-text h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-text p {
+      color: var(--color-text-muted);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-detail .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-subtle);
+      font-weight: 600;
+      min-width: 70px;
+    }
+
+    .contact-detail .value {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
       font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 4px;
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .form-group select option { background: var(--color-bg-elevated); }
+
+    /* ── Footer ── */
+    .site-footer {
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--color-border-subtle);
+      text-align: center;
+      color: var(--color-text-subtle);
+      font-size: 0.8rem;
+    }
+
+    .site-footer a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover { color: var(--color-accent-light); }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: rgba(12, 10, 9, 0.98);
+        padding: 1.5rem 2rem;
+        gap: 1.2rem;
+        border-bottom: 1px solid var(--color-border-subtle);
+      }
+      .product-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <h1>Custom Site</h1>
-  <p class="subtitle">Dashboard overview</p>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Value</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Alpha Service</td>
-          <td>Infrastructure</td>
-          <td>128</td>
-          <td><span class="status status--active">Active</span></td>
-        </tr>
-        <tr>
-          <td>Beta Pipeline</td>
-          <td>Data</td>
-          <td>64</td>
-          <td><span class="status status--active">Active</span></td>
-        </tr>
-        <tr>
-          <td>Gamma Worker</td>
-          <td>Compute</td>
-          <td>256</td>
-          <td><span class="status status--pending">Pending</span></td>
-        </tr>
-        <tr>
-          <td>Delta Cache</td>
-          <td>Storage</td>
-          <td>512</td>
-          <td><span class="status status--active">Active</span></td>
-        </tr>
-        <tr>
-          <td>Epsilon Monitor</td>
-          <td>Observability</td>
-          <td>32</td>
-          <td><span class="status status--inactive">Inactive</span></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#hero" class="logo">Forge <span>&</span> Form</a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  <footer>custom-site.sogos.io</footer>
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <span class="hero-badge">Handcrafted Since 2004</span>
+    <h1>Ironwork Tables of Timeless Distinction</h1>
+    <p>Each piece is hand-forged by master artisans, blending centuries-old blacksmithing techniques with contemporary design.</p>
+    <div class="hero-actions">
+      <a href="#collection" class="btn btn-primary">View Collection</a>
+      <a href="#contact" class="btn btn-outline">Commission a Piece</a>
+    </div>
+  </section>
+
+  <!-- Collection -->
+  <section id="collection">
+    <div class="container">
+      <div class="section-header">
+        <h2>The Collection</h2>
+        <p>Signature pieces ranging from intimate side tables to grand dining statements, each uniquely forged.</p>
+      </div>
+      <div class="product-grid">
+
+        <div class="product-card">
+          <img class="product-img" src="https://images.unsplash.com/photo-1567111065380-257ee03985bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=800" alt="The Meridian dining table">
+          <div class="product-info">
+            <h3>The Meridian</h3>
+            <p class="desc">Grand dining table with hand-scrolled iron base and tempered glass top. Seats eight.</p>
+            <div class="product-footer">
+              <span class="price">$9,800</span>
+              <span class="tag">Signature</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img class="product-img" src="https://images.unsplash.com/photo-1618588291966-fd658dab68a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=800" alt="The Helix console table">
+          <div class="product-info">
+            <h3>The Helix</h3>
+            <p class="desc">Ornamental console table with twisted iron columns and reclaimed walnut surface.</p>
+            <div class="product-footer">
+              <span class="price">$6,400</span>
+              <span class="tag">Bestseller</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img class="product-img" src="https://images.unsplash.com/photo-1654856486373-480e1a5db20f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=800" alt="The Jardin garden table">
+          <div class="product-info">
+            <h3>The Jardin</h3>
+            <p class="desc">Weather-resistant garden table with intricate leaf-motif ironwork and stone inlay top.</p>
+            <div class="product-footer">
+              <span class="price">$5,200</span>
+              <span class="tag">Outdoor</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img class="product-img" src="https://images.unsplash.com/photo-1662348989066-d75e6c2ab54e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=800" alt="The Atelier writing desk">
+          <div class="product-info">
+            <h3>The Atelier</h3>
+            <p class="desc">Writing desk with forged iron trestle legs and hand-oiled mahogany writing surface.</p>
+            <div class="product-footer">
+              <span class="price">$7,600</span>
+              <span class="tag">Limited</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img class="product-img" src="https://images.unsplash.com/photo-1617657306475-6df5826c05ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=800" alt="The Vesper side table">
+          <div class="product-info">
+            <h3>The Vesper</h3>
+            <p class="desc">Sculptural side table with a single iron spiral base and floating marble disc.</p>
+            <div class="product-footer">
+              <span class="price">$3,200</span>
+              <span class="tag">Accent</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img class="product-img" src="https://images.unsplash.com/photo-1559051668-934cd674493c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=800" alt="The Lumiere coffee table">
+          <div class="product-info">
+            <h3>The Lumiere</h3>
+            <p class="desc">Coffee table featuring an openwork iron cage base with brushed copper accents.</p>
+            <div class="product-footer">
+              <span class="price">$4,800</span>
+              <span class="tag">New</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2>Pricing Tiers</h2>
+        <p>From curated collection pieces to fully bespoke commissions tailored to your space.</p>
+      </div>
+      <div class="pricing-grid">
+
+        <div class="pricing-card">
+          <h3>Accent Pieces</h3>
+          <div class="price-range">$1,500 &ndash; $3,500 <span>per piece</span></div>
+          <ul class="pricing-features">
+            <li>Side tables, plant stands, and pedestals</li>
+            <li>Select from 12 signature iron finishes</li>
+            <li>Standard sizing with minor adjustments</li>
+            <li>4&ndash;6 week lead time</li>
+            <li>5-year structural warranty</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Inquire</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <h3>Statement Tables</h3>
+          <div class="price-range">$4,000 &ndash; $8,000 <span>per piece</span></div>
+          <ul class="pricing-features">
+            <li>Dining, coffee, and console tables</li>
+            <li>Custom dimensions to fit your space</li>
+            <li>Choice of surface: glass, stone, or wood</li>
+            <li>Dedicated artisan assigned to your project</li>
+            <li>8&ndash;12 week lead time</li>
+            <li>Lifetime structural warranty</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Commission</a>
+        </div>
+
+        <div class="pricing-card">
+          <h3>Bespoke & Grand</h3>
+          <div class="price-range">$8,000 &ndash; $10,000+ <span>per piece</span></div>
+          <ul class="pricing-features">
+            <li>Fully custom design from concept sketches</li>
+            <li>Collaborative design sessions with our atelier</li>
+            <li>Exotic materials and complex ironwork</li>
+            <li>White-glove delivery and installation</li>
+            <li>12&ndash;20 week lead time</li>
+            <li>Lifetime warranty with annual care visit</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Request Consultation</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2>Get In Touch</h2>
+        <p>Whether you have a vision in mind or need guidance, our team is ready to help bring your piece to life.</p>
+      </div>
+      <div class="contact-grid">
+
+        <div class="contact-text">
+          <h3>Visit Our Atelier</h3>
+          <p>Our workshop and showroom are open by appointment. Come see the craft in person, discuss your project over coffee, and explore our material library.</p>
+          <div class="contact-detail">
+            <span class="label">Studio</span>
+            <span class="value">142 Ironworks Lane, Brooklyn, NY 11222</span>
+          </div>
+          <div class="contact-detail">
+            <span class="label">Phone</span>
+            <span class="value">(718) 555-0193</span>
+          </div>
+          <div class="contact-detail">
+            <span class="label">Email</span>
+            <span class="value">hello@forgeandform.studio</span>
+          </div>
+          <div class="contact-detail">
+            <span class="label">Hours</span>
+            <span class="value">Mon&ndash;Fri 10am&ndash;6pm &middot; Sat by appointment</span>
+          </div>
+        </div>
+
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your inquiry. We will be in touch within 24 hours.');">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="interest">Interest</label>
+            <select id="interest">
+              <option>Accent Piece ($1,500 – $3,500)</option>
+              <option>Statement Table ($4,000 – $8,000)</option>
+              <option>Bespoke Commission ($8,000+)</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Tell us about your space, style, and vision..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Send Inquiry</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>&copy; 2026 Forge &amp; Form Ironworks &middot; <a href="#collection">Collection</a> &middot; <a href="#pricing">Pricing</a> &middot; <a href="#contact">Contact</a></p>
+  </footer>
+
 </body>
 </html>
