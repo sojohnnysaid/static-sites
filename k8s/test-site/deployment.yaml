@@ -18,18 +18,13 @@ spec:
         operator: Exists
         effect: NoSchedule
       containers:
-      - name: python-server
-        image: python:3.11-alpine
-        command: ["/bin/sh", "-c"]
-        args:
-        - |
-          cd /html
-          python -m http.server 8080
+      - name: nginx
+        image: nginxinc/nginx-unprivileged:alpine
         ports:
         - containerPort: 8080
         volumeMounts:
         - name: html
-          mountPath: /html
+          mountPath: /usr/share/nginx/html
           readOnly: true
         securityContext:
           allowPrivilegeEscalation: false
@@ -37,7 +32,6 @@ spec:
             drop:
             - ALL
           runAsNonRoot: true
-          runAsUser: 1000
       volumes:
       - name: html
         configMap:
