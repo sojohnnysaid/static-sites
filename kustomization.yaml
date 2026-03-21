@@ -22,6 +22,8 @@ resources:
   - k8s/test2/service.yaml
   - k8s/custom-site/deployment.yaml
   - k8s/custom-site/service.yaml
+  - k8s/construction/deployment.yaml
+  - k8s/construction/service.yaml
   - k8s/networkpolicy.yaml
 
 configMapGenerator:
@@ -52,6 +54,9 @@ configMapGenerator:
   - name: custom-site-html
     files:
       - index.html=sites/custom-site/index.html
+  - name: construction-html
+    files:
+      - index.html=sites/construction/index.html
 
 generatorOptions:
   disableNameSuffixHash: true

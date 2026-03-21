@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Contracting Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #fafaf9;
+      --color-bg-alt: #f5f5f4;
+      --color-bg-dark: #1c1917;
+      --color-bg-dark-elevated: #292524;
+      --color-border: #e7e5e4;
+      --color-text: #1c1917;
+      --color-text-muted: #57534e;
+      --color-text-light: #a8a29e;
+      --color-text-on-dark: #fafaf9;
+      --color-accent: #b45309;
+      --color-accent-hover: #92400e;
+      --color-accent-light: #fef3c7;
+      --font-heading: 'DM Serif Display', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.6;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 250, 249, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--color-text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--color-accent); }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-text);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 10rem 2rem 6rem;
+      background: var(--color-bg-dark);
+      color: var(--color-text-on-dark);
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--color-text-light);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      font-weight: 300;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--color-accent-hover); }
+
+    .btn-outline-light {
+      background: transparent;
+      color: var(--color-text-on-dark);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .btn-outline-light:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent-light);
+    }
+
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Sections ── */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-heading {
+      font-family: var(--font-heading);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      color: var(--color-text-muted);
+      max-width: 540px;
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Services ── */
+    #services { background: var(--color-bg); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .service-card:hover {
+      border-color: var(--color-accent);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--color-accent-light);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .service-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 0.6rem;
+    }
+
+    .service-card p {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ── About ── */
+    #about { background: var(--color-bg-alt); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat {
+      padding: 1.25rem;
+      background: var(--color-bg);
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--color-accent);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    .about-text p {
+      color: var(--color-text-muted);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .about-image {
+      background: var(--color-bg-dark);
+      border-radius: 8px;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-light);
+      font-size: 0.85rem;
+      overflow: hidden;
+    }
+
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── Contact ── */
+    #contact { background: var(--color-bg); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 3rem;
+    }
+
+    .contact-info h3 {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .contact-info p {
+      color: var(--color-text-muted);
+      font-weight: 300;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    .contact-detail {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .contact-detail .icon {
+      width: 36px;
+      height: 36px;
+      background: var(--color-accent-light);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .contact-detail .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-light);
+    }
+
+    .contact-detail .value {
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+
+    .contact-form {
+      background: var(--color-bg-alt);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--color-text);
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    /* ── Footer ── */
+    .site-footer {
+      background: var(--color-bg-dark);
+      color: var(--color-text-light);
+      padding: 3rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--color-text-on-dark);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--color-text-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--color-accent); }
+
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--color-bg-dark-elevated);
+      font-size: 0.8rem;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background: rgba(250, 250, 249, 0.98);
+        padding: 1.5rem 2rem;
+        gap: 1rem;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .services-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-image { height: 260px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#hero" class="logo">GC Consulting</a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+      <ul class="nav-links">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <h1>Expert General Contracting Consulting</h1>
+    <p>We bring decades of construction expertise to every project. From pre-construction planning to final delivery, we help you build with confidence.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Get a Consultation</a>
+      <a href="#services" class="btn btn-outline-light">Our Services</a>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="container">
+      <p class="section-label">What We Do</p>
+      <h2 class="section-heading">Full-Spectrum Construction Consulting</h2>
+      <p class="section-desc">We support owners, developers, and contractors through every phase of the building lifecycle.</p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">&#9670;</div>
+          <h3>Pre-Construction Planning</h3>
+          <p>Feasibility studies, budgeting, scheduling, and risk analysis before ground breaks. We identify potential issues early to save time and money.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">&#9632;</div>
+          <h3>Project Management</h3>
+          <p>On-site oversight, subcontractor coordination, quality assurance, and timeline management from foundation to occupancy.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">&#9650;</div>
+          <h3>Cost Estimation &amp; Control</h3>
+          <p>Detailed cost estimates, value engineering, change order management, and budget tracking to keep your project on financial target.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">&#9679;</div>
+          <h3>Building Code Compliance</h3>
+          <p>Permit coordination, code review, ADA compliance, and inspection preparation to ensure your project meets all regulatory requirements.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">&#9733;</div>
+          <h3>Owner Representation</h3>
+          <p>We act as your advocate on-site, protecting your interests through contractor negotiations, dispute resolution, and quality verification.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">&#9883;</div>
+          <h3>Safety &amp; Risk Management</h3>
+          <p>OSHA compliance programs, site safety audits, risk mitigation strategies, and insurance coordination for every phase of construction.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <p class="section-label">About Us</p>
+          <h2 class="section-heading">Building Trust Through Experience</h2>
+          <div class="about-text">
+            <p>GC Consulting was founded on a simple principle: construction projects succeed when guided by experienced, independent advisors who put the owner's interests first.</p>
+            <p>Our team of licensed professionals brings backgrounds in general contracting, architecture, and civil engineering. We've overseen projects ranging from residential renovations to multi-story commercial builds, always with an emphasis on quality, safety, and transparent communication.</p>
+            <p>Whether you're a first-time developer or a seasoned property owner, we provide the clarity and expertise needed to deliver projects on time and on budget.</p>
+          </div>
+          <div class="about-stats">
+            <div class="stat">
+              <div class="stat-number">25+</div>
+              <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">340</div>
+              <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">98%</div>
+              <div class="stat-label">Client Satisfaction</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">$2B+</div>
+              <div class="stat-label">Construction Value</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-image">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Construction site">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <p class="section-label">Get In Touch</p>
+      <h2 class="section-heading">Let's Discuss Your Project</h2>
+      <p class="section-desc">Reach out for a free initial consultation. We'll review your project scope and outline how we can help.</p>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Contact Details</h3>
+          <p>Our offices are open weekdays. We also offer on-site consultations throughout the tri-state area.</p>
+
+          <div class="contact-detail">
+            <div class="icon">&#9993;</div>
+            <div>
+              <div class="label">Email</div>
+              <div class="value">info@gcconsulting.com</div>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="icon">&#9742;</div>
+            <div>
+              <div class="label">Phone</div>
+              <div class="value">(212) 555-0147</div>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="icon">&#9873;</div>
+            <div>
+              <div class="label">Office</div>
+              <div class="value">450 Construction Way, Suite 300<br>New York, NY 10001</div>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="icon">&#9200;</div>
+            <div>
+              <div class="label">Hours</div>
+              <div class="value">Mon&ndash;Fri 7:00 AM &ndash; 5:00 PM</div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" onsubmit="event.preventDefault(); this.querySelector('.btn').textContent = 'Message Sent!'; setTimeout(() => this.querySelector('.btn').textContent = 'Send Message', 3000);">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="you@company.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" placeholder="(555) 000-0000">
+            </div>
+            <div class="form-group">
+              <label for="project-type">Project Type</label>
+              <select id="project-type">
+                <option>Residential</option>
+                <option>Commercial</option>
+                <option>Industrial</option>
+                <option>Renovation</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Project Details</label>
+            <textarea id="message" placeholder="Tell us about your project, timeline, and budget range..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">GC Consulting</div>
+      <ul class="footer-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="footer-copy">&copy; 2026 General Contracting Consulting. All rights reserved. &middot; Licensed &amp; Insured</div>
+    </div>
+  </footer>
+
+</body>
+</html>
