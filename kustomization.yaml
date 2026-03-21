@@ -20,6 +20,8 @@ resources:
   - k8s/gardening/service.yaml
   - k8s/test2/deployment.yaml
   - k8s/test2/service.yaml
+  - k8s/custom-site/deployment.yaml
+  - k8s/custom-site/service.yaml
   - k8s/networkpolicy.yaml
 
 configMapGenerator:
@@ -47,6 +49,9 @@ configMapGenerator:
   - name: test2-html
     files:
       - index.html=sites/test2/index.html
+  - name: custom-site-html
+    files:
+      - index.html=sites/custom-site/index.html
 
 generatorOptions:
   disableNameSuffixHash: true
