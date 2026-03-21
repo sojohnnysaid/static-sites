@@ -18,6 +18,8 @@ resources:
   - k8s/test-site/service.yaml
   - k8s/gardening/deployment.yaml
   - k8s/gardening/service.yaml
+  - k8s/test2/deployment.yaml
+  - k8s/test2/service.yaml
   - k8s/networkpolicy.yaml
 
 configMapGenerator:
@@ -42,6 +44,9 @@ configMapGenerator:
   - name: gardening-html
     files:
       - index.html=sites/gardening-sogo-io/index.html
+  - name: test2-html
+    files:
+      - index.html=sites/test2/index.html
 
 generatorOptions:
   disableNameSuffixHash: true
