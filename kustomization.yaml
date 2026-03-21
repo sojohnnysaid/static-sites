@@ -41,10 +41,7 @@ configMapGenerator:
       - index.html=sites/test-site/index.html
   - name: gardening-html
     files:
-      - build.tar.gz=sites/gardening-sogo-io/build.tar.gz
-  - name: gardening-nginx-conf
-    files:
-      - nginx.conf=sites/gardening-sogo-io/nginx.conf
+      - index.html=sites/gardening-sogo-io/index.html
 
 generatorOptions:
   disableNameSuffixHash: true
